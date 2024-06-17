@@ -1,12 +1,13 @@
+import 'react-native-gesture-handler';
 import {SafeAreaView, Text} from "react-native";
+import {NavigationContainer} from "@react-navigation/native"
+import MainNavigation from "./Navigation/MainNavigation.tsx";
 
 const App = () => {
     return (
-        <SafeAreaView>
-            <Text>
-                Hello World
-            </Text>
-        </SafeAreaView>
+        <NavigationContainer>
+            <MainNavigation/>
+        </NavigationContainer>
     );
 };
 

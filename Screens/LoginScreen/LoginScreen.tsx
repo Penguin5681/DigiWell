@@ -1,11 +1,14 @@
-import {ImageBackground, SafeAreaView, StatusBar, Text, View} from "react-native";
+import {ImageBackground, SafeAreaView, StatusBar, StyleSheet, Text, View} from "react-native";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {SetStateAction, useState} from "react";
 import Style from "./Style";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
-import GlobalImageBackgroundStyle from "../../Assets/GlobalStyles/GlobalImageBackgroundStyle";
 import EditText from "../../Components/EditText/EditText.tsx";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
+import GoogleButton from "../../Components/GoogleButton/GoogleButton.tsx";
+import FacebookButton from "../../Components/FacebookButton/FacebookButton.tsx";
+import LoginMethodText from "../../Components/LoginMethodText/LoginMethodText.tsx";
+import {Routes} from "../../Navigation/Routes";
 
 const LoginScreen = ({navigation}: { navigation: any }) => {
     const [defaultEmailValue, setDefaultEmailValue] = useState("");
@@ -15,18 +18,19 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
             <ImageBackground
                 source={require("../../Assets/Images/GlobalAppAssets/img.png")}
                 style={
-                    {
-                        flexDirection: 'row', flexWrap: 'wrap'
-                    }
+                    {flexDirection: 'row', flexWrap: 'wrap',}
                 }
-                imageStyle={{}}
                 resizeMode={"cover"}>
+
+                <View style={{...StyleSheet.absoluteFill, backgroundColor: 'rgba(0 ,0, 0, 0.6)'}}/>
 
                 <View
                     id={"back-button"}
                     style={Style.backButton}>
-                    <BackButton onPress={() => {
-                    }}/>
+                    <BackButton
+                        onPress={() => {
+                            navigation.navigate(Routes.WelcomeScreen)
+                        }}/>
                 </View>
 
                 <View
@@ -72,14 +76,33 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
                         text={"Login"}
                         textColor={"#FFFFFF"}
                         buttonColor={"#1E232C"}
+                        topMargin={0}
                         onPress={() => {
                             console.log("Login Button Clicked!")
                         }}
-                        isEnabled={(defaultEmailValue.length > 6 && defaultPasswordValue.length >= 6)}/>
+                        isEnabled={(defaultEmailValue.length > 6 && defaultPasswordValue.length >= 6)}
+                    />
+
+                    <View style={Style.loginMethodTextContainer}>
+                        {/*<Svg>*/}
+                        {/*    <Line*/}
+                        {/*        x1={"0"}*/}
+                        {/*        y1={"0"}*/}
+                        {/*        x2={"100"}*/}
+                        {/*        y2={"0"}*/}
+                        {/*        stroke={"#E8ECF4"}*/}
+                        {/*        strokeWidth={"1"}*/}
+                        {/*    />*/}
+                        {/*</Svg>*/}
+                        <LoginMethodText text={"Or Login with"}/>
+
+                        <View style={Style.signInButtonContainer}>
+                            <GoogleButton rightMargin={12}/>
+                            <FacebookButton/>
+                        </View>
+                    </View>
                 </View>
-
             </View>
-
         </SafeAreaView>
     );
 };

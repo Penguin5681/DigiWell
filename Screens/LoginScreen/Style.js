@@ -14,13 +14,13 @@ const Style = StyleSheet.create({
         marginBottom: verticalScale(20),
     },
     inputFieldContainer: {
-        backgroundColor: '#161515',
+        backgroundColor: '#000',
         height: '100%',
         width: '100%'
     },
     emailEditText: {
         marginHorizontal: horizontalScale(27),
-        marginTop: verticalScale(26)
+        marginTop: verticalScale(20)
     },
     passwordEditText: {
         marginHorizontal: horizontalScale(27),
@@ -32,17 +32,19 @@ const Style = StyleSheet.create({
         color: "#DBDBDB",
         textAlign: 'right',
         marginRight: horizontalScale(28),
-        marginTop: verticalScale(13.84),
+        marginTop: verticalScale(10.84),
     },
     loginButtonContainer: {
         marginHorizontal: horizontalScale(27),
-        marginTop: verticalScale(25.35),
+        marginTop: verticalScale(20.35),
     },
-    googleButton: {
-
+    signInButtonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: verticalScale(10),
     },
-    facebookButton: {
-
+    loginMethodTextContainer: {
+        marginTop: verticalScale(16),
     },
 });
 

@@ -6,6 +6,15 @@ const GlobalStyle = StyleSheet.create({
     },
     globalAppBackground: {
         backgroundColor: '#000'
+    },
+    globalAppLogoContainer: {
+        backgroundColor: '#FFF',
+        padding: 10,
+        borderRadius: 7.739,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 96,
+        height: 51,
     }
 });
 

@@ -53,7 +53,7 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
                 <View style={Style.passwordEditText}>
                     <EditText
                         text={"Enter your password"}
-                        inputType={'password'}
+                        inputType={'text'}
                         value={defaultPasswordValue}
                         onChangeText={(value: SetStateAction<string>) => {
                             console.log(value);

@@ -27,9 +27,9 @@ const Style = StyleSheet.create({
         marginTop: verticalScale(13.84),
     },
     forgetPasswordText: {
-        fontFamily: getUrbanistFontFamily('Urbanist', '500'),
+        fontFamily: getUrbanistFontFamily('Urbanist', '700'),
         fontSize: 13.86,
-        color: "#DBDBDB",
+        color: "#35C2C1",
         textAlign: 'right',
         marginRight: horizontalScale(28),
         marginTop: verticalScale(10.84),

@@ -65,23 +65,13 @@ const ForgetPasswordPage = ({navigation}: { navigation: any }) => {
                         textColor={"#FFF"}
                         buttonColor={"#1E232C"}
                         onPress={() => {
-                            console.log("Click")
+                            navigation.navigate(Routes.OTPVerificationScreen);
                         }}
-                        isEnabled={defaultEmailValue.length > 5}
+                        isEnabled={true}
                         topMargin={30}
                     />
                 </View>
             </View>
-
-            <View
-                style={Style.footerTextViewContainer}>
-                <Text style={Style.footerTextView}>
-                    Remember Password?
-                </Text>
-
-                <Text style={Style.footerTextView2}> Login</Text>
-            </View>
-
         </SafeAreaView>
     );
 };

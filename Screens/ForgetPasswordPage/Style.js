@@ -15,8 +15,9 @@ const Style = StyleSheet.create({
     },
     subHeaderTextView: {
         fontFamily: getUrbanistFontFamily('Urbanist', '500'),
-        fontSize: scaleFontSize(15),
-        marginTop: verticalScale(10)
+        fontSize: scaleFontSize(16),
+        marginTop: verticalScale(10),
+        color: "#DBDBDB"
     },
     inputFieldContainer: {
         height: '100%',
@@ -27,14 +28,8 @@ const Style = StyleSheet.create({
         marginHorizontal: horizontalScale(27),
         marginTop: verticalScale(20)
     },
-    footerTextViewContainer: {
-        // TODO: Fix Flex footer view (margin Auto)
-        marginTop: 'auto',
-        flexDirection: 'row',
-        justifyContent: 'center'
-    },
     footerTextView: {
-        fontFamily: getUrbanistFontFamily('Urbanist', '500'),
+        fontFamily: getUrbanistFontFamily( 'Urbanist', '500'),
         fontSize: scaleFontSize(15),
         color: "#D0D0D0",
         letterSpacing: 0.15,
@@ -45,8 +40,6 @@ const Style = StyleSheet.create({
         color: '#35C2C1',
         letterSpacing: 0.15
     },
-
-
 });
 
 export default Style;

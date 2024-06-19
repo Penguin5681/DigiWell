@@ -4,6 +4,9 @@ import WelcomeScreen from "../Screens/WelcomeScreen/WelcomeScreen.tsx";
 import LoginScreen from "../Screens/LoginScreen/LoginScreen.tsx";
 import RegisterScreen from "../Screens/RegisterScreen/RegisterScreen.tsx";
 import ForgetPasswordPage from "../Screens/ForgetPasswordPage/ForgetPasswordPage.tsx";
+import OTPVerificationScreen from "../Screens/OTPVerificationScreen/OTPVerificationScreen.tsx";
+import CreateNewPasswordPageScreen from "../Screens/CreateNewPasswordPageScreen/CreateNewPasswordPageScreen.tsx";
+import PasswordChangedScreen from "../Screens/PasswordChangedScreen/PasswordChangedScreen.tsx";
 
 const StackBase= createStackNavigator();
 const MainNavigation = () => {
@@ -13,6 +16,9 @@ const MainNavigation = () => {
             <StackBase.Screen name={Routes.LoginScreen} component={LoginScreen}/>
             <StackBase.Screen name={Routes.ForgetPasswordPage} component={ForgetPasswordPage}/>
             <StackBase.Screen name={Routes.RegisterScreen} component={RegisterScreen}/>
+            <StackBase.Screen name={Routes.OTPVerificationScreen} component={OTPVerificationScreen}/>
+            <StackBase.Screen name={Routes.CreateNewPasswordPageScreen} component={CreateNewPasswordPageScreen}/>
+            <StackBase.Screen name={Routes.PasswordChangedScreen} component={PasswordChangedScreen}/>
         </StackBase.Navigator>
     );
 };

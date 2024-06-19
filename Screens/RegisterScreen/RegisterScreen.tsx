@@ -1,20 +1,22 @@
-import {ImageBackground, SafeAreaView, StatusBar, StyleSheet, Text, View} from "react-native";
+import {Button, ImageBackground, SafeAreaView, StyleSheet, Text, View} from "react-native";
+import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
-import {SetStateAction, useState} from "react";
-import Style from "./Style";
+import {Routes} from "../../Navigation/Routes";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import EditText from "../../Components/EditText/EditText.tsx";
+import React, {SetStateAction, useState} from "react";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
+import LoginMethodText from "../../Components/LoginMethodText/LoginMethodText.tsx";
 import GoogleButton from "../../Components/GoogleButton/GoogleButton.tsx";
 import FacebookButton from "../../Components/FacebookButton/FacebookButton.tsx";
-import LoginMethodText from "../../Components/LoginMethodText/LoginMethodText.tsx";
-import {Routes} from "../../Navigation/Routes";
+import Style from "./Style";
 
-const LoginScreen = ({navigation}: { navigation: any }) => {
+const RegisterScreen = ({navigation}: { navigation: any }) => {
     const [defaultEmailValue, setDefaultEmailValue] = useState("");
     const [defaultPasswordValue, setDefaultPasswordValue] = useState("");
+    const [defaultConfirmPasswordValue, setDefaultConfirmPasswordValue] = useState("");
     return (
-        <SafeAreaView>
+        <SafeAreaView style={[GlobalStyle.globalAppBackground, GlobalStyle.globalBackgroundFlex]}>
             <ImageBackground
                 source={require("../../Assets/Images/GlobalAppAssets/img.png")}
                 style={
@@ -35,55 +37,56 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
 
                 <View
                     id={"header-text-view"}
-                    style={Style.headerTextView}>
-                    <HeaderText text={"Welcome back! Glad to see you, Again!"}/>
+                    style={[Style.headerTextView, {marginBottom: 20}]}>
+                    <HeaderText text={"Hello! Register to get started"}/>
                 </View>
             </ImageBackground>
 
-            <View
-                style={Style.inputFieldContainer}>
-                <View style={Style.emailEditText}>
+            <View style={Style.inputFieldContainer}>
+
+                <View style={Style.emailEditTextContainer}>
                     <EditText
-                        text={"Enter your email"}
+                        text={"Email"}
                         inputType={'email'}
                         value={defaultEmailValue}
                         onChangeText={(value: SetStateAction<string>) => {
-                            console.log(value);
-                            setDefaultEmailValue(value);
-                        }}
-                    />
+                            console.log(value)
+                            setDefaultEmailValue((value))
+                        }}/>
                 </View>
 
-                <View style={Style.passwordEditText}>
+                <View style={Style.passwordEditTextContainer}>
                     <EditText
-                        text={"Enter your password"}
+                        text={"Password"}
                         inputType={'password'}
                         value={defaultPasswordValue}
                         onChangeText={(value: SetStateAction<string>) => {
-                            console.log(value);
-                            setDefaultPasswordValue(value);
-                        }}
-                    />
+                            console.log(value)
+                            setDefaultPasswordValue((value))
+                        }}/>
                 </View>
 
-                <Text style={Style.forgetPasswordText}>
-                    Forgot Password?
-                </Text>
+                <View style={Style.confirmPasswordEditTextContainer}>
+                    <EditText
+                        text={"Confirm Password"}
+                        inputType={'password'}
+                        value={defaultPasswordValue}
+                        onChangeText={(value: SetStateAction<string>) => {
+                            console.log(value)
+                            setDefaultPasswordValue((value))
+                        }}/>
+                </View>
 
-                <View
-                    style={Style.loginButtonContainer}>
+                <View style={Style.buttonContainer}>
                     <LoginSignUpButton
-                        text={"Login"}
-                        textColor={"#FFFFFF"}
+                        text={"Register"}
+                        textColor={"#FFF"}
                         buttonColor={"#1E232C"}
-                        topMargin={0}
-                        onPress={() => {
-                            console.log("Login Button Clicked!")
-                        }}
-                        isEnabled={(defaultEmailValue.length > 6 && defaultPasswordValue.length >= 6)}
-                    />
+                        onPress={() => null}
+                        isEnabled={true}
+                        topMargin={15}/>
 
-                    <View style={Style.loginMethodTextContainer}>
+                    <View style={Style.signUpMethodTextContainer}>
                         {/*<Svg>*/}
                         {/*    <Line*/}
                         {/*        x1={"0"}*/}
@@ -94,17 +97,19 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
                         {/*        strokeWidth={"1"}*/}
                         {/*    />*/}
                         {/*</Svg>*/}
-                        <LoginMethodText text={"Or Login with"}/>
+                        <LoginMethodText text={"Or Register with"}/>
 
-                        <View style={Style.signInButtonContainer}>
+                        <View style={Style.signUpButtonContainer}>
                             <GoogleButton rightMargin={12}/>
                             <FacebookButton/>
                         </View>
+
                     </View>
                 </View>
             </View>
+
         </SafeAreaView>
     );
 };
 
-export default LoginScreen;
+export default RegisterScreen;

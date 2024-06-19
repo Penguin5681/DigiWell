@@ -66,7 +66,13 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
                     />
                 </View>
 
-                <Text style={Style.forgetPasswordText}>
+                <Text
+                    style={Style.forgetPasswordText}
+                    onPress={() => {
+                        console.log("LoginScreen -> ForgetPasswordPage")
+                        navigation.navigate(Routes.ForgetPasswordPage);
+                    }}
+                >
                     Forgot Password?
                 </Text>
 

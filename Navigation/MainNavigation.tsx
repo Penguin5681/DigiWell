@@ -19,6 +19,11 @@ const MainNavigation = () => {
             <StackBase.Screen name={Routes.OTPVerificationScreen} component={OTPVerificationScreen}/>
             <StackBase.Screen name={Routes.CreateNewPasswordPageScreen} component={CreateNewPasswordPageScreen}/>
             <StackBase.Screen name={Routes.PasswordChangedScreen} component={PasswordChangedScreen}/>
+            {/*<StackBase.Screen name={Routes.HomePage} component={HomePage}/>*/}
+            {/*<StackBase.Screen name={Routes.DashboardScreen} component={DashboardScreen}/>*/}
+            {/*<StackBase.Screen name={Routes.AppUsageScreen} component={AppUsageScreen}/>*/}
+            {/*<StackBase.Screen name={Routes.DetailedAppUsageScreen} component={DetailedAppUsageScreen}/>*/}
+            {/*<StackBase.Screen name={Routes.ProfileScreen} component={ProfileScreen}/>*/}
         </StackBase.Navigator>
     );
 };

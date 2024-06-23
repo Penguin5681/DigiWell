@@ -75,12 +75,10 @@ const CreateNewPasswordPageScreen = ({navigation}: { navigation: any }) => {
                         onPress={() => {
                             navigation.navigate(Routes.PasswordChangedScreen);
                         }}
-                        isEnabled={true}
+                        isEnabled={(defaultNewPasswordValue.length >= 6 && defaultConfirmPasswordValue.length >= 6)}
                         topMargin={33}/>
                 </View>
             </View>
-
-
         </SafeAreaView>
     );
 }

@@ -69,7 +69,7 @@ const OTPVerificationScreen = ({navigation}: { navigation: any }) => {
                         onPress={() => {
                             navigation.navigate(Routes.CreateNewPasswordPageScreen);
                         }}
-                        isEnabled={true}
+                        isEnabled={defaultOTP.length === 4}
                         topMargin={38}/>
                 </View>
             </View>

@@ -67,7 +67,7 @@ const ForgetPasswordPage = ({navigation}: { navigation: any }) => {
                         onPress={() => {
                             navigation.navigate(Routes.OTPVerificationScreen);
                         }}
-                        isEnabled={true}
+                        isEnabled={defaultEmailValue.length >= 6}
                         topMargin={30}
                     />
                 </View>

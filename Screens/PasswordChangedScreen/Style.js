@@ -11,7 +11,7 @@ const Style = StyleSheet.create({
     },
     headerTextContainer: {
         alignItems: 'center',
-        marginTop: 20
+        marginTop: 20,
     },
     subHeaderTextContainer: {
         fontFamily: getUrbanistFontFamily('Urbanist', '500'),

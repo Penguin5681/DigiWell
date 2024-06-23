@@ -16,7 +16,8 @@ const PasswordChangedScreen = ({navigation}: {navigation: any}) => {
             </View>
 
             <View
-                style={Style.headerTextContainer}>
+                style={Style.headerTextContainer}
+            >
 
                 <HeaderText text={"Password Changed!"}/>
 

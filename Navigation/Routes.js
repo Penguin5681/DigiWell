@@ -6,4 +6,10 @@ export const Routes = {
     OTPVerificationScreen: "OTPVerificationScreen",
     CreateNewPasswordPageScreen: "CreateNewPasswordPageScreen",
     PasswordChangedScreen: 'PasswordChangedScreen',
+    HomePage: "HomePage",
+    DashboardScreen: "DashboardScreen",
+    AppUsageScreen: "AppUsageScreen",
+    DetailedAppUsageScreen: "DetailedAppUsageScreen",
+    ProfileScreen: "ProfileScreen",
+
 };

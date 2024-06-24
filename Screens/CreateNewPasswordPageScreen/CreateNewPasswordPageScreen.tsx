@@ -27,7 +27,7 @@ const CreateNewPasswordPageScreen = ({navigation}: { navigation: any }) => {
                     style={Style.backButton}>
                     <BackButton
                         onPress={() => {
-                            navigation.navigate(Routes.OTPVerificationScreen)
+                            navigation.navigate(Routes.ForgetPasswordPage);
                         }}/>
                 </View>
 

@@ -42,7 +42,7 @@ const WelcomeScreen = ({navigation}: { navigation: any }) => {
                     <View style={{marginTop: 30}}>
                         <Text
                             onPress={() => {
-                                navigation.navigate()
+                                navigation.navigate(Routes.HomePage);
                             }}
                             style={Style.textStyle}>
                             Continue as a guest

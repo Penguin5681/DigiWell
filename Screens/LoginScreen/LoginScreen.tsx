@@ -1,4 +1,4 @@
-import {ImageBackground, SafeAreaView, StatusBar, StyleSheet, Text, View} from "react-native";
+import {ImageBackground, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {SetStateAction, useState} from "react";
 import Style from "./Style";
@@ -84,22 +84,13 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
                         buttonColor={"#1E232C"}
                         topMargin={0}
                         onPress={() => {
+                            navigation.navigate(Routes.HomePage);
                             console.log("Login Button Clicked!")
                         }}
                         isEnabled={(defaultEmailValue.length > 6 && defaultPasswordValue.length >= 6)}
                     />
 
                     <View style={Style.loginMethodTextContainer}>
-                        {/*<Svg>*/}
-                        {/*    <Line*/}
-                        {/*        x1={"0"}*/}
-                        {/*        y1={"0"}*/}
-                        {/*        x2={"100"}*/}
-                        {/*        y2={"0"}*/}
-                        {/*        stroke={"#E8ECF4"}*/}
-                        {/*        strokeWidth={"1"}*/}
-                        {/*    />*/}
-                        {/*</Svg>*/}
                         <LoginMethodText text={"Or Login with"}/>
 
                         <View style={Style.signInButtonContainer}>

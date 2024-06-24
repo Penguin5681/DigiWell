@@ -8,7 +8,7 @@ import OtpInputs from "react-native-otp-inputs";
 import {OtpInput} from "react-native-otp-entry";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
 
-const OTPVerificationScreen = ({navigation}: { navigation: any }) => {
+const ForgetPasswordOTPVerificationScreen = ({navigation}: { navigation: any }) => {
     const [defaultOTP, setDefaultOTP] = useState('');
     // @ts-ignore
     return (
@@ -77,4 +77,4 @@ const OTPVerificationScreen = ({navigation}: { navigation: any }) => {
     );
 };
 
-export default OTPVerificationScreen;
+export default ForgetPasswordOTPVerificationScreen;

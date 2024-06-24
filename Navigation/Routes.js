@@ -3,7 +3,8 @@ export const Routes = {
     LoginScreen: "LoginScreen",
     ForgetPasswordPage: "ForgetPasswordPage",
     RegisterScreen: "RegisterScreen",
-    OTPVerificationScreen: "OTPVerificationScreen",
+    ForgetPasswordOTPVerificationScreen: "ForgetPasswordOTPVerificationScreen",
+    RegistrationOTPVerificationScreen: "RegistrationOTPVerificationScreen",
     CreateNewPasswordPageScreen: "CreateNewPasswordPageScreen",
     PasswordChangedScreen: 'PasswordChangedScreen',
     HomePage: "HomePage",
@@ -11,5 +12,4 @@ export const Routes = {
     AppUsageScreen: "AppUsageScreen",
     DetailedAppUsageScreen: "DetailedAppUsageScreen",
     ProfileScreen: "ProfileScreen",
-
 };

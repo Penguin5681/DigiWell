@@ -1,14 +1,5 @@
-# Getting Started
+# Get the app running:
 
-## Steps:
-
-### 1. start the server:
-```
-   npm start
-```
-
-### 2. Start the android or ios app
-
-```
-   run-android || run-ios
-```
+## Clone the repo using ``` git clone https://github.com/Penguin5681/DigiWell/ ```
+## ``` cd DigiWell ```
+### ``` npx react-native run-android ``` or ``` npx react-native run-ios ``` 

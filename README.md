@@ -1,3 +1,5 @@
+# Note: This app is still under development
+
 # Get the app running:
 
 ## Clone the repo using ``` git clone https://github.com/Penguin5681/DigiWell/ ```

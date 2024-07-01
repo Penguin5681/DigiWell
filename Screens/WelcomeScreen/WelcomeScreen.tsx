@@ -40,7 +40,11 @@ const WelcomeScreen = ({navigation}: { navigation: any }) => {
                         isEnabled={true}/>
 
                     <View style={{marginTop: 30}}>
-                        <Text style={Style.textStyle}>
+                        <Text
+                            onPress={() => {
+                                navigation.navigate(Routes.HomePage);
+                            }}
+                            style={Style.textStyle}>
                             Continue as a guest
                         </Text>
                     </View>

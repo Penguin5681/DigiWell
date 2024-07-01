@@ -7,5 +7,13 @@ export const Routes = {
     EditProfileScreen: "EditProfileScreen",
     ProfilePreviewScreen: "ProfilePreviewScreen",
     ProfileSettingScreen: "ProfileSettingScreen",
-
+    ForgetPasswordOTPVerificationScreen: "ForgetPasswordOTPVerificationScreen",
+    RegistrationOTPVerificationScreen: "RegistrationOTPVerificationScreen",
+    CreateNewPasswordPageScreen: "CreateNewPasswordPageScreen",
+    PasswordChangedScreen: 'PasswordChangedScreen',
+    HomePage: "HomePage",
+    DashboardScreen: "DashboardScreen",
+    AppUsageScreen: "AppUsageScreen",
+    DetailedAppUsageScreen: "DetailedAppUsageScreen",
+    ProfileScreen: "ProfileScreen",
 };

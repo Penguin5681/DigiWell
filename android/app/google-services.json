@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "989497261110",
+    "project_id": "digiwell-e57ff",
+    "storage_bucket": "digiwell-e57ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:989497261110:android:1e1089f47f31106d282c97",
+        "android_client_info": {
+          "package_name": "com.digiwell"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDP95IA759tFzAkzZRtEiRyYpu6fKaA0P0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

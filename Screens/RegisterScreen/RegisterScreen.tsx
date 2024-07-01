@@ -71,11 +71,11 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
                     <EditText
                         text={"Confirm Password"}
                         inputType={'password'}
-                        value={defaultPasswordValue}
+                        value={defaultConfirmPasswordValue}
                         onChangeText={(value: SetStateAction<string>) => {
                             console.log(value)
-                            setDefaultPasswordValue((value))
-                        }}/>
+                            setDefaultConfirmPasswordValue((value))
+                    }}/>
                 </View>
 
                 <View style={Style.buttonContainer}>
@@ -83,8 +83,11 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
                         text={"Register"}
                         textColor={"#FFF"}
                         buttonColor={"#1E232C"}
-                        onPress={() => null}
-                        isEnabled={true}
+                        onPress={() => {
+                            navigation.navigate(Routes.RegistrationOTPVerificationScreen);
+                            console.log("Registration to OTP Verification.")
+                        }}
+                        isEnabled={(defaultEmailValue.length > 6) && ((defaultPasswordValue.length >= 6 && defaultConfirmPasswordValue.length >= 6) && (defaultPasswordValue === defaultConfirmPasswordValue))}
                         topMargin={15}/>
 
                     <View style={Style.signUpMethodTextContainer}>
@@ -104,11 +107,9 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
                             <GoogleButton rightMargin={12}/>
                             <FacebookButton/>
                         </View>
-
                     </View>
                 </View>
             </View>
-
         </SafeAreaView>
     );
 };

@@ -1,15 +1,15 @@
 import {ImageBackground, SafeAreaView, StyleSheet, Text, View} from "react-native";
-import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import Style from "./Style";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
-import EditText from "../../Components/EditText/EditText.tsx";
-import {SetStateAction, useState} from "react";
+import {useState} from "react";
+import OtpInputs from "react-native-otp-inputs";
+import {OtpInput} from "react-native-otp-entry";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
 
-const ForgetPasswordPage = ({navigation}: { navigation: any }) => {
-    const [defaultEmailValue, setDefaultEmailValue] = useState("");
+const ForgetPasswordOTPVerificationScreen = ({navigation}: { navigation: any }) => {
+    const [defaultOTP, setDefaultOTP] = useState('');
     // @ts-ignore
     return (
         <SafeAreaView>
@@ -22,57 +22,59 @@ const ForgetPasswordPage = ({navigation}: { navigation: any }) => {
 
                 <View
                     style={{...StyleSheet.absoluteFill, backgroundColor: 'rgba(0 ,0, 0, 0.6)'}}/>
+
                 <View
                     id={"back-button"}
                     style={Style.backButton}>
                     <BackButton
                         onPress={() => {
-                            navigation.navigate(Routes.LoginScreen)
+                            navigation.navigate(Routes.ForgetPasswordPage)
                         }}/>
                 </View>
 
                 <View
                     id={"header-text-view"}
                     style={Style.headerTextView}>
-                    <HeaderText text={"Forgot Password?"}/>
+                    <HeaderText text={"OTP Verification"}/>
 
                     <Text
                         style={Style.subHeaderTextView}>
-                        Don't worry! It occurs. Please enter the email address linked with your account.
+                        Enter the verification code we just sent on your email address.
                     </Text>
-
                 </View>
             </ImageBackground>
 
-            <View
-                style={Style.inputFieldContainer}>
-                <View
-                    style={Style.emailEditTextContainer}>
-                    <EditText
-                        text={'Enter your email'}
-                        inputType={'email'}
-                        value={defaultEmailValue}
-                        onChangeText={
-                            (value: SetStateAction<string>) => {
-                                console.log(value)
-                                setDefaultEmailValue(value);
-                            }
-                        }/>
+            <View style={Style.otpInputContainer}>
+                <View style={Style.otpInputStyle}>
+                    <OtpInput
+                        numberOfDigits={4}
+                        focusStickBlinkingDuration={700}
+                        focusColor={"#35C2C1"}
+                        onTextChange={(value) => {
+                            // setDefaultOTP(value);
+                        }}
+                        onFilled={(value) => {
+                            console.log(value);
+                            setDefaultOTP(value)
+                        }}
+                        autoFocus={false}
+                    />
+                </View>
 
+                <View style={Style.verifyButtonContainer}>
                     <LoginSignUpButton
-                        text={"Send Code"}
+                        text={"Verify"}
                         textColor={"#FFF"}
                         buttonColor={"#1E232C"}
                         onPress={() => {
-                            navigation.navigate(Routes.ForgetPasswordOTPVerificationScreen);
+                            navigation.navigate(Routes.CreateNewPasswordPageScreen);
                         }}
-                        isEnabled={defaultEmailValue.length >= 6}
-                        topMargin={30}
-                    />
+                        isEnabled={defaultOTP.length === 4}
+                        topMargin={38}/>
                 </View>
             </View>
         </SafeAreaView>
     );
 };
 
-export default ForgetPasswordPage;
+export default ForgetPasswordOTPVerificationScreen;

@@ -5,7 +5,7 @@ const Style = StyleSheet.create({
     headerTextStyle: {
         color: "#FFFFFF",
         fontFamily: getUrbanistFontFamily('Urbanist', '700'),
-        fontSize: 27.6,
+        fontSize: 25.6,
         letterSpacing: -0.277,
     },
 

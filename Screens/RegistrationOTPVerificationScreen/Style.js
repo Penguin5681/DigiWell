@@ -1,6 +1,6 @@
+
 import {StyleSheet} from "react-native";
 import {horizontalScale, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
-import {getUrbanistFontFamily} from "../../Assets/Fonts/helper";
 
 const Style = StyleSheet.create({
     backButton: {
@@ -14,26 +14,21 @@ const Style = StyleSheet.create({
         marginBottom: verticalScale(20),
     },
     subHeaderTextView: {
-        color: "#DBDBDB",
-        marginTop: 8,
-        fontFamily: getUrbanistFontFamily('Urbanist', '500'),
+        color: "#DBDBDB"
     },
-    editTextContainer: {
+    otpInputContainer: {
         width: '100%',
         height: '100%',
         backgroundColor: '#000'
     },
-    newPasswordEditTextContainer: {
-        marginTop: verticalScale(20),
-        marginHorizontal: horizontalScale(27),
-        marginBottom: verticalScale(15),
+    otpInputStyle: {
+        marginTop: verticalScale(32),
+        marginHorizontal: horizontalScale(40),
     },
-    confirmPasswordEditTextContainer: {
-        marginHorizontal: horizontalScale(27),
-    },
-    buttonContainer: {
-        marginHorizontal: horizontalScale(27),
+    verifyButtonContainer: {
+        marginHorizontal: horizontalScale(40),
     }
+
 
 });
 

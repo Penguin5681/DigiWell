@@ -1,4 +1,4 @@
-import {Button, ImageBackground, SafeAreaView, StyleSheet, Text, View} from "react-native";
+import {Button, ImageBackground, SafeAreaView, StyleSheet, Text, View,ScrollView} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes";
@@ -41,6 +41,7 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
                     <HeaderText text={"Hello! Register to get started"}/>
                 </View>
             </ImageBackground>
+
 
             <View style={Style.inputFieldContainer}>
 

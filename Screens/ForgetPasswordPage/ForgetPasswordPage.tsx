@@ -22,7 +22,6 @@ const ForgetPasswordPage = ({navigation}: { navigation: any }) => {
 
                 <View
                     style={{...StyleSheet.absoluteFill, backgroundColor: 'rgba(0 ,0, 0, 0.6)'}}/>
-
                 <View
                     id={"back-button"}
                     style={Style.backButton}>

@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@candlefinance/blur-view": "^0.5.3",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
@@ -30,6 +31,7 @@
     "react-native-bubble-tabbar": "^0.1.0",
     "react-native-curved-bottom-bar": "^3.2.7",
     "react-native-device-info": "^11.1.0",
+    "react-native-element-dropdown": "^2.12.1",
     "react-native-gesture-handler": "^2.16.2",
     "react-native-otp-entry": "^1.7.0",
     "react-native-otp-inputs": "^7.4.0",

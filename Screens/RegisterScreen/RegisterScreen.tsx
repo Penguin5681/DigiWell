@@ -74,7 +74,7 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
                         onChangeText={(value: SetStateAction<string>) => {
                             console.log(value)
                             setDefaultConfirmPasswordValue((value))
-                        }}/>
+                    }}/>
                 </View>
 
                 <View style={Style.buttonContainer}>
@@ -106,7 +106,6 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
                             <GoogleButton rightMargin={12}/>
                             <FacebookButton/>
                         </View>
-
                     </View>
                 </View>
             </View>

@@ -7,15 +7,38 @@ import DetailedAppUsageScreen from "../Screens/DetailedAppUsageScreen/DetailedAp
 import ProfileScreen from "../Screens/ProfileScreen/ProfileScreen.tsx";
 
 const BottomTab = createBottomTabNavigator();
-
+const AnimatedTab = AnimatedTabBarNavigator();
 const BottomTabNavigation = () => {
     return (
-        <BottomTab.Navigator screenOptions={{headerShown: false}}>
-            <BottomTab.Screen name={Routes.DashboardScreen} component={DashboardScreen}/>
-            <BottomTab.Screen name={Routes.AppUsageScreen} component={AppUsageScreen}/>
-            <BottomTab.Screen name={Routes.DetailedAppUsageScreen} component={DetailedAppUsageScreen}/>
-            <BottomTab.Screen name={Routes.ProfileScreen} component={ProfileScreen}/>
+        <BottomTab.Navigator
+            screenOptions={{headerShown: false}}>
+
+            <BottomTab.Screen
+                name={Routes.DashboardScreen}
+                component={DashboardScreen}/>
+
+            <BottomTab.Screen
+                name={Routes.AppUsageScreen}
+                component={AppUsageScreen}/>
+
+            <BottomTab.Screen
+                name={Routes.DetailedAppUsageScreen}
+                component={DetailedAppUsageScreen}/>
+
+            <BottomTab.Screen
+                name={Routes.ProfileScreen}
+                component={ProfileScreen}/>
+
         </BottomTab.Navigator>
+
+        // <BottomTab.Navigator
+        //     screenOptions={{headerShown: false}}
+        // >
+        //     <BottomTab.Screen name={Routes.DashboardScreen} component={DashboardScreen}/>
+        //     <BottomTab.Screen name={Routes.AppUsageScreen} component={AppUsageScreen}/>
+        //     <BottomTab.Screen name={Routes.DetailedAppUsageScreen} component={DetailedAppUsageScreen}/>
+        //     <BottomTab.Screen name={Routes.ProfileScreen} component={ProfileScreen}/>
+        // </BottomTab.Navigator>
     );
 };
 

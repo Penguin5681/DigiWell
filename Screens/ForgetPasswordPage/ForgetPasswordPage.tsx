@@ -65,7 +65,7 @@ const ForgetPasswordPage = ({navigation}: { navigation: any }) => {
                         textColor={"#FFF"}
                         buttonColor={"#1E232C"}
                         onPress={() => {
-                            navigation.navigate(Routes.OTPVerificationScreen);
+                            navigation.navigate(Routes.ForgetPasswordOTPVerificationScreen);
                         }}
                         isEnabled={defaultEmailValue.length >= 6}
                         topMargin={30}

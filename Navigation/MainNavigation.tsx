@@ -16,15 +16,15 @@ const StackBase = createStackNavigator();
 const MainNavigation: React.FC = () => {
     return (
         <StackBase.Navigator screenOptions={{headerShown: false}}>
-            <StackBase.Screen name={Routes.WelcomeScreen} component={WelcomeScreen}/>
-            <StackBase.Screen name={Routes.LoginScreen} component={LoginScreen}/>
-            <StackBase.Screen name={Routes.ForgetPasswordPage} component={ForgetPasswordPage}/>
-            <StackBase.Screen name={Routes.RegisterScreen} component={RegisterScreen}/>
-            <StackBase.Screen name={Routes.RegistrationOTPVerificationScreen} component={RegistrationOTPVerificationScreen}/>
-            <StackBase.Screen name={Routes.ForgetPasswordOTPVerificationScreen}
-            component={ForgetPasswordOTPVerificationScreen}/>
-            <StackBase.Screen name={Routes.CreateNewPasswordPageScreen} component={CreateNewPasswordPageScreen}/>
-            <StackBase.Screen name={Routes.PasswordChangedScreen} component={PasswordChangedScreen}/>
+            {/*<StackBase.Screen name={Routes.WelcomeScreen} component={WelcomeScreen}/>*/}
+            {/*<StackBase.Screen name={Routes.LoginScreen} component={LoginScreen}/>*/}
+            {/*<StackBase.Screen name={Routes.ForgetPasswordPage} component={ForgetPasswordPage}/>*/}
+            {/*<StackBase.Screen name={Routes.RegisterScreen} component={RegisterScreen}/>*/}
+            {/*<StackBase.Screen name={Routes.RegistrationOTPVerificationScreen} component={RegistrationOTPVerificationScreen}/>*/}
+            {/*<StackBase.Screen name={Routes.ForgetPasswordOTPVerificationScreen}*/}
+            {/*component={ForgetPasswordOTPVerificationScreen}/>*/}
+            {/*<StackBase.Screen name={Routes.CreateNewPasswordPageScreen} component={CreateNewPasswordPageScreen}/>*/}
+            {/*<StackBase.Screen name={Routes.PasswordChangedScreen} component={PasswordChangedScreen}/>*/}
             <StackBase.Screen name={Routes.HomePage} component={BottomTabNavigation}/>
         </StackBase.Navigator>
     );

@@ -908,6 +908,11 @@
 "@bcoe/v8-coverage@^0.2.3":
   version "0.2.3"
 
+"@candlefinance/blur-view@^0.5.3":
+  version "0.5.3"
+  resolved "https://registry.npmjs.org/@candlefinance/blur-view/-/blur-view-0.5.3.tgz"
+  integrity sha512-cadAtDYUAXtw3rpn2B+/pGkdbR6FRzOS2JHyR6rMbrdI9kNybM8lXPeMT8RfwDAal8j/lHacgcA6nw3n97QHpw==
+
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
   resolved "https://registry.npmjs.org/@egjs/hammerjs/-/hammerjs-2.0.17.tgz"
@@ -4517,6 +4522,13 @@ react-native-device-info@^11.1.0:
   version "11.1.0"
   resolved "https://registry.npmjs.org/react-native-device-info/-/react-native-device-info-11.1.0.tgz"
   integrity sha512-hzXJSObJdezEz0hF7MAJ3tGeoesuQWenXXt9mrQR9Mjb8kXpZ09rqSsZ/quNpJdZpQ3rYiFa3/0GFG5KNn9PBg==
+
+react-native-element-dropdown@^2.12.1:
+  version "2.12.1"
+  resolved "https://registry.npmjs.org/react-native-element-dropdown/-/react-native-element-dropdown-2.12.1.tgz"
+  integrity sha512-Z3uWNFBoezDEsy9AZJxoDc9DxoAdfeprUjaInmbuzYOk6R0Y0UZ659JIalX20XNvrNRWJUfSZwbM94jWYNsIyw==
+  dependencies:
+    lodash "^4.17.21"
 
 react-native-gesture-handler@^2.16.2, "react-native-gesture-handler@>= 1.0.0":
   version "2.16.2"

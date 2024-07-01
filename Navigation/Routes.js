@@ -4,4 +4,8 @@ export const Routes = {
     ForgetPasswordPage: "ForgetPasswordPage",
     RegisterScreen: "RegisterScreen",
     OTPVerificationScreen: "OTPVerificationScreen",
+    EditProfileScreen: "EditProfileScreen",
+    ProfilePreviewScreen: "ProfilePreviewScreen",
+    ProfileSettingScreen: "ProfileSettingScreen",
+
 };

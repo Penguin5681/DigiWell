@@ -21,7 +21,7 @@ const Style = StyleSheet.create({
     },
     buttonContainer: {
         marginHorizontal: horizontalScale(27)
-    }
+    },
 });
 
 export default Style;

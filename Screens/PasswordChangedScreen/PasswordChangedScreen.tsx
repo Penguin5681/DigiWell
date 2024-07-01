@@ -20,7 +20,6 @@ const PasswordChangedScreen = ({navigation}: {navigation: any}) => {
             >
 
                 <HeaderText text={"Password Changed!"}/>
-
                 <Text style={Style.subHeaderTextContainer}>
                     Your password has been changed successfully.
                 </Text>
@@ -36,7 +35,8 @@ const PasswordChangedScreen = ({navigation}: {navigation: any}) => {
                     }}
                     isEnabled={true}
                     topMargin={40}
-                />
+                    buttonRadius={8}
+                    leftMargin={0}/>
             </View>
         </SafeAreaView>
     );

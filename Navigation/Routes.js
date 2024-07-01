@@ -16,4 +16,5 @@ export const Routes = {
     AppUsageScreen: "AppUsageScreen",
     DetailedAppUsageScreen: "DetailedAppUsageScreen",
     ProfileScreen: "ProfileScreen",
+    ProfileUpdatedScreen: "ProfileUpdatedScreen"
 };

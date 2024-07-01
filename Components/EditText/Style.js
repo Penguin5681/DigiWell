@@ -1,3 +1,4 @@
+
 import {StyleSheet} from "react-native";
 import {horizontalScale, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
 import {getUrbanistFontFamily} from "../../Assets/Fonts/helper";

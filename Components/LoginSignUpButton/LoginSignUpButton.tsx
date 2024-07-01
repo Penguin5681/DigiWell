@@ -5,7 +5,6 @@ import {verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
 
 interface ButtonProps {
     leftMargin: number;
-    buttonHeight: number;
     buttonRadius: number;
     text: string,
     textColor: string,
@@ -18,12 +17,17 @@ interface ButtonProps {
 const LoginSignUpButton = (props: ButtonProps) => {
     return (
         <Pressable
-            style={[Style.buttonLayout, {backgroundColor: props.buttonColor}, {opacity: props.isEnabled ? 1 : 0.5}, {marginTop: verticalScale((props.topMargin))},
-                {borderRadius: props.buttonRadius},{height:props.buttonHeight}]}
+            style={[Style.buttonLayout,
+                {backgroundColor: props.buttonColor},
+                {opacity: props.isEnabled ? 1 : 0.5},
+                {marginTop: verticalScale((props.topMargin))},
+                {borderRadius: props.buttonRadius},
+                ]}
             onPress={props.onPress}
-            disabled={!props.isEnabled}
-        >
-            <Text style={[Style.buttonText, {color: props.textColor}]}>
+            disabled={!props.isEnabled}>
+            <Text
+                style={[Style.buttonText,
+                    {color: props.textColor}]}>
                 {props.text}
             </Text>
         </Pressable>
@@ -38,7 +42,6 @@ LoginSignUpButton.propTypes = {
     isEnabled: PropTypes.bool.isRequired,
     topMargin: PropTypes.number.isRequired,
     buttonRadius: PropTypes.number,
-    buttonHeight: PropTypes.number,
 };
 
 export default LoginSignUpButton;

@@ -24,18 +24,6 @@ const EditProfileScreen = () => {
   ];
 
 
-  const renderLabel = () => {
-    if (value || isFocus) {
-      return (
-        <Text style={[Styles.label, isFocus && { color: 'blue' }]}>
-          Dropdown label
-        </Text>
-      );
-    }
-    return null;
-  };
-
-
   return (
     <SafeAreaView>
       <View style={Styles.background}>

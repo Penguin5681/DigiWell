@@ -36,10 +36,8 @@ const MainNavigation: React.FC = () => {
             {/*component={ForgetPasswordOTPVerificationScreen}/>*/}
             {/*<StackBase.Screen name={Routes.CreateNewPasswordPageScreen} component={CreateNewPasswordPageScreen}/>*/}
             {/*<StackBase.Screen name={Routes.PasswordChangedScreen} component={PasswordChangedScreen}/>*/}
-            {/*<StackBase.Screen name={Routes.HomePage} component={BottomTabNavigation}/>*/}
-            <StackBase.Screen
-                name={Routes.ProfileUpdatedScreen}
-                component={ProfileUpdatedScreen}/>
+            <StackBase.Screen name={Routes.HomePage} component={BottomTabNavigation}/>
+            {/*<StackBase.Screen name={Routes.ProfileUpdatedScreen} component={ProfileUpdatedScreen}/>*/}
         </StackBase.Navigator>
     );
 };

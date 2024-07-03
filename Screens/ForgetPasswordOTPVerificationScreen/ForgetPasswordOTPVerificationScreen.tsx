@@ -1,14 +1,14 @@
-import {ImageBackground, SafeAreaView, StyleSheet, Text, View} from "react-native";
+import { Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import Style from "./Style";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import {useState} from "react";
-import OtpInputs from "react-native-otp-inputs";
 import {OtpInput} from "react-native-otp-entry";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
 
 const ForgetPasswordOTPVerificationScreen = ({navigation}: { navigation: any }) => {
+    const colorSchema = Appearance.getColorScheme();
     const [defaultOTP, setDefaultOTP] = useState('');
     // @ts-ignore
     return (
@@ -21,7 +21,7 @@ const ForgetPasswordOTPVerificationScreen = ({navigation}: { navigation: any }) 
                 resizeMode={"cover"}>
 
                 <View
-                    style={{...StyleSheet.absoluteFill, backgroundColor: 'rgba(0 ,0, 0, 0.6)'}}/>
+                    style={{...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0 ,0, 0, 0.6)'}}/>
 
                 <View
                     id={"back-button"}
@@ -29,13 +29,16 @@ const ForgetPasswordOTPVerificationScreen = ({navigation}: { navigation: any }) 
                     <BackButton
                         onPress={() => {
                             navigation.navigate(Routes.ForgetPasswordPage)
-                        }}/>
+                        }}
+                        backArrowColor={colorSchema === "dark" ? "#FFF" : "#000"}
+                        buttonBackgroundColor={colorSchema === "dark" ? "#000" : "#FFF"}
+                    />
                 </View>
 
                 <View
                     id={"header-text-view"}
                     style={Style.headerTextView}>
-                    <HeaderText text={"OTP Verification"}/>
+                    <HeaderText text={"OTP Verification"} textColor={"#FFF"}/>
 
                     <Text
                         style={Style.subHeaderTextView}>
@@ -44,7 +47,7 @@ const ForgetPasswordOTPVerificationScreen = ({navigation}: { navigation: any }) 
                 </View>
             </ImageBackground>
 
-            <View style={Style.otpInputContainer}>
+            <View style={[Style.otpInputContainer, { backgroundColor: colorSchema === "dark" ? "#000" : "#FFF" }]}>
                 <View style={Style.otpInputStyle}>
                     <OtpInput
                         numberOfDigits={4}
@@ -70,7 +73,9 @@ const ForgetPasswordOTPVerificationScreen = ({navigation}: { navigation: any }) 
                             navigation.navigate(Routes.CreateNewPasswordPageScreen);
                         }}
                         isEnabled={defaultOTP.length === 4}
-                        topMargin={38}/>
+                        topMargin={38}
+                        buttonRadius={8}
+                        leftMargin={0}/>
                 </View>
             </View>
         </SafeAreaView>

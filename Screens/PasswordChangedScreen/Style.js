@@ -15,7 +15,6 @@ const Style = StyleSheet.create({
     },
     subHeaderTextContainer: {
         fontFamily: getUrbanistFontFamily('Urbanist', '500'),
-        color: '#DBDBDB',
         fontSize: scaleFontSize(15),
         marginTop: verticalScale(8)
     },

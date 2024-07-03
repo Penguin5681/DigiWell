@@ -6,13 +6,14 @@ import {horizontalScale} from "../../Assets/ScalingUtility/ScalingUtility";
 
 interface GoogleButtonProps {
     rightMargin: number,
+    buttonBackgroundColor: string,
 }
 
 const GoogleButton = (props: GoogleButtonProps) => {
     return (
         <View
             style={
-            [GlobalStyle.globalAppLogoContainer, {marginRight: horizontalScale((props.rightMargin))}]
+            [GlobalStyle.globalAppLogoContainer, {marginRight: horizontalScale((props.rightMargin))}, {backgroundColor: props.buttonBackgroundColor}]
         }>
             <Image
                 source={require('../../Assets/Images/google_logo_24px.png')}/>
@@ -22,6 +23,7 @@ const GoogleButton = (props: GoogleButtonProps) => {
 
 GoogleButton.propTypes = {
     rightMargin: PropTypes.number.isRequired,
+    buttonBackgroundColor: PropTypes.string,
 }
 
 export default GoogleButton;

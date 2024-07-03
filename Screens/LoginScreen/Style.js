@@ -14,7 +14,6 @@ const Style = StyleSheet.create({
         marginBottom: verticalScale(20),
     },
     inputFieldContainer: {
-        backgroundColor: '#000',
         height: '100%',
         width: '100%',
     },

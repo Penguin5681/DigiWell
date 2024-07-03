@@ -1,6 +1,6 @@
-import {ImageBackground, SafeAreaView, StyleSheet, Text, View} from "react-native";
+import { Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
-import {SetStateAction, useState} from "react";
+import React, {SetStateAction, useState} from "react";
 import Style from "./Style";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import EditText from "../../Components/EditText/EditText.tsx";
@@ -11,6 +11,7 @@ import LoginMethodText from "../../Components/LoginMethodText/LoginMethodText.ts
 import {Routes} from "../../Navigation/Routes";
 
 const LoginScreen = ({navigation}: { navigation: any }) => {
+    const colorSchema = Appearance.getColorScheme();
     const [defaultEmailValue, setDefaultEmailValue] = useState("");
     const [defaultPasswordValue, setDefaultPasswordValue] = useState("");
     return (
@@ -22,47 +23,55 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
                 }
                 resizeMode={"cover"}>
 
-                <View style={{...StyleSheet.absoluteFill, backgroundColor: 'rgba(0 ,0, 0, 0.6)'}}/>
-
+                <View style={{...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0 ,0, 0, 0.6)'}}/>
                 <View
                     id={"back-button"}
                     style={Style.backButton}>
                     <BackButton
                         onPress={() => {
                             navigation.navigate(Routes.WelcomeScreen)
-                        }}/>
+                        }}
+                        buttonBackgroundColor={colorSchema === 'dark' ? '#000' : '#FFF'}
+                        backArrowColor={colorSchema === 'dark' ? '#FFF' : '#000'}/>
                 </View>
 
                 <View
                     id={"header-text-view"}
                     style={Style.headerTextView}>
-                    <HeaderText text={"Welcome back! Glad to see you, Again!"}/>
+                    <HeaderText text={"Welcome back! Glad to see you, Again!"} textColor={"#FFF"}/>
                 </View>
             </ImageBackground>
 
+
             <View
-                style={Style.inputFieldContainer}>
+                style={[Style.inputFieldContainer, {backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'}]}>
                 <View style={Style.emailEditText}>
                     <EditText
                         text={"Enter your email"}
+                        textColor={colorSchema === 'light' ? '#000' : '#FFF'}
+                        placeHolderTextColor={colorSchema === 'light' ? '#000' : '#FFF'}
+                        backgroundColor={colorSchema === 'light' ? '#E5E4E2' : "#303030"}
                         inputType={'email'}
                         value={defaultEmailValue}
                         onChangeText={(value: SetStateAction<string>) => {
                             console.log(value);
                             setDefaultEmailValue(value);
                         }}
-                    />
+                     />
                 </View>
 
                 <View style={Style.passwordEditText}>
                     <EditText
                         text={"Enter your password"}
+                        textColor={colorSchema === 'light' ? '#000' : '#FFF'}
+                        placeHolderTextColor={colorSchema === 'light' ? '#000' : '#FFF'}
                         inputType={'password'}
                         value={defaultPasswordValue}
                         onChangeText={(value: SetStateAction<string>) => {
                             console.log(value);
                             setDefaultPasswordValue(value);
                         }}
+                     backgroundColor={colorSchema === 'light' ? '#E5E4E2' : "#303030"}
                     />
                 </View>
 
@@ -88,14 +97,15 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
                             console.log("Login Button Clicked!")
                         }}
                         isEnabled={(defaultEmailValue.length > 6 && defaultPasswordValue.length >= 6)}
-                    />
+                     buttonRadius={8}
+                     leftMargin={0}/>
 
                     <View style={Style.loginMethodTextContainer}>
                         <LoginMethodText text={"Or Login with"}/>
 
                         <View style={Style.signInButtonContainer}>
-                            <GoogleButton rightMargin={12}/>
-                            <FacebookButton/>
+                            <GoogleButton rightMargin={12} buttonBackgroundColor={colorSchema === 'dark' ? '#FFF' : '#E5E4E2' }/>
+                            <FacebookButton buttonBackgroundColor={colorSchema === 'dark' ? '#FFF' : '#E5E4E2'}/>
                         </View>
                     </View>
                 </View>

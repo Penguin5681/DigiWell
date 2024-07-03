@@ -22,7 +22,7 @@ const LoginSignUpButton = (props: ButtonProps) => {
                 {opacity: props.isEnabled ? 1 : 0.5},
                 {marginTop: verticalScale((props.topMargin))},
                 {borderRadius: props.buttonRadius},
-                ]}
+            ]}
             onPress={props.onPress}
             disabled={!props.isEnabled}>
             <Text

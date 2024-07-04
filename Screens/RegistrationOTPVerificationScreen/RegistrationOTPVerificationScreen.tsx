@@ -71,7 +71,7 @@ const RegistrationOTPVerificationScreen = ({navigation}: {navigation: any}) => {
                         textColor={"#FFF"}
                         buttonColor={"#1E232C"}
                         onPress={() => {
-                            navigation.navigate(Routes.HomePage);
+                            navigation.navigate(Routes.PhotoUploadScreen);
                         }}
                         isEnabled={defaultOTP.length === 4}
                         topMargin={38}

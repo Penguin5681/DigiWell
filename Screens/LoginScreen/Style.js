@@ -1,6 +1,6 @@
 import {StyleSheet} from "react-native";
-import {horizontalScale, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
-import {getUrbanistFontFamily} from "../../Assets/Fonts/helper";
+import { horizontalScale, scaleFontSize, verticalScale } from "../../Assets/ScalingUtility/ScalingUtility";
+import { getInterFontFamily, getUrbanistFontFamily } from "../../Assets/Fonts/helper";
 
 const Style = StyleSheet.create({
     backButton: {
@@ -44,6 +44,13 @@ const Style = StyleSheet.create({
     },
     loginMethodTextContainer: {
         marginTop: verticalScale(16),
+    },
+    error: {
+        fontFamily: getInterFontFamily("Inter"),
+        fontSize: scaleFontSize(16),
+        color:'#ff0000',
+        marginTop:verticalScale(5),
+        marginHorizontal: horizontalScale(27),
     },
 });
 

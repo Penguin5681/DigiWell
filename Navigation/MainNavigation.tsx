@@ -10,6 +10,7 @@ import PasswordChangedScreen from "../Screens/PasswordChangedScreen/PasswordChan
 import React from "react";
 import BottomTabNavigation from "./BottomTabNavigation.tsx";
 import RegistrationOTPVerificationScreen from "../Screens/RegistrationOTPVerificationScreen/RegistrationOTPVerificationScreen.tsx";
+import PhotoUploadScreen from "../Screens/PhotoUploadScreen/PhotoUploadScreen.tsx";
 
 const StackBase = createStackNavigator();
 
@@ -53,6 +54,7 @@ const MainNavigation: React.FC = () => {
             <StackBase.Screen name={Routes.LoginScreen} component={LoginScreen} />
             <StackBase.Screen name={Routes.RegisterScreen} component={RegisterScreen} />
             <StackBase.Screen name={Routes.RegistrationOTPVerificationScreen} component={RegistrationOTPVerificationScreen} />
+            <StackBase.Screen name={Routes.PhotoUploadScreen} component={PhotoUploadScreen}/>
             <StackBase.Screen name={Routes.ForgetPasswordPage} component={ForgetPasswordPage} />
             <StackBase.Screen name={Routes.ForgetPasswordOTPVerificationScreen} component={ForgetPasswordOTPVerificationScreen} />
             <StackBase.Screen name={Routes.CreateNewPasswordPageScreen} component={CreateNewPasswordPageScreen} />

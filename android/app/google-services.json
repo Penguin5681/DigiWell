@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "989497261110",
-    "project_id": "digiwell-e57ff",
-    "storage_bucket": "digiwell-e57ff.appspot.com"
+    "project_number": "411285290789",
+    "project_id": "digiwell-f7384",
+    "storage_bucket": "digiwell-f7384.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:989497261110:android:1e1089f47f31106d282c97",
+        "mobilesdk_app_id": "1:411285290789:android:6e472f6a64a175543ee4cc",
         "android_client_info": {
           "package_name": "com.digiwell"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDP95IA759tFzAkzZRtEiRyYpu6fKaA0P0"
+          "current_key": "AIzaSyDlcRSfxe5auLTHs1gvpdmiqN3vZtzgC6I"
         }
       ],
       "services": {

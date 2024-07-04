@@ -7,6 +7,9 @@ interface EditTextProps {
     inputType: string,
     value: string,
     onChangeText: any,
+    backgroundColor: string,
+    placeHolderTextColor: string,
+    textColor: string,
 }
 
 const inputTypes = ["text", "password", "numeric", "email"];
@@ -30,9 +33,9 @@ const getKeyboardType = (inputType: string) => {
 const EditText = (props: EditTextProps) => {
     return (
         <TextInput
-            style={Style.inputStyle}
+            style={[Style.inputStyle, {backgroundColor: props.backgroundColor}, {color: props.textColor}]}
             placeholder={props.text}
-            placeholderTextColor={"#DBDBDB"}
+            placeholderTextColor={props.placeHolderTextColor}
             value={props.value}
             keyboardType={getKeyboardType(props.inputType)}
             secureTextEntry={props.inputType === inputTypes[1]}
@@ -46,6 +49,9 @@ EditText.propTypes = {
     inputType: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
     onChangeText: PropTypes.any.isRequired,
+    backgroundColor: PropTypes.string,
+    placeHolderTextColor: PropTypes.string,
+    textColor: PropTypes.string,
 }
 
 export default EditText;

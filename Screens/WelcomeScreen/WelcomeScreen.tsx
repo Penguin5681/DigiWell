@@ -4,7 +4,6 @@ import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpBut
 import GlobalImageBackgroundStyle from "../../Assets/GlobalStyles/GlobalImageBackgroundStyle";
 import Style from "./Style";
 import {Routes} from "../../Navigation/Routes";
-import LoginScreen from "../LoginScreen/LoginScreen.tsx";
 
 const WelcomeScreen = ({navigation}: { navigation: any }) => {
     return (
@@ -25,7 +24,10 @@ const WelcomeScreen = ({navigation}: { navigation: any }) => {
                             }
                         }
                         topMargin={0}
-                        isEnabled={true}/>
+                        isEnabled={true}
+                        buttonRadius={8}
+                        leftMargin={0}
+                    />
 
                     <LoginSignUpButton
                         text={"Register"}
@@ -37,7 +39,9 @@ const WelcomeScreen = ({navigation}: { navigation: any }) => {
                             }
                         }
                         topMargin={10}
-                        isEnabled={true}/>
+                        isEnabled={true}
+                        buttonRadius={8}
+                        leftMargin={0}/>
 
                     <View style={{marginTop: 30}}>
                         <Text
@@ -49,7 +53,6 @@ const WelcomeScreen = ({navigation}: { navigation: any }) => {
                         </Text>
                     </View>
                 </View>
-
             </ImageBackground>
         </SafeAreaView>
     );

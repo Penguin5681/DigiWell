@@ -16,7 +16,7 @@ const Style = StyleSheet.create({
     subHeaderTextView: {
         color: "#DBDBDB",
         marginTop: 8,
-        fontFamily: getUrbanistFontFamily('Urbanist', '500'),
+        fontFamily: getUrbanistFontFamily('Urbanist', '600'),
     },
     editTextContainer: {
         width: '100%',

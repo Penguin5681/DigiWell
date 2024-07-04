@@ -4,12 +4,13 @@ import Style from "./Style";
 
 interface HeaderTextProps {
     text: string,
+    textColor: string,
 }
 
 const HeaderText = (props: HeaderTextProps) => {
     return (
         <Text
-            style={Style.headerTextStyle}>
+            style={[Style.headerTextStyle, {color: props.textColor}]}>
             {props.text}
         </Text>
     );
@@ -17,6 +18,7 @@ const HeaderText = (props: HeaderTextProps) => {
 
 HeaderText.propTypes = {
     text: PropTypes.string.isRequired,
+    textColor: PropTypes.string
 };
 
 export default HeaderText;

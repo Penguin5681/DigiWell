@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 
 interface BackButtonProps {
     onPress: any,
+    buttonBackgroundColor: string,
+    backArrowColor: string,
 }
 
 const BackButton = (props: BackButtonProps) => {
@@ -14,8 +16,12 @@ const BackButton = (props: BackButtonProps) => {
             onPress={props.onPress}
         >
             <View
-                style={Style.backButtonBackground}>
-                <FontAwesomeIcon style={Style.icon} icon={faArrowLeft} />
+                style={[Style.backButtonBackground, {backgroundColor: props.buttonBackgroundColor}]}>
+                <FontAwesomeIcon
+                    style={Style.icon}
+                    icon={faArrowLeft}
+                    color={props.backArrowColor}
+                />
             </View>
         </Pressable>
     );
@@ -23,6 +29,8 @@ const BackButton = (props: BackButtonProps) => {
 
 BackButton.propTypes = {
     onPress: PropTypes.any.isRequired,
+    buttonBackgroundColor: PropTypes.string,
+    backArrowColor: PropTypes.string,
 }
 
 export default BackButton;

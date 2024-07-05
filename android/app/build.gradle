@@ -83,6 +83,9 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    packagingOptions {
+            exclude 'META-INF/*.kotlin_module'
+        }
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -101,6 +104,10 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -115,5 +122,7 @@ dependencies {
         implementation jscFlavor
     }
 }
-
+project.ext.react = [
+    enableHermes: true,  // clean and rebuild if changing
+]
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

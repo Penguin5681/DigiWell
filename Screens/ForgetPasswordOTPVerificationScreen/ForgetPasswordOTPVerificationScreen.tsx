@@ -6,10 +6,33 @@ import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import {useState} from "react";
 import {OtpInput} from "react-native-otp-entry";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
+import functions from '@react-native-firebase/functions';
+import {useRoute} from "@react-navigation/native";
 
 const ForgetPasswordOTPVerificationScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = Appearance.getColorScheme();
     const [defaultOTP, setDefaultOTP] = useState('');
+    interface RouteParams {
+        defaultEmailValue: string;
+    }
+    const route = useRoute();
+    const routeParams = route.params as RouteParams | undefined;
+    const email = routeParams?.defaultEmailValue;
+    const verifyOtp = async () => {
+        try {
+            interface VerifyOtpResponse {
+                success: boolean,
+            }
+            const result = await functions().httpsCallable('verifyOtp')({email, otp: defaultOTP});
+            const data = result.data as VerifyOtpResponse;
+            if (data.success) {
+                // TODO: Implement a forget password logic
+                navigation.navigate(Routes.CreateNewPasswordPageScreen);
+            }
+        } catch (error) {
+            console.log(error, "Invalid OTP");
+        }
+    };
     // @ts-ignore
     return (
         <SafeAreaView>
@@ -70,7 +93,7 @@ const ForgetPasswordOTPVerificationScreen = ({navigation}: { navigation: any }) 
                         textColor={"#FFF"}
                         buttonColor={"#1E232C"}
                         onPress={() => {
-                            navigation.navigate(Routes.CreateNewPasswordPageScreen);
+                            verifyOtp();
                         }}
                         isEnabled={defaultOTP.length === 4}
                         topMargin={38}

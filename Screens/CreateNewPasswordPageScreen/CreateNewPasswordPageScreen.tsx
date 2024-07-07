@@ -1,4 +1,4 @@
-import { Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import {Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import Style from "./Style";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes";
@@ -6,6 +6,7 @@ import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import EditText from "../../Components/EditText/EditText.tsx";
 import {SetStateAction, useState} from "react";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
+import firebaseAuth from '@react-native-firebase/auth';
 
 const CreateNewPasswordPageScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = Appearance.getColorScheme();
@@ -55,7 +56,7 @@ const CreateNewPasswordPageScreen = ({navigation}: { navigation: any }) => {
                         textColor={colorSchema === 'light' ? '#000' : '#FFF'}
                         placeHolderTextColor={colorSchema === 'light' ? '#000' : '#FFF'}
                         backgroundColor={colorSchema === 'light' ? '#E5E4E2' : "#303030"}
-                        inputType={'text'}
+                        inputType={'password'}
                         value={defaultNewPasswordValue}
                         onChangeText={(value: SetStateAction<string>) => {
                             setDefaultNewPasswordValue(value);
@@ -70,7 +71,7 @@ const CreateNewPasswordPageScreen = ({navigation}: { navigation: any }) => {
                         textColor={colorSchema === 'light' ? '#000' : '#FFF'}
                         placeHolderTextColor={colorSchema === 'light' ? '#000' : '#FFF'}
                         backgroundColor={colorSchema === 'light' ? '#E5E4E2' : "#303030"}
-                        inputType={'text'}
+                        inputType={'password'}
                         value={defaultConfirmPasswordValue}
                         onChangeText={(value: SetStateAction<string>) => {
                             setDefaultConfirmPasswordValue(value);
@@ -83,9 +84,9 @@ const CreateNewPasswordPageScreen = ({navigation}: { navigation: any }) => {
                         textColor={"#FFF"}
                         buttonColor={"#1E232C"}
                         onPress={() => {
-                            navigation.navigate(Routes.PasswordChangedScreen);
+                            // TODO: Implement a password update feature without requiring a recent login
                         }}
-                        isEnabled={(defaultNewPasswordValue.length >= 6 && defaultConfirmPasswordValue.length >= 6)}
+                        isEnabled={(defaultNewPasswordValue.length >= 6 && defaultConfirmPasswordValue.length >= 6) && (defaultNewPasswordValue === defaultConfirmPasswordValue)}
                         topMargin={33}
                         buttonRadius={8}
                         leftMargin={0}

@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 
 exports.sendOtpEmail = functions.https.onCall(async (data, context) => {
     const email = data.email;
-    const otp = Math.floor(Math.random() * 10000).toString();
+    const otp = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
     console.log(`Sending OTP ${otp} to ${email}`);
 
     const mailOptions = {

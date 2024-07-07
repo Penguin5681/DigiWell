@@ -6,10 +6,45 @@ import {Routes} from "../../Navigation/Routes";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import {OtpInput} from "react-native-otp-entry";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
+import functions from '@react-native-firebase/functions';
+import {useRoute} from "@react-navigation/native";
+import {createUser} from "../../api/user";
 
 const RegistrationOTPVerificationScreen = ({navigation}: {navigation: any}) => {
     const colorSchema = Appearance.getColorScheme();
     const [defaultOTP, setDefaultOTP] = useState('');
+    interface RouteParams {
+        defaultEmailValue: string;
+        defaultPasswordValue: string;
+    }
+    const route = useRoute();
+    const routeParams = route.params as RouteParams | undefined;
+
+    const email = routeParams?.defaultEmailValue;
+    const password = routeParams?.defaultPasswordValue;
+    const [success, setSuccess] = useState("");
+    const [error, setError] = useState("");
+    const verifyOtp = async () => {
+      try {
+          interface VerifyOtpResponse {
+              success: boolean;
+          }
+          const result = await functions().httpsCallable("verifyOtp")({email, otp:      defaultOTP});
+          const data = result.data as VerifyOtpResponse;
+          if (data.success) {
+              let user = await createUser(email, password);
+              if (user.error) {
+                  setError(user.error);
+              } else {
+                  setError('');
+                  setSuccess("Registration Success");
+                  setTimeout(() => navigation.navigate(Routes.HomePage));
+              }
+          }
+      }  catch (error) {
+          console.log("Invalid OTP")
+      }
+    };
     // @ts-ignore
     return (
         <SafeAreaView>
@@ -71,7 +106,9 @@ const RegistrationOTPVerificationScreen = ({navigation}: {navigation: any}) => {
                         textColor={"#FFF"}
                         buttonColor={"#1E232C"}
                         onPress={() => {
-                            navigation.navigate(Routes.PhotoUploadScreen);
+                            // navigation.navigate(Routes.PhotoUploadScreen);
+                            // console.log(email, password)
+                            verifyOtp();
                         }}
                         isEnabled={defaultOTP.length === 4}
                         topMargin={38}

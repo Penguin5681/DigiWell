@@ -1,4 +1,4 @@
-import auth from "@react-native-firebase/auth";
+import auth from '@react-native-firebase/auth';
 
 export const createUser = async (email, password) => {
   try {
@@ -42,3 +42,4 @@ export const loginUser = async (email, password) => {
     return {status:false,error:error.message }
   }
 };
+

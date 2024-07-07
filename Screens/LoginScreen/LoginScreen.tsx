@@ -1,6 +1,6 @@
 import {Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
-import React, {SetStateAction, useState} from "react";
+import React, {SetStateAction, useEffect, useState} from "react";
 import Style from "./Style";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import EditText from "../../Components/EditText/EditText.tsx";
@@ -10,12 +10,23 @@ import FacebookButton from "../../Components/FacebookButton/FacebookButton.tsx";
 import LoginMethodText from "../../Components/LoginMethodText/LoginMethodText.tsx";
 import {Routes} from "../../Navigation/Routes";
 import {loginUser} from "../../api/user";
+import {_signInWithGoogle} from "../../auth";
+
 
 const LoginScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = Appearance.getColorScheme();
     const [defaultEmailValue, setDefaultEmailValue] = useState("");
     const [defaultPasswordValue, setDefaultPasswordValue] = useState("");
     const [error, setError] = useState("");
+
+    async function signInWithGoogle() {
+        _signInWithGoogle().then(data => {
+            console.log('user data=>', data);
+            navigation.navigate(Routes.HomePage);
+        });
+    }
+
+
 
     return (
         <SafeAreaView>
@@ -113,7 +124,7 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
                         <LoginMethodText text={"Or Login with"}/>
 
                         <View style={Style.signInButtonContainer}>
-                            <GoogleButton rightMargin={12}
+                            <GoogleButton onPress={()=> signInWithGoogle()} rightMargin={12}
                                           buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
                             <FacebookButton buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
                         </View>

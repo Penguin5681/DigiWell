@@ -1,4 +1,7 @@
 // Just a filler Screen
-const HomePage = ({navigation}: { navigation: any }) => {};
+import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
+
+const HomePage = () => {
+};
 
 export default HomePage;

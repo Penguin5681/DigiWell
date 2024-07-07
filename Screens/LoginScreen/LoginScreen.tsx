@@ -1,6 +1,6 @@
 import {Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
-import React, {SetStateAction, useEffect, useState} from "react";
+import React, {SetStateAction, useState} from "react";
 import Style from "./Style";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import EditText from "../../Components/EditText/EditText.tsx";

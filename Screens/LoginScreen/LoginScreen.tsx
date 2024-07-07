@@ -10,7 +10,7 @@ import FacebookButton from "../../Components/FacebookButton/FacebookButton.tsx";
 import LoginMethodText from "../../Components/LoginMethodText/LoginMethodText.tsx";
 import {Routes} from "../../Navigation/Routes";
 import {loginUser} from "../../api/user";
-import {_signInWithGoogle} from "../../auth";
+import {_signInWithGoogle} from "../../auth/loginAuth";
 
 
 const LoginScreen = ({navigation}: { navigation: any }) => {

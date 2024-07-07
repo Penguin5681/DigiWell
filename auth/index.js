@@ -16,7 +16,7 @@ export const _signInWithGoogle = async () => {
         return userInfo;
     } catch (error) {
         console.log('=> Google Sign In', error,error.code);
-        return null;
+        return null
     }
 };
 

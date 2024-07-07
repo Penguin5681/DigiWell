@@ -8,6 +8,7 @@ import {OtpInput} from "react-native-otp-entry";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
 import functions from '@react-native-firebase/functions';
 import {useRoute} from "@react-navigation/native";
+import firebaseAuth from "@react-native-firebase/auth";
 
 const ForgetPasswordOTPVerificationScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = Appearance.getColorScheme();
@@ -26,8 +27,10 @@ const ForgetPasswordOTPVerificationScreen = ({navigation}: { navigation: any }) 
             const result = await functions().httpsCallable('verifyOtp')({email, otp: defaultOTP});
             const data = result.data as VerifyOtpResponse;
             if (data.success) {
-                // TODO: Implement a forget password logic
-                navigation.navigate(Routes.CreateNewPasswordPageScreen);
+                if (email != null) {
+                    await firebaseAuth().sendPasswordResetEmail(email);
+                }
+                navigation.navigate(Routes.PasswordResetLinkSentSuccessfullyScreen);
             }
         } catch (error) {
             console.log(error, "Invalid OTP");

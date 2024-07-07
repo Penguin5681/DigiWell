@@ -12,6 +12,8 @@ import BottomTabNavigation from "./BottomTabNavigation.tsx";
 import RegistrationOTPVerificationScreen from "../Screens/RegistrationOTPVerificationScreen/RegistrationOTPVerificationScreen.tsx";
 import PhotoUploadScreen from "../Screens/PhotoUploadScreen/PhotoUploadScreen.tsx";
 import AvatarUploadScreen from "../Screens/AvatarUploadScreen/AvatarUploadScreen.tsx";
+import PasswordResetLinkSentSuccessfullyScreen
+    from "../Screens/PasswordResetLinkSentSuccessfullyScreen/PasswordResetLinkSentSuccessfullyScreen.tsx";
 
 const StackBase = createStackNavigator();
 
@@ -60,6 +62,7 @@ const MainNavigation: React.FC = () => {
             <StackBase.Screen name={Routes.ForgetPasswordOTPVerificationScreen} component={ForgetPasswordOTPVerificationScreen} />
             <StackBase.Screen name={Routes.CreateNewPasswordPageScreen} component={CreateNewPasswordPageScreen} />
             <StackBase.Screen name={Routes.PasswordChangedScreen} component={PasswordChangedScreen} />
+            <StackBase.Screen name={Routes.PasswordResetLinkSentSuccessfullyScreen} component={PasswordResetLinkSentSuccessfullyScreen}/>
             <StackBase.Screen name={Routes.HomePage} component={BottomTabNavigation} />
             <StackBase.Screen name={Routes.AvatarUploadScreen} component={AvatarUploadScreen}/>
         </StackBase.Navigator>

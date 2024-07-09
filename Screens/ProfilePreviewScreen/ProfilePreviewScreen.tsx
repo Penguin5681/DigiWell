@@ -1,65 +1,221 @@
 import React from "react";
 import Style from "./Style";
-import { Button, FlatList, Image, SafeAreaView, Text, View } from "react-native";
-import ProfileContainer from "../../Components/ProfileContainer/ProfileContainer.tsx";
-import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
-import ActivityProfile from "../../Components/ActivityProfile/ActivityProfile.tsx";
+import {Appearance, Image, SafeAreaView, Text, TouchableOpacity, View} from "react-native";
+import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
+import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
+import {scaleFontSize, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
+import {SvgXml} from "react-native-svg";
+import {VectorIcons} from "../../Assets/Images/VectorIcons";
+import LinearGradient from 'react-native-linear-gradient';
 
 const ProfilePreviewScreen = () => {
-  const profileLinks = [
-    {
-      name: "Your Favorite",
-      linkImage: require("../../Assets/Images/favourite.png")
-    },
-    {
-      name: "Payment",
-      linkImage: require("../../Assets/Images/payment.png")
-    },
-    {
-      name: "Tell Your Friends",
-      linkImage: require("../../Assets/Images/send.png")
-    },
-    {
-      name: "Promotions",
-      linkImage: require("../../Assets/Images/promotions.png")
-    },
-    {
-      name: "Settings",
-      linkImage: require("../../Assets/Images/settings.png")
-    },
-    {
-      name: "Log Out",
-      linkImage: require("../../Assets/Images/logout.png")
-    }
-  ];
-  return (
-    <SafeAreaView>
-      <View style={Style.background}>
-        <View style={Style.profileCont}>
-          <View>
-            <ProfileContainer profilePhoto={require("../../Assets/Images/Ellipse.png")} imageDimensions={113} />
-          </View>
-          <View style={Style.infoContainer}>
-            <Text style={Style.userName}>Jatin Dhobi</Text>
-            <Text style={Style.Info}>India</Text>
-            <Text style={Style.Info}>Since 2005</Text>
-          </View>
-        </View>
-        <View style={Style.profButton}>
-        <LoginSignUpButton text={"Edit profile"} textColor={"#FFFFFF"} buttonColor={"#34ADE1"} onPress={() => {
-          console.log("Click");
-        }} isEnabled={true} topMargin={10} buttonRadius={30} buttonHeight={60}/>
-        </View>
-        <View style={Style.activities}>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={profileLinks}
-            renderItem={({ item }) => (<ActivityProfile activityName={item.name} activityImage={item.linkImage} />)} />
-        </View>
-      </View>
-    </SafeAreaView>
-  );
-};
+    const colorSchema = Appearance.getColorScheme();
+    const dailyScreenTime = '3h 28m';
+    const weeklyScreenTime = '13h 42m';
+    const dailyMostUsedApp = "Brave";
+    const weeklyMostUsedApp = "Chrome";
+    const accountCreationDate = "09/07/2024";
+    const darkModeGradientColorList = ['#0c0c0c', '#4C4E52', '#9FA2A8'];
+    const lightModeGradientColorList = ['#c6c6d2', '#d0d0e8', '#97a1a3'];
 
+    return (
+        <SafeAreaView
+            style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'}]}>
+
+            <View style={Style.userDetailContainer}>
+                <Image
+                    style={[Style.userImage, {borderColor: colorSchema === 'dark' ? '#FFF' : '#000'}]}
+                    source={require('../../Assets/Images/monkey.jpg')}/>
+                <View style={Style.userLabelContainer}>
+                    <OptionsHeaderText
+                        text={'Monkey'}
+                        color={'#309CFF'}
+                        fontSize={scaleFontSize(30)}
+                        marginBottom={0}
+                        onPress={() => {
+                        }}/>
+                    <OptionsHeaderText
+                        text={'Motihari'}
+                        color={colorSchema === 'dark' ? '#FFF' : '#000'}
+                        fontSize={scaleFontSize(19)}
+                        marginBottom={0}
+                        onPress={() => {
+                        }}/>
+                    <OptionsHeaderText
+                        text={'Since 2022'}
+                        color={colorSchema === 'dark' ? '#FFF' : '#000'}
+                        fontSize={scaleFontSize(19)}
+                        marginBottom={0}
+                        onPress={() => {
+                        }}/>
+
+                    <TouchableOpacity
+                        style={[Style.editProfileButton, {backgroundColor: colorSchema === 'dark' ? '#FFF' : '#E5E4E2'}]}>
+                        <Text style={Style.buttonContent}>
+                            Edit Profile
+                        </Text>
+                    </TouchableOpacity>
+
+                </View>
+            </View>
+
+            <View style={{
+                flex: 1,
+                justifyContent: 'space-around',
+                top: 140,
+                left: 0,
+                right: 0,
+                position: 'absolute',
+                bottom: 75
+            }}>
+
+                <View style={[Style.statsContainer,]}>
+
+                    <LinearGradient
+                        style={Style.usageStatsGradient}
+                        start={{x: 0, y: 0}}
+                        end={{x: 0.2, y: 4}}
+                        colors={colorSchema === 'dark' ? darkModeGradientColorList : lightModeGradientColorList}>
+
+                        <View style={Style.dailyStats}>
+                            <OptionsHeaderText
+                                text={"Screen Usage"} color={'#119b9b'}
+                                fontSize={scaleFontSize(30)}
+                                marginBottom={verticalScale(10)} onPress={() => null}/>
+
+                            <OptionsHeaderText
+                                text={`Today's Screen Time: ${dailyScreenTime}`}
+                                color={colorSchema === 'light' ? '#000' : '#FFF'}
+                                fontSize={scaleFontSize(14)}
+                                marginBottom={0}
+                                onPress={() => {
+                                }}/>
+
+                            <OptionsHeaderText
+                                text={`Today's Most Used App: ${dailyMostUsedApp}`}
+                                color={colorSchema === 'light' ? '#000' : '#FFF'}
+                                fontSize={scaleFontSize(14)}
+                                marginBottom={verticalScale(10)} onPress={() => {
+                            }}/>
+                        </View>
+
+                        <View style={Style.weeklyStats}>
+                            <OptionsHeaderText
+                                text={`Week's Screen Time: ${weeklyScreenTime}`}
+                                color={colorSchema === 'light' ? '#000' : '#FFF'}
+                                fontSize={scaleFontSize(14)}
+                                marginBottom={0}
+                                onPress={() => {
+                                }}/>
+
+                            <OptionsHeaderText
+                                text={`Week's Most Used App: ${weeklyMostUsedApp}`}
+                                color={colorSchema === 'light' ? '#000' : '#FFF'}
+                                fontSize={scaleFontSize(14)}
+                                marginBottom={10} onPress={() => {
+                            }}/>
+                        </View>
+                    </LinearGradient>
+                </View>
+
+
+                <View
+                    style={[Style.accountStatusContainer]}>
+
+                    <LinearGradient
+                        style={Style.usageStatsGradient}
+                        start={{x: 0, y: 0}}
+                        end={{x: 0.2, y: 4}}
+                        colors={colorSchema === 'dark' ? darkModeGradientColorList : lightModeGradientColorList}>
+
+                        <OptionsHeaderText
+                            text={"Account Info"}
+                            color={'#119b9b'}
+                            fontSize={scaleFontSize(30)}
+                            marginBottom={verticalScale(10)}
+                            onPress={() => null}/>
+
+                        <OptionsHeaderText
+                            text={`Account Created On: ${accountCreationDate}`}
+                            color={colorSchema === 'light' ? '#000' : '#FFF'}
+                            fontSize={scaleFontSize(14)}
+                            marginBottom={10} onPress={() => {
+                        }}/>
+
+                    </LinearGradient>
+                </View>
+
+
+                <View
+                    style={[Style.profileOptionContainer,]}>
+
+                    <LinearGradient
+                        style={Style.profileOptionGradient}
+                        start={{x: 0, y: 0}}
+                        end={{x: 0.2, y: 4}}
+                        colors={colorSchema === 'dark' ? darkModeGradientColorList : lightModeGradientColorList}>
+
+                        <View style={Style.homeOption}>
+                            <SvgXml
+                                xml={VectorIcons.homeIconVector}/>
+                            <Text
+                                style={[Style.optionLabel, {color: colorSchema === 'dark' ? '#FFF' : '#000'}]}>
+                                Go to Dashboard
+                            </Text>
+                            <SvgXml
+                                xml={colorSchema === 'dark' ? VectorIcons.arrowRightVectorWhite : VectorIcons.arrowRightVectorBlack}/>
+                        </View>
+
+                        <View style={Style.settingsOption}>
+                            <SvgXml
+                                xml={VectorIcons.settingsVector}/>
+                            <Text
+                                style={[Style.optionLabel, {color: colorSchema === 'dark' ? '#FFF' : '#000'}]}>
+                                Settings
+                            </Text>
+                            <SvgXml
+                                xml={colorSchema === 'dark' ? VectorIcons.arrowRightVectorWhite : VectorIcons.arrowRightVectorBlack}/>
+                        </View>
+
+                        <View style={Style.shareOption}>
+                            <SvgXml
+                                xml={colorSchema === 'dark' ? VectorIcons.shareIconWhite : VectorIcons.shareIconBlack}/>
+                            <Text
+                                style={[Style.optionLabel, {color: colorSchema === 'dark' ? '#FFF' : '#000'}]}>
+                                Tell your friends
+                            </Text>
+                            <SvgXml
+                                xml={colorSchema === 'dark' ? VectorIcons.arrowRightVectorWhite : VectorIcons.arrowRightVectorBlack}/>
+                        </View>
+
+                        <View style={Style.deleteOption}>
+                            <SvgXml
+                                xml={colorSchema === 'dark' ? VectorIcons.deleteIconWhiteVector : VectorIcons.deleteIconBlackVector}/>
+                            <Text
+                                style={[Style.optionLabel, {color: colorSchema === 'dark' ? '#FFF' : '#000'}]}>
+                                Delete Account
+                            </Text>
+                            <SvgXml
+                                xml={colorSchema === 'dark' ? VectorIcons.arrowRightVectorWhite : VectorIcons.arrowRightVectorBlack}/>
+                        </View>
+
+                        <View style={Style.logoutOption}>
+                            <SvgXml
+                                xml={VectorIcons.logOutVector}/>
+                            <Text
+                                style={[Style.optionLabel, {color: colorSchema === 'dark' ? '#FFF' : '#000'}]}>
+                                Logout
+                            </Text>
+                            <SvgXml
+                                xml={colorSchema === 'dark' ? VectorIcons.arrowRightVectorWhite : VectorIcons.arrowRightVectorBlack}/>
+                        </View>
+
+                    </LinearGradient>
+
+                </View>
+            </View>
+        </SafeAreaView>
+    );
+};
 
 export default ProfilePreviewScreen;

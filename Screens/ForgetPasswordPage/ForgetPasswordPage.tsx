@@ -1,4 +1,4 @@
-import { Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import {Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, ToastAndroid, View} from "react-native";
 import Style from "./Style";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes";
@@ -83,9 +83,11 @@ const ForgetPasswordPage = ({navigation}: { navigation: any }) => {
                             sendOtp();
                         }}
                         isEnabled={defaultEmailValue.length >= 6}
-                        topMargin={30}
+                        topMargin={20}
                         buttonRadius={8}
                         leftMargin={0}/>
+
+
                 </View>
             </View>
         </SafeAreaView>

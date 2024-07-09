@@ -16,8 +16,11 @@ import DashboardScreen from "../Screens/DashboardScreen/DashboardScreen.tsx";
 import AppUsageScreen from "../Screens/AppUsageScreen/AppUsageScreen.tsx";
 import DetailedAppUsageScreen from "../Screens/DetailedAppUsageScreen/DetailedAppUsageScreen.tsx";
 import ProfileScreen from "../Screens/ProfileScreen/ProfileScreen.tsx";
+import EditProfileScreen from "../Screens/EditProfileScreen/EditProfileScreen.tsx";
+import ProfilePreviewScreen from "../Screens/ProfilePreviewScreen/ProfilePreviewScreen.tsx";
+import AppLimitsScreen from "../Screens/AppLimitsScreen/AppLimitsScreen.tsx";
 
-const BottomTabNavigation = () => {
+const BottomTabNavigation = ({navigation} : {navigation: any}) => {
     const _renderIcon = (routeName: any, selectedTab: any) => {
         let selectedTabIcon = null;
 
@@ -73,7 +76,9 @@ const BottomTabNavigation = () => {
                 <Animated.View style={Style.btnCircleUp}>
                     <TouchableOpacity
                         style={Style.button}
-                        // onPress={() => Alert.alert("Click Action")}
+                        onPress={() => {
+                            navigation.navigate(Routes.ProfileSettingScreen)
+                        }}
                     >
                         <FontAwesomeIcon icon={faGear} color="gray" size={25} />
                     </TouchableOpacity>
@@ -92,11 +97,11 @@ const BottomTabNavigation = () => {
             <CurvedBottomBar.Screen
                 name={Routes.DetailedAppUsageScreen}
                 position={"RIGHT"}
-                component={DetailedAppUsageScreen} />
+                component={AppLimitsScreen} />
             <CurvedBottomBar.Screen
                 name={Routes.ProfileScreen}
                 position={"RIGHT"}
-                component={ProfileScreen} />
+                component={ProfilePreviewScreen} />
 
         </CurvedBottomBar.Navigator></>
     );

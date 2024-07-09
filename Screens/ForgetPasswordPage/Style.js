@@ -40,6 +40,7 @@ const Style = StyleSheet.create({
         color: '#35C2C1',
         letterSpacing: 0.15
     },
+
 });
 
 export default Style;

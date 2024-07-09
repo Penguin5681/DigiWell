@@ -1,4 +1,4 @@
-import { Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import {Alert, Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, ToastAndroid, View} from "react-native";
 import Style from "./Style";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes";
@@ -9,21 +9,35 @@ import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpBut
 import functions from '@react-native-firebase/functions';
 import {useRoute} from "@react-navigation/native";
 import firebaseAuth from "@react-native-firebase/auth";
+import {error} from "firebase-functions/logger";
 
 const ForgetPasswordOTPVerificationScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = Appearance.getColorScheme();
     const [defaultOTP, setDefaultOTP] = useState('');
+
     interface RouteParams {
         defaultEmailValue: string;
     }
+
     const route = useRoute();
     const routeParams = route.params as RouteParams | undefined;
     const email = routeParams?.defaultEmailValue;
+    const defaultEmailValue = routeParams?.defaultEmailValue;
+    const sendOtp = async () => {
+        try {
+            await functions().httpsCallable('sendOtpEmail')({email: defaultEmailValue});
+            navigation.navigate(Routes.ForgetPasswordOTPVerificationScreen, {defaultEmailValue});
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const verifyOtp = async () => {
         try {
             interface VerifyOtpResponse {
                 success: boolean,
             }
+
             const result = await functions().httpsCallable('verifyOtp')({email, otp: defaultOTP});
             const data = result.data as VerifyOtpResponse;
             if (data.success) {
@@ -33,6 +47,7 @@ const ForgetPasswordOTPVerificationScreen = ({navigation}: { navigation: any }) 
                 navigation.navigate(Routes.PasswordResetLinkSentSuccessfullyScreen);
             }
         } catch (error) {
+            Alert.alert("Error Occurred", `OTP Verification failed`)
             console.log(error, "Invalid OTP");
         }
     };
@@ -73,7 +88,7 @@ const ForgetPasswordOTPVerificationScreen = ({navigation}: { navigation: any }) 
                 </View>
             </ImageBackground>
 
-            <View style={[Style.otpInputContainer, { backgroundColor: colorSchema === "dark" ? "#000" : "#FFF" }]}>
+            <View style={[Style.otpInputContainer, {backgroundColor: colorSchema === "dark" ? "#000" : "#FFF"}]}>
                 <View style={Style.otpInputStyle}>
                     <OtpInput
                         numberOfDigits={4}
@@ -88,6 +103,23 @@ const ForgetPasswordOTPVerificationScreen = ({navigation}: { navigation: any }) 
                         }}
                         autoFocus={false}
                     />
+
+
+                </View>
+
+                <View style={Style.resendOTPContainer}>
+                    <Text
+                        style={Style.resendOTPText}
+                        onPress={() => {
+                            sendOtp()
+                                .catch(error => {
+                                    console.log("OTP Error Occurred: " + error);
+                                });
+                            ToastAndroid.show("OTP Sent", ToastAndroid.SHORT);
+                        }}
+                    >
+                        Didn't receive OTP? Re-send
+                    </Text>
                 </View>
 
                 <View style={Style.verifyButtonContainer}>
@@ -96,7 +128,10 @@ const ForgetPasswordOTPVerificationScreen = ({navigation}: { navigation: any }) 
                         textColor={"#FFF"}
                         buttonColor={"#1E232C"}
                         onPress={() => {
-                            verifyOtp();
+                            verifyOtp()
+                                .catch(error => {
+                                    console.log(`OTP Verification Occurred: ${error}`);
+                                })
                         }}
                         isEnabled={defaultOTP.length === 4}
                         topMargin={38}

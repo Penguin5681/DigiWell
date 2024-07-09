@@ -1,5 +1,6 @@
 import {StyleSheet} from "react-native";
 import {horizontalScale, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
+import {getUrbanistFontFamily} from "../../Assets/Fonts/helper";
 
 const Style = StyleSheet.create({
     backButton: {
@@ -26,8 +27,19 @@ const Style = StyleSheet.create({
     },
     verifyButtonContainer: {
         marginHorizontal: horizontalScale(40),
-    }
-
+    },
+    resendOTPContainer: {
+        marginHorizontal: horizontalScale(40),
+        marginBottom: verticalScale(-20),
+        marginTop: verticalScale(10),
+    },
+    resendOTPText: {
+        fontFamily: getUrbanistFontFamily('Urbanist', '700'),
+        fontSize: 13.86,
+        color: "#35C2C1",
+        marginTop: verticalScale(10.84),
+        textAlign: 'right'
+    },
 
 });
 

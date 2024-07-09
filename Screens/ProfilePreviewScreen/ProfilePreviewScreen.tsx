@@ -10,6 +10,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const ProfilePreviewScreen = () => {
     const colorSchema = Appearance.getColorScheme();
+    // This data will be realtime soon
     const dailyScreenTime = '3h 28m';
     const weeklyScreenTime = '13h 42m';
     const dailyMostUsedApp = "Brave";
@@ -70,7 +71,6 @@ const ProfilePreviewScreen = () => {
             }}>
 
                 <View style={[Style.statsContainer,]}>
-
                     <LinearGradient
                         style={Style.usageStatsGradient}
                         start={{x: 0, y: 0}}
@@ -144,7 +144,6 @@ const ProfilePreviewScreen = () => {
 
                     </LinearGradient>
                 </View>
-
 
                 <View
                     style={[Style.profileOptionContainer,]}>

@@ -1,11 +1,12 @@
 import {StyleSheet} from "react-native";
-import {scaleFontSize, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
+import {horizontalScale, scaleFontSize, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
 
 const Style = StyleSheet.create({
     headerStatsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        marginTop: verticalScale(10)
+        marginTop: verticalScale(10),
+        padding: 20
     },
     appsInstalledStatsContainer: {},
     dailyScreenTimeStatsContainer: {},
@@ -35,8 +36,21 @@ const Style = StyleSheet.create({
     appsInstalledStatsContainerGradient: {
         padding: 15,
         borderRadius: 10,
-    }
+    },
+    appUsageStatsHeaderViewContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginHorizontal: horizontalScale(23)
+    },
+    dropDownMenuContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 0.4,
+    },
+    appUsageStatsContainer: {
 
+    }
 });
 
 export default Style;

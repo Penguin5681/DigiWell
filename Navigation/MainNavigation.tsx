@@ -12,12 +12,11 @@ import BottomTabNavigation from "./BottomTabNavigation.tsx";
 import RegistrationOTPVerificationScreen from "../Screens/RegistrationOTPVerificationScreen/RegistrationOTPVerificationScreen.tsx";
 import PhotoUploadScreen from "../Screens/PhotoUploadScreen/PhotoUploadScreen.tsx";
 import AvatarUploadScreen from "../Screens/AvatarUploadScreen/AvatarUploadScreen.tsx";
-
 const StackBase = createStackNavigator();
-
 const MainNavigation: React.FC = () => {
     return (
         <StackBase.Navigator
+            initialRouteName={"WelcomeScreen"}
             screenOptions={{
                 headerShown: false,
                 gestureEnabled: true,

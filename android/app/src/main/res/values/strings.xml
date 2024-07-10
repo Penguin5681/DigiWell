@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">DigiWell</string>
+    <string name="facebook_app_id">1232974071209616</string>
+    <string name="fb_login_protocol_scheme">fb1232974071209616</string>
+    <string name="facebook_client_token">b0b6b47a7ec7a3f1f8f71c24fd31c116</string>
+
+
 </resources>

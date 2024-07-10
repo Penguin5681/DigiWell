@@ -4,8 +4,20 @@ import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpBut
 import GlobalImageBackgroundStyle from "../../Assets/GlobalStyles/GlobalImageBackgroundStyle";
 import Style from "./Style";
 import {Routes} from "../../Navigation/Routes";
+import {useEffect} from "react";
+import auth from "@react-native-firebase/auth";
 
 const WelcomeScreen = ({navigation}: { navigation: any }) => {
+
+
+    useEffect(() => {
+        const unsubscribe=auth().onAuthStateChanged(user => {
+            if (user){
+                navigation.navigate(Routes.HomePage);
+            }
+        })
+        return unsubscribe;
+    }, []);
     return (
         <SafeAreaView style={[GlobalStyle.globalBackgroundFlex,]}>
             <ImageBackground

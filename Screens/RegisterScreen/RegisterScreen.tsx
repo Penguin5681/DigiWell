@@ -19,6 +19,8 @@ import GoogleButton from "../../Components/GoogleButton/GoogleButton.tsx";
 import FacebookButton from "../../Components/FacebookButton/FacebookButton.tsx";
 import Style from "./Style";
 import functions from '@react-native-firebase/functions';
+import {GoogleSignin} from "@react-native-google-signin/google-signin";
+import auth from "@react-native-firebase/auth";
 
 
 const RegisterScreen = ({navigation}: { navigation: any }) => {
@@ -36,6 +38,26 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
             navigation.navigate(Routes.RegistrationOTPVerificationScreen, {defaultEmailValue, defaultPasswordValue});
         } catch (error) {
             console.log(error)
+        }
+    };
+
+    const signInWithGoogle = async () => {
+        try {
+            GoogleSignin.configure({
+                offlineAccess: false,
+                webClientId: '411285290789-h7085ag0gmrfickl1h80fkpcv97vgttu.apps.googleusercontent.com',
+                scopes: ['profile', 'email'],
+            });
+            await GoogleSignin.hasPlayServices();
+            const userInfo = await GoogleSignin.signIn();
+
+            const {idToken} = await GoogleSignin.signIn();
+            const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
+            auth().signInWithCredential(googleCredentials);
+            return userInfo;
+        } catch (error) {
+            console.log('=> Google Sign In', error);
+            return null;
         }
     };
 
@@ -134,9 +156,13 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
                             <View style={Style.signUpButtonContainer}>
 
                                 <GoogleButton onPress={()=>{
+                                    signInWithGoogle().then(data=>{
+                                        console.log(data);
+                                        navigation.navigate(Routes.HomePage);
+                                    })
                                 }} rightMargin={12}
                                               buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
-                                <FacebookButton buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
+                                <FacebookButton onPress={()=>{}} buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
                             </View>
                         </View>
                     </View>

@@ -17,7 +17,7 @@ const Style = StyleSheet.create({
         fontFamily: getUrbanistFontFamily('Urbanist', '500'),
         fontSize: scaleFontSize(16),
         marginTop: verticalScale(10),
-        color: "#DBDBDB"
+        color: "#FFF"
     },
     inputFieldContainer: {
         height: '100%',
@@ -40,6 +40,7 @@ const Style = StyleSheet.create({
         color: '#35C2C1',
         letterSpacing: 0.15
     },
+
 });
 
 export default Style;

@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 
 exports.sendOtpEmail = functions.https.onCall(async (data, context) => {
     const email = data.email;
-    const otp = Math.floor(Math.random() * 10000).toString();
+    const otp = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
     console.log(`Sending OTP ${otp} to ${email}`);
 
     const mailOptions = {
@@ -38,7 +38,7 @@ exports.sendOtpEmail = functions.https.onCall(async (data, context) => {
         await admin.firestore().collection('otps').doc(email).set({
             otp: otp,
             createdAt: admin.firestore.FieldValue.serverTimestamp(),
-            expiresAt: admin.firestore.Timestamp.fromDate(new Date(Date.now() + 5 * 60000)) // 5 minutes
+            expiresAt: admin.firestore.Timestamp.fromDate(new Date(Date.now() + 10 * 60000)) // 10 minutes
         });
         console.log(`OTP ${otp} stored for ${email}`);
         return {success: true};

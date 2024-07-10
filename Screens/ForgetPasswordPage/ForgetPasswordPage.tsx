@@ -1,4 +1,4 @@
-import { Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import {Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, ToastAndroid, View} from "react-native";
 import Style from "./Style";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes";
@@ -6,10 +6,20 @@ import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import EditText from "../../Components/EditText/EditText.tsx";
 import {SetStateAction, useState} from "react";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
+import functions from '@react-native-firebase/functions';
+
 
 const ForgetPasswordPage = ({navigation}: { navigation: any }) => {
     const colorSchema = Appearance.getColorScheme();
     const [defaultEmailValue, setDefaultEmailValue] = useState("");
+    const sendOtp = async () => {
+        try {
+            await functions().httpsCallable('sendOtpEmail')({email: defaultEmailValue});
+            navigation.navigate(Routes.ForgetPasswordOTPVerificationScreen, {defaultEmailValue});
+        } catch (error) {
+            console.log(error)
+        }
+    }
     // @ts-ignore
     return (
         <SafeAreaView>
@@ -37,7 +47,7 @@ const ForgetPasswordPage = ({navigation}: { navigation: any }) => {
                 <View
                     id={"header-text-view"}
                     style={Style.headerTextView}>
-                    <HeaderText text={"Forgot Password?"} textColor={"#FF"}/>
+                    <HeaderText text={"Forgot Password?"} textColor={"#FFF"}/>
 
                     <Text
                         style={Style.subHeaderTextView}>
@@ -70,12 +80,14 @@ const ForgetPasswordPage = ({navigation}: { navigation: any }) => {
                         textColor={"#FFF"}
                         buttonColor={"#1E232C"}
                         onPress={() => {
-                            navigation.navigate(Routes.ForgetPasswordOTPVerificationScreen);
+                            sendOtp();
                         }}
                         isEnabled={defaultEmailValue.length >= 6}
-                        topMargin={30}
+                        topMargin={20}
                         buttonRadius={8}
                         leftMargin={0}/>
+
+
                 </View>
             </View>
         </SafeAreaView>

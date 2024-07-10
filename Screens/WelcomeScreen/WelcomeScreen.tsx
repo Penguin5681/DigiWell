@@ -1,4 +1,4 @@
-import {ImageBackground, SafeAreaView, Text, View} from "react-native";
+import {ImageBackground, Platform, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
 import GlobalImageBackgroundStyle from "../../Assets/GlobalStyles/GlobalImageBackgroundStyle";
@@ -6,10 +6,9 @@ import Style from "./Style";
 import {Routes} from "../../Navigation/Routes";
 import {useEffect} from "react";
 import auth from "@react-native-firebase/auth";
+import SplashScreen from "react-native-splash-screen";
 
 const WelcomeScreen = ({navigation}: { navigation: any }) => {
-
-
     useEffect(() => {
         const unsubscribe=auth().onAuthStateChanged(user => {
             if (user){
@@ -21,9 +20,11 @@ const WelcomeScreen = ({navigation}: { navigation: any }) => {
     return (
         <SafeAreaView style={[GlobalStyle.globalBackgroundFlex,]}>
             <ImageBackground
-                style={GlobalImageBackgroundStyle.imageBackground}
+                style={[GlobalImageBackgroundStyle.imageBackground]}
                 resizeMode={'cover'}
                 source={require('../../Assets/Images/GlobalAppAssets/img.png')}>
+
+                <View style={{...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0, 0, 0, 0.4)'}}/>
 
                 <View style={Style.buttonContainer}>
                     <LoginSignUpButton

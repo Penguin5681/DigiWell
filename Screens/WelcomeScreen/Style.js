@@ -12,8 +12,8 @@ const Style = StyleSheet.create({
         marginBottom: verticalScale(18),
     },
     textStyle: {
-        fontFamily: getUrbanistFontFamily('Urbanist', '700'),
-        color: '#1E232C',
+        fontFamily: getUrbanistFontFamily('Urbanist', '800'),
+        color: '#FFF',
         textDecorationLine: 'underline',
         textAlign: 'center',
     },

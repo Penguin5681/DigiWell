@@ -5,14 +5,13 @@ import {
     Text,
     View,
     Appearance,
-    Alert
 } from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import EditText from "../../Components/EditText/EditText.tsx";
-import React, {SetStateAction, useEffect, useState} from "react";
+import React, {SetStateAction, useState} from "react";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
 import LoginMethodText from "../../Components/LoginMethodText/LoginMethodText.tsx";
 import GoogleButton from "../../Components/GoogleButton/GoogleButton.tsx";

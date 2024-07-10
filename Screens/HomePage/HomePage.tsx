@@ -1,4 +1,5 @@
-// Just a filler Screen
-const HomePage = ({navigation}: { navigation: any }) => {};
+
+const HomePage = () => {
+};
 
 export default HomePage;

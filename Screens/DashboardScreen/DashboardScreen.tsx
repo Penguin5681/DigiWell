@@ -9,7 +9,6 @@ import LinearGradient from "react-native-linear-gradient";
 import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
 import {useState} from "react";
 import DropDownPicker from "react-native-dropdown-picker";
-
 const DashboardScreen = () => {
     const appsInstalled = '12';
     const dailyScreenTime = "3h 12m";

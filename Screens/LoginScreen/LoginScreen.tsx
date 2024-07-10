@@ -1,6 +1,6 @@
 import {Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
-import React, {SetStateAction, useState} from "react";
+import React, {SetStateAction, useEffect, useState} from "react";
 import Style from "./Style";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import EditText from "../../Components/EditText/EditText.tsx";
@@ -10,12 +10,48 @@ import FacebookButton from "../../Components/FacebookButton/FacebookButton.tsx";
 import LoginMethodText from "../../Components/LoginMethodText/LoginMethodText.tsx";
 import {Routes} from "../../Navigation/Routes";
 import {loginUser} from "../../api/user";
+import {AccessToken, LoginManager} from "react-native-fbsdk-next";
+import auth from "@react-native-firebase/auth";
+import {GoogleSignin} from "@react-native-google-signin/google-signin";
 
 const LoginScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = Appearance.getColorScheme();
+    const [error, setError] = useState("");
     const [defaultEmailValue, setDefaultEmailValue] = useState("");
     const [defaultPasswordValue, setDefaultPasswordValue] = useState("");
-    const [error, setError] = useState("");
+
+    const signInWithGoogle = async () => {
+        try {
+            GoogleSignin.configure({
+                offlineAccess: false,
+                webClientId: '411285290789-h7085ag0gmrfickl1h80fkpcv97vgttu.apps.googleusercontent.com',
+                scopes: ['profile', 'email'],
+            });
+            await GoogleSignin.hasPlayServices();
+            const userInfo = await GoogleSignin.signIn();
+            const {idToken} = await GoogleSignin.signIn();
+            const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
+            auth().signInWithCredential(googleCredentials);
+            return userInfo;
+        } catch (error) {
+            console.log('=> Google Sign In', error);
+            return null;
+        }
+    };
+
+    const signInWithFacebook = async () => {
+        const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+
+        if (result.isCancelled) {
+            throw 'User cancelled the login process';
+        }
+        const data = await AccessToken.getCurrentAccessToken();
+        if (!data) {
+            throw 'Something went wrong obtaining access token';
+        }
+        const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+        return auth().signInWithCredential(facebookCredential);
+    };
 
     return (
         <SafeAreaView>
@@ -88,6 +124,7 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
                     Forgot Password?
                 </Text>
                 {error.length > 0 && <Text style={Style.error}>{error}</Text>}
+                {/*{facebookError.length > 0 && <Text style={Style.error}>{facebookError}</Text>}*/}
                 <View
                     style={Style.loginButtonContainer}>
                     <LoginSignUpButton
@@ -113,9 +150,23 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
                         <LoginMethodText text={"Or Login with"}/>
 
                         <View style={Style.signInButtonContainer}>
-                            <GoogleButton rightMargin={12}
+                            <GoogleButton onPress={() => signInWithGoogle().then(data => {
+                                navigation.navigate(Routes.HomePage);
+                                console.log('user data=>', data);
+                            })
+                            } rightMargin={12}
                                           buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
-                            <FacebookButton buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
+                            <FacebookButton
+                                onPress={() => {
+                                    signInWithFacebook().then(data => {
+                                        try {
+                                            navigation.navigate(Routes.HomePage);
+                                            console.log('user data=>', data);
+                                        } catch (error) {
+                                            console.log(error);
+                                        }
+                                    });
+                                }} buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
                         </View>
                     </View>
                 </View>

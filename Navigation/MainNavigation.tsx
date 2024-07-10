@@ -16,12 +16,11 @@ import PasswordResetLinkSentSuccessfullyScreen
     from "../Screens/PasswordResetLinkSentSuccessfullyScreen/PasswordResetLinkSentSuccessfullyScreen.tsx";
 import ProfileSettingsScreen from "../Screens/ProfileSettingsScreen/ProfileSettingsScreen.tsx";
 import EditProfileScreen from "../Screens/EditProfileScreen/EditProfileScreen.tsx";
-
 const StackBase = createStackNavigator();
-
 const MainNavigation: React.FC = () => {
     return (
         <StackBase.Navigator
+            initialRouteName={"WelcomeScreen"}
             screenOptions={{
                 headerShown: false,
                 gestureEnabled: true,

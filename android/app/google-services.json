@@ -12,7 +12,20 @@
           "package_name": "com.digiwell"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "411285290789-3smii6f5k7jl1aik3b3lev13rdeir8h7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.digiwell",
+            "certificate_hash": "69aaf70cec435a308d0906718ed2e05e167fde40"
+          }
+        },
+        {
+          "client_id": "411285290789-h7085ag0gmrfickl1h80fkpcv97vgttu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDlcRSfxe5auLTHs1gvpdmiqN3vZtzgC6I"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "411285290789-h7085ag0gmrfickl1h80fkpcv97vgttu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

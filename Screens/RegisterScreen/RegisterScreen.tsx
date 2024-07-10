@@ -21,6 +21,7 @@ import Style from "./Style";
 import functions from '@react-native-firebase/functions';
 import {GoogleSignin} from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth";
+import {AccessToken, LoginManager} from "react-native-fbsdk-next";
 
 
 const RegisterScreen = ({navigation}: { navigation: any }) => {
@@ -60,6 +61,22 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
             return null;
         }
     };
+
+
+    const signInWithFacebook = async () => {
+        const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+
+        if (result.isCancelled) {
+            throw 'User cancelled the login process';
+        }
+        const data = await AccessToken.getCurrentAccessToken();
+        if (!data) {
+            throw 'Something went wrong obtaining access token';
+        }
+        const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+        return auth().signInWithCredential(facebookCredential);
+    };
+
 
         return (
             <SafeAreaView style={[GlobalStyle.globalAppBackground, GlobalStyle.globalBackgroundFlex]}>
@@ -162,7 +179,16 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
                                     })
                                 }} rightMargin={12}
                                               buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
-                                <FacebookButton onPress={()=>{}} buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
+                                <FacebookButton onPress={()=>{
+                                    signInWithFacebook().then(data => {
+                                        try {
+                                            navigation.navigate(Routes.HomePage);
+                                            console.log('user data=>', data);
+                                        } catch (error) {
+                                            console.log(error);
+                                        }
+                                    });
+                                }} buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
                             </View>
                         </View>
                     </View>

@@ -6,3 +6,5 @@
 ### Then ``` cd DigiWell ```
 ### Run ``` npm install ```
 ### ``` npx react-native run-android ``` or ``` npx react-native run-ios ``` 
+
+## Special Thanks to: Jatin bro

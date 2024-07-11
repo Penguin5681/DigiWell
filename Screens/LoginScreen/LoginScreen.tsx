@@ -1,4 +1,4 @@
-import {Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, View} from "react-native";
+import {Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, useColorScheme, View} from "react-native";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import React, {SetStateAction, useEffect, useState} from "react";
 import Style from "./Style";
@@ -15,7 +15,7 @@ import auth from "@react-native-firebase/auth";
 import {GoogleSignin} from "@react-native-google-signin/google-signin";
 
 const LoginScreen = ({navigation}: { navigation: any }) => {
-    const colorSchema = Appearance.getColorScheme();
+    const colorSchema = useColorScheme();
     const [error, setError] = useState("");
     const [defaultEmailValue, setDefaultEmailValue] = useState("");
     const [defaultPasswordValue, setDefaultPasswordValue] = useState("");

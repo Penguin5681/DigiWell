@@ -1,19 +1,20 @@
-import { Image, SafeAreaView, Text, View } from "react-native";
+import {Image, SafeAreaView, Text, useColorScheme, View} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import Style from "./Style";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
 
 const ProfileUpdatedScreen = ({navigation}: {navigation: any}) => {
+    const colorSchema = useColorScheme();
     return (
         <SafeAreaView
-            style={[GlobalStyle.globalBackgroundFlex, GlobalStyle.globalAppBackground, {alignItems: 'center', justifyContent: "center"}]}>
+            style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'light' ? '#FFF' : '#000'}, {alignItems: 'center', justifyContent: "center"}]}>
             <View style={Style.stickerContainer}>
                 <Image source={require('../../Assets/Images/BlueSticker.png')}/>
             </View>
 
             <View style={Style.headerTextContainer}>
-                <HeaderText text={"Profile Updated!!"}/>
+                <HeaderText text={"Profile Updated!!"} textColor={colorSchema === 'dark' ? '#FFF' : '#000'}/>
                 <Text style={Style.subHeaderTextContainer}>
                     Your profile has been updated successfully.
                 </Text>

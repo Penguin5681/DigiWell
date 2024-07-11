@@ -22,7 +22,6 @@ const Style = StyleSheet.create({
     profileOptionContainer: {
         justifyContent: 'space-between',
         flexDirection: 'column',
-        borderWidth: 0.5,
 
         borderRadius: 30,
         marginHorizontal: horizontalScale(15),
@@ -60,7 +59,6 @@ const Style = StyleSheet.create({
     },
     statsContainer: {
 
-        borderWidth: 0.5,
         borderRadius: 30,
         marginTop: verticalScale(10),
         marginHorizontal: horizontalScale(15),
@@ -76,7 +74,6 @@ const Style = StyleSheet.create({
         paddingTop: verticalScale(10),
     },
     accountStatusContainer: {
-        borderWidth: 0.5,
 
         marginHorizontal: horizontalScale(15),
         borderRadius: 30,

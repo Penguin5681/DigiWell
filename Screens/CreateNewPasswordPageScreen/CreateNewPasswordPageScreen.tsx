@@ -1,4 +1,4 @@
-import {Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, View} from "react-native";
+import {Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, useColorScheme, View} from "react-native";
 import Style from "./Style";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes";
@@ -9,7 +9,7 @@ import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpBut
 import firebaseAuth from '@react-native-firebase/auth';
 
 const CreateNewPasswordPageScreen = ({navigation}: { navigation: any }) => {
-    const colorSchema = Appearance.getColorScheme();
+    const colorSchema = useColorScheme();
     const [defaultNewPasswordValue, setDefaultNewPasswordValue] = useState('');
     const [defaultConfirmPasswordValue, setDefaultConfirmPasswordValue] = useState('');
     return (

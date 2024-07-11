@@ -1,4 +1,13 @@
-import {Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, ToastAndroid, View} from "react-native";
+import {
+    Appearance,
+    ImageBackground,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    ToastAndroid,
+    useColorScheme,
+    View
+} from "react-native";
 import Style from "./Style";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes";
@@ -10,7 +19,7 @@ import functions from '@react-native-firebase/functions';
 
 
 const ForgetPasswordPage = ({navigation}: { navigation: any }) => {
-    const colorSchema = Appearance.getColorScheme();
+    const colorSchema = useColorScheme();
     const [defaultEmailValue, setDefaultEmailValue] = useState("");
     const sendOtp = async () => {
         try {

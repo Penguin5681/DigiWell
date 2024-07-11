@@ -31,16 +31,15 @@ const BottomTabNavigation = ({navigation} : {navigation: any}) => {
             case Routes.AppUsageScreen:
                 selectedTabIcon = faClock;
                 break;
-            case Routes.DetailedAppUsageScreen:
+            case Routes.AppLimitsScreen:
                 selectedTabIcon = faHourglassHalf;
                 break;
             case Routes.ProfileScreen:
                 selectedTabIcon = faUser;
                 break;
-            default:
-                selectedTabIcon = faWarning;
         }
 
+        // @ts-ignore
         return (
             <FontAwesomeIcon
                 icon={selectedTabIcon}
@@ -95,7 +94,7 @@ const BottomTabNavigation = ({navigation} : {navigation: any}) => {
                 component={AppUsageScreen}
                 position="LEFT" />
             <CurvedBottomBar.Screen
-                name={Routes.DetailedAppUsageScreen}
+                name={Routes.AppLimitsScreen}
                 position={"RIGHT"}
                 component={AppLimitsScreen} />
             <CurvedBottomBar.Screen

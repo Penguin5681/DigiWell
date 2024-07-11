@@ -1,15 +1,16 @@
 import React from "react";
 import Style from "./Style";
-import {Appearance, Image, SafeAreaView, Text, TouchableOpacity, View} from "react-native";
+import {Appearance, Image, SafeAreaView, Text, TouchableOpacity, useColorScheme, View} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
 import {scaleFontSize, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
 import {SvgXml} from "react-native-svg";
 import {VectorIcons} from "../../Assets/Images/VectorIcons";
 import LinearGradient from 'react-native-linear-gradient';
+import {Routes} from "../../Navigation/Routes";
 
-const ProfilePreviewScreen = () => {
-    const colorSchema = Appearance.getColorScheme();
+const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
+    const colorSchema = useColorScheme();
     // This data will be realtime soon
     const dailyScreenTime = '3h 28m';
     const weeklyScreenTime = '13h 42m';
@@ -51,7 +52,11 @@ const ProfilePreviewScreen = () => {
                         }}/>
 
                     <TouchableOpacity
-                        style={[Style.editProfileButton, {backgroundColor: colorSchema === 'dark' ? '#FFF' : '#E5E4E2'}]}>
+                        style={[Style.editProfileButton, {backgroundColor: colorSchema === 'dark' ? '#FFF' : '#E5E4E2'}]}
+                        onPress={() => {
+                            navigation.navigate(Routes.EditProfileScreen)
+                        }}
+                    >
                         <Text style={Style.buttonContent}>
                             Edit Profile
                         </Text>

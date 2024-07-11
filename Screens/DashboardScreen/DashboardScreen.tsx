@@ -1,4 +1,4 @@
-import {Appearance, SafeAreaView, Text, ToastAndroid, View} from "react-native";
+import {Appearance, SafeAreaView, Text, ToastAndroid, useColorScheme, View} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import Style from "./Style";
 import {SvgXml} from "react-native-svg";
@@ -12,7 +12,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 const DashboardScreen = () => {
     const appsInstalled = '12';
     const dailyScreenTime = "3h 12m";
-    const colorSchema = Appearance.getColorScheme();
+    const colorSchema = useColorScheme();
     const darkModeGradientColorList = ['#0c0c0c', '#4C4E52', '#9FA2A8'];
     const lightModeGradientColorList = ['#c6c6d2', '#d0d0e8', '#97a1a3'];
     const currentAppListView = 'Today';

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Appearance, Image, ImageBackground, SafeAreaView, Switch, Text, View} from "react-native";
+import {Appearance, Image, ImageBackground, SafeAreaView, Switch, Text, useColorScheme, View} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import SettingsPageHeaderText from "../../Components/SettingsPageHeaderText/SettingsPageHeaderText.tsx";
 import Style from "./Style";
@@ -8,6 +8,8 @@ import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderT
 import {scaleFontSize, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes";
+import setColorScheme = Appearance.setColorScheme;
+import addChangeListener = Appearance.addChangeListener;
 
 const accountIconVector = "<svg width=\"30\" height=\"30\" viewBox=\"0 0 30 29\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n" +
     "<path d=\"M3 27C2.175 27 1.4685 26.706 0.880502 26.118C0.292502 25.53 -0.000997453 24.824 2.54669e-06 24V3C2.54669e-06 2.175 0.294003 1.4685 0.882003 0.880502C1.47 0.292502 2.176 -0.000997453 3 2.54669e-06H24C24.825 2.54669e-06 25.5315 0.294003 26.1195 0.882003C26.7075 1.47 27.001 2.176 27 3V11.5125C26.3 11.1625 25.5685 10.906 24.8055 10.743C24.0425 10.58 23.274 10.499 22.5 10.5C21.775 10.5 21.0875 10.569 20.4375 10.707C19.7875 10.845 19.15 11.0385 18.525 11.2875C18.6 11.0375 18.6565 10.7875 18.6945 10.5375C18.7325 10.2875 18.751 10.025 18.75 9.75C18.75 8.3 18.2375 7.0625 17.2125 6.0375C16.1875 5.0125 14.95 4.5 13.5 4.5C12.05 4.5 10.8125 5.0125 9.7875 6.0375C8.7625 7.0625 8.25 8.3 8.25 9.75C8.25 11.2 8.7625 12.4375 9.7875 13.4625C10.8125 14.4875 12.05 15 13.5 15H13.875C13.55 15.45 13.269 15.9315 13.032 16.4445C12.795 16.9575 12.5885 17.4885 12.4125 18.0375C10.5625 18.1625 8.8435 18.6 7.2555 19.35C5.6675 20.1 4.249 21.075 3 22.275V24H12.45C12.625 24.55 12.825 25.075 13.05 25.575C13.275 26.075 13.55 26.55 13.875 27H3ZM21 28.5L20.55 26.25C20.25 26.125 19.9685 25.9935 19.7055 25.8555C19.4425 25.7175 19.174 25.549 18.9 25.35L16.725 26.025L15.225 23.475L16.95 21.975C16.9 21.625 16.875 21.3 16.875 21C16.875 20.7 16.9 20.375 16.95 20.025L15.225 18.525L16.725 15.975L18.9 16.65C19.175 16.45 19.444 16.2815 19.707 16.1445C19.97 16.0075 20.251 15.876 20.55 15.75L21 13.5H24L24.45 15.75C24.75 15.875 25.0315 16.0125 25.2945 16.1625C25.5575 16.3125 25.826 16.5 26.1 16.725L28.275 15.975L29.775 18.6L28.05 20.1C28.1 20.4 28.125 20.7125 28.125 21.0375C28.125 21.3625 28.1 21.675 28.05 21.975L29.775 23.475L28.275 26.025L26.1 25.35C25.825 25.55 25.5565 25.719 25.2945 25.857C25.0325 25.995 24.751 26.126 24.45 26.25L24 28.5H21ZM22.5 24C23.325 24 24.0315 23.706 24.6195 23.118C25.2075 22.53 25.501 21.824 25.5 21C25.5 20.175 25.206 19.4685 24.618 18.8805C24.03 18.2925 23.324 17.999 22.5 18C21.675 18 20.9685 18.294 20.3805 18.882C19.7925 19.47 19.499 20.176 19.5 21C19.5 21.825 19.794 22.5315 20.382 23.1195C20.97 23.7075 21.676 24.001 22.5 24Z\" fill=\"url(#paint0_linear_670_433)\"/>\n" +
@@ -40,132 +42,97 @@ const otherIconVector = "<svg width=\"30\" height=\"30\" viewBox=\"0 0 30 30\" f
     "</svg>\n";
 
 const ProfileSettingsScreen = ({navigation}: { navigation: any }) => {
-    const colorSchema = Appearance.getColorScheme();
+    const colorSchema = useColorScheme();
     const [notificationSwitchState, setNotificationSwitchState] = useState(false);
     const [updatesSwitchState, setUpdatesSwitchState] = useState(false);
     const [darkModeEnabledState, setDarkModeEnabledState] = useState(colorSchema === 'dark');
-    return (
-        <SafeAreaView
-            style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'}]}>
-            <View
-                id={"SettingsHeader"}
-                style={Style.settingsHeaderContainer}>
-                <View style={Style.backButtonContainer}>
-                    <BackButton
-                        onPress={() => {
-                            navigation.navigate(Routes.HomePage)
+    return <SafeAreaView
+        style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'}]}>
+        <View
+            id={"SettingsHeader"}
+            style={Style.settingsHeaderContainer}>
+            <View style={Style.backButtonContainer}>
+                <BackButton
+                    onPress={() => {
+                        navigation.navigate(Routes.HomePage)
+                    }}
+                    buttonBackgroundColor={colorSchema === 'dark' ? '#FFF' : '#000'}
+                    backArrowColor={colorSchema === 'light' ? '#FFF' : '#000'}/>
+            </View>
+            <SettingsPageHeaderText text={'Settings'}/>
+        </View>
+
+        <View
+            id={"AccountOptions"}
+            style={Style.accountOptionsContainer}>
+            <View style={Style.subAccountOptionsContainer}>
+                <SvgXml
+                    style={Style.svgStyle}
+                    xml={accountIconVector}/>
+                <SettingsPageHeaderText text={"Account"}/>
+            </View>
+
+            <View style={Style.accountOptionsLabelContainer}>
+                <OptionsHeaderText
+                    text={"Edit Profile"}
+                    color={colorSchema === 'dark' ? '#FFF' : '#000'}
+                    fontSize={scaleFontSize(20)}
+                    marginBottom={verticalScale(15)}
+                    onPress={() => {}}/>
+
+                <OptionsHeaderText
+                    text={"Change Password"}
+                    color={colorSchema === 'dark' ? '#FFF' : '#000'}
+                    fontSize={scaleFontSize(20)}
+                    marginBottom={verticalScale(15)}
+                    onPress={() => {}}
+                />
+
+                <OptionsHeaderText
+                    text={"Privacy"}
+                    color={colorSchema === 'dark' ? '#FFF' : '#000'}
+                    fontSize={scaleFontSize(20)}
+                    marginBottom={0}
+                    onPress={() => {}}
+                />
+            </View>
+
+        </View>
+
+        <View
+            id={"NotificationOptions"}
+            style={Style.notificationOptionsContainer}>
+
+            <View style={Style.subAccountOptionsContainer}>
+                <SvgXml
+                    style={Style.svgStyle}
+                    xml={notificationIconVector}/>
+                <SettingsPageHeaderText text={"Notifications"}/>
+            </View>
+
+            <View style={Style.accountOptionsLabelContainer}>
+
+                <View style={Style.labelSwitchContainer}>
+                    <OptionsHeaderText
+                        text={"Allow Notification"}
+                        color={colorSchema === 'dark' ? '#FFF' : '#000'}
+                        fontSize={scaleFontSize(20)}
+                        marginBottom={verticalScale(15)}
+                        onPress={() => {}}
+                    />
+                    <Switch
+                        trackColor={{false: '#2d2c2c', true: '#2d2c2c'}}
+                        thumbColor={notificationSwitchState ? '#309CFF' : '#454545'}
+                        value={notificationSwitchState}
+                        onValueChange={(switchState) => {
+                            setNotificationSwitchState(switchState);
                         }}
-                        buttonBackgroundColor={colorSchema === 'dark' ? '#FFF' : '#000'}
-                        backArrowColor={colorSchema === 'light' ? '#FFF' : '#000'}/>
-                </View>
-                <SettingsPageHeaderText text={'Settings'}/>
-            </View>
-
-            <View
-                id={"AccountOptions"}
-                style={Style.accountOptionsContainer}>
-                <View style={Style.subAccountOptionsContainer}>
-                    <SvgXml
-                        style={Style.svgStyle}
-                        xml={accountIconVector}/>
-                    <SettingsPageHeaderText text={"Account"}/>
-                </View>
-
-                <View style={Style.accountOptionsLabelContainer}>
-                    <OptionsHeaderText
-                        text={"Edit Profile"}
-                        color={colorSchema === 'dark' ? '#FFF' : '#000'}
-                        fontSize={scaleFontSize(20)}
-                        marginBottom={verticalScale(15)}
-                        onPress={() => {}}/>
-
-                    <OptionsHeaderText
-                        text={"Change Password"}
-                        color={colorSchema === 'dark' ? '#FFF' : '#000'}
-                        fontSize={scaleFontSize(20)}
-                        marginBottom={verticalScale(15)}
-                        onPress={() => {}}
-                    />
-
-                    <OptionsHeaderText
-                        text={"Privacy"}
-                        color={colorSchema === 'dark' ? '#FFF' : '#000'}
-                        fontSize={scaleFontSize(20)}
-                        marginBottom={0}
-                        onPress={() => {}}
                     />
                 </View>
 
-            </View>
-
-            <View
-                id={"NotificationOptions"}
-                style={Style.notificationOptionsContainer}>
-
-                <View style={Style.subAccountOptionsContainer}>
-                    <SvgXml
-                        style={Style.svgStyle}
-                        xml={notificationIconVector}/>
-                    <SettingsPageHeaderText text={"Notifications"}/>
-                </View>
-
-                <View style={Style.accountOptionsLabelContainer}>
-
-                    <View style={Style.labelSwitchContainer}>
-                        <OptionsHeaderText
-                            text={"Allow Notification"}
-                            color={colorSchema === 'dark' ? '#FFF' : '#000'}
-                            fontSize={scaleFontSize(20)}
-                            marginBottom={verticalScale(15)}
-                            onPress={() => {}}
-                        />
-                        <Switch
-                            trackColor={{false: '#2d2c2c', true: '#2d2c2c'}}
-                            thumbColor={notificationSwitchState ? '#309CFF' : '#454545'}
-                            value={notificationSwitchState}
-                            onValueChange={(switchState) => {
-                                setNotificationSwitchState(switchState);
-                            }}
-                        />
-                    </View>
-
-                    <View style={Style.labelSwitchContainer}>
-                        <OptionsHeaderText
-                            text={"Updates"}
-                            color={colorSchema === 'dark' ? '#FFF' : '#000'}
-                            fontSize={scaleFontSize(20)}
-                            marginBottom={verticalScale(15)}
-                            onPress={() => {}}
-                        />
-
-                        <Switch
-                            trackColor={{false: '#2d2c2c', true: '#2d2c2c'}}
-                            thumbColor={updatesSwitchState ? '#309CFF' : '#454545'}
-                            value={updatesSwitchState}
-                            onValueChange={(switchState) => {
-                                setUpdatesSwitchState(switchState);
-                            }}
-                        />
-                    </View>
-
-                </View>
-
-            </View>
-
-            <View
-                id={"OtherOptions"}
-                style={Style.otherOptionsContainer}>
-
-                <View style={Style.subAccountOptionsContainer}>
-                    <SvgXml
-                        style={Style.svgStyle}
-                        xml={otherIconVector}/>
-                    <SettingsPageHeaderText text={"Other"}/>
-                </View>
-
-                <View style={Style.labelSwitchContainer2}>
+                <View style={Style.labelSwitchContainer}>
                     <OptionsHeaderText
-                        text={"Dark Mode"}
+                        text={"Updates"}
                         color={colorSchema === 'dark' ? '#FFF' : '#000'}
                         fontSize={scaleFontSize(20)}
                         marginBottom={verticalScale(15)}
@@ -174,49 +141,82 @@ const ProfileSettingsScreen = ({navigation}: { navigation: any }) => {
 
                     <Switch
                         trackColor={{false: '#2d2c2c', true: '#2d2c2c'}}
-                        thumbColor={darkModeEnabledState ? '#309CFF' : '#454545'}
-                        value={darkModeEnabledState}
+                        thumbColor={updatesSwitchState ? '#309CFF' : '#454545'}
+                        value={updatesSwitchState}
                         onValueChange={(switchState) => {
-                            setDarkModeEnabledState(switchState);
+                            setUpdatesSwitchState(switchState);
                         }}
                     />
                 </View>
 
-                <View style={Style.labelSwitchContainer2}>
-                    <OptionsHeaderText
-                        text={"Language"}
-                        color={colorSchema === 'dark' ? '#FFF' : '#000'}
-                        fontSize={scaleFontSize(20)}
-                        marginBottom={verticalScale(15)}
-                        onPress={() => {}}
-                    />
+            </View>
 
-                    <Text
-                        style={[Style.languageText, {color: colorSchema === 'dark' ? '#FFF' : '#000'}]}>
-                        English
-                    </Text>
+        </View>
 
-                </View>
+        <View
+            id={"OtherOptions"}
+            style={Style.otherOptionsContainer}>
 
-                <View style={Style.labelSwitchContainer2}>
-                    <OptionsHeaderText
-                        text={"Region"}
-                        color={colorSchema === 'dark' ? '#FFF' : '#000'}
-                        fontSize={scaleFontSize(20)}
-                        marginBottom={verticalScale(15)}
-                        onPress={() => {}}
-                    />
+            <View style={Style.subAccountOptionsContainer}>
+                <SvgXml
+                    style={Style.svgStyle}
+                    xml={otherIconVector}/>
+                <SettingsPageHeaderText text={"Other"}/>
+            </View>
 
-                    <Text
-                        style={[Style.languageText, {color: colorSchema === 'dark' ? '#FFF' : '#000'}]}>
-                        India
-                    </Text>
-                </View>
+            <View style={Style.labelSwitchContainer2}>
+                <OptionsHeaderText
+                    text={"Dark Mode"}
+                    color={colorSchema === 'dark' ? '#FFF' : '#000'}
+                    fontSize={scaleFontSize(20)}
+                    marginBottom={verticalScale(15)}
+                    onPress={() => {}}
+                />
+
+                <Switch
+                    trackColor={{false: '#2d2c2c', true: '#2d2c2c'}}
+                    thumbColor={darkModeEnabledState ? '#309CFF' : '#454545'}
+                    value={darkModeEnabledState}
+                    onValueChange={(switchState) => {
+                        setDarkModeEnabledState(switchState);
+                    }}
+                />
+            </View>
+
+            <View style={Style.labelSwitchContainer2}>
+                <OptionsHeaderText
+                    text={"Language"}
+                    color={colorSchema === 'dark' ? '#FFF' : '#000'}
+                    fontSize={scaleFontSize(20)}
+                    marginBottom={verticalScale(15)}
+                    onPress={() => {}}
+                />
+
+                <Text
+                    style={[Style.languageText, {color: colorSchema === 'dark' ? '#FFF' : '#000'}]}>
+                    English
+                </Text>
 
             </View>
 
-        </SafeAreaView>
-    );
+            <View style={Style.labelSwitchContainer2}>
+                <OptionsHeaderText
+                    text={"Region"}
+                    color={colorSchema === 'dark' ? '#FFF' : '#000'}
+                    fontSize={scaleFontSize(20)}
+                    marginBottom={verticalScale(15)}
+                    onPress={() => {}}
+                />
+
+                <Text
+                    style={[Style.languageText, {color: colorSchema === 'dark' ? '#FFF' : '#000'}]}>
+                    India
+                </Text>
+            </View>
+
+        </View>
+
+    </SafeAreaView>;
 };
 
 export default ProfileSettingsScreen;

@@ -4,7 +4,7 @@ import {
     StyleSheet,
     Text,
     View,
-    Appearance,
+    Appearance, useColorScheme,
 } from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
@@ -24,7 +24,7 @@ import {AccessToken, LoginManager} from "react-native-fbsdk-next";
 
 
 const RegisterScreen = ({navigation}: { navigation: any }) => {
-    const colorSchema = Appearance.getColorScheme();
+    const colorSchema = useColorScheme();
     const [defaultEmailValue, setDefaultEmailValue] = useState("");
     const [defaultPasswordValue, setDefaultPasswordValue] = useState("");
     const [defaultConfirmPasswordValue, setDefaultConfirmPasswordValue] = useState("");

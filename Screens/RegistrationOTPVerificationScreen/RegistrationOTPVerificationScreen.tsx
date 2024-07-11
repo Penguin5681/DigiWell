@@ -1,5 +1,5 @@
 import {useState} from "react";
-import { Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import {Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, useColorScheme, View} from "react-native";
 import Style from "../ForgetPasswordOTPVerificationScreen/Style";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes";
@@ -11,7 +11,7 @@ import {useRoute} from "@react-navigation/native";
 import {createUser} from "../../api/user";
 
 const RegistrationOTPVerificationScreen = ({navigation}: {navigation: any}) => {
-    const colorSchema = Appearance.getColorScheme();
+    const colorSchema = useColorScheme();
     const [defaultOTP, setDefaultOTP] = useState('');
     interface RouteParams {
         defaultEmailValue: string;

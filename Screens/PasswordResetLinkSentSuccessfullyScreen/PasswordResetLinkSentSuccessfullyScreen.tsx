@@ -1,4 +1,4 @@
-import {Appearance, Image, SafeAreaView, Text, View} from "react-native";
+import {Appearance, Image, SafeAreaView, Text, useColorScheme, View} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import Style from "./Style";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
@@ -7,7 +7,7 @@ import {Routes} from "../../Navigation/Routes";
 import {useEffect} from "react";
 
 const PasswordResetLinkSentSuccessfullyScreen = ({navigation}: { navigation: any }) => {
-    const colorSchema = Appearance.getColorScheme();
+    const colorSchema = useColorScheme();
     useEffect(() => {
         const timeOut = setTimeout(() => {
             navigation.navigate(Routes.LoginScreen)

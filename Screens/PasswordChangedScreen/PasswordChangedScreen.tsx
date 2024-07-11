@@ -1,4 +1,4 @@
-import { Appearance, Image, SafeAreaView, StatusBar, Text, View } from "react-native";
+import {Appearance, Image, SafeAreaView, StatusBar, Text, useColorScheme, View} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import Style from "./Style";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
@@ -7,7 +7,7 @@ import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpBut
 import {Routes} from "../../Navigation/Routes";
 
 const PasswordChangedScreen = ({navigation}: {navigation: any}) => {
-    const colorSchema = Appearance.getColorScheme();
+    const colorSchema = useColorScheme();
     return (
         <SafeAreaView
             style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'}]}>

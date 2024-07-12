@@ -1,4 +1,13 @@
-import {Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, useColorScheme, View} from "react-native";
+import {
+    Appearance,
+    ImageBackground,
+    SafeAreaView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    useColorScheme,
+    View
+} from "react-native";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import React, {SetStateAction, useEffect, useState} from "react";
 import Style from "./Style";
@@ -13,6 +22,8 @@ import {loginUser} from "../../api/user";
 import {AccessToken, LoginManager} from "react-native-fbsdk-next";
 import auth from "@react-native-firebase/auth";
 import {GoogleSignin} from "@react-native-google-signin/google-signin";
+import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
+import KeyboardCoveringContainer from "../../Components/KeboardCoveringContainer/KeyboardCoveringContainer";
 
 const LoginScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
@@ -54,7 +65,12 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
     };
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'}]}>
+            <StatusBar
+                backgroundColor={'transparent'}
+                barStyle={colorSchema === 'dark' ? 'light-content' : 'dark-content'}
+                translucent={true}
+            />
             <ImageBackground
                 source={require("../../Assets/Images/GlobalAppAssets/img.png")}
                 style={
@@ -82,95 +98,99 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
             </ImageBackground>
 
 
-            <View
-                style={[Style.inputFieldContainer, {backgroundColor: colorSchema === "dark" ? "#000" : "#FFF"}]}>
-                <View style={Style.emailEditText}>
-                    <EditText
-                        text={"Enter your email"}
-                        textColor={colorSchema === "light" ? "#000" : "#FFF"}
-                        placeHolderTextColor={colorSchema === "light" ? "#000" : "#FFF"}
-                        backgroundColor={colorSchema === "light" ? "#E5E4E2" : "#303030"}
-                        inputType={"email"}
-                        value={defaultEmailValue}
-                        onChangeText={(value: SetStateAction<string>) => {
-                            console.log(value);
-                            setDefaultEmailValue(value);
-                        }}
-                    />
-                </View>
+            <KeyboardCoveringContainer style={undefined}>
 
-                <View style={Style.passwordEditText}>
-                    <EditText
-                        text={"Enter your password"}
-                        textColor={colorSchema === "light" ? "#000" : "#FFF"}
-                        placeHolderTextColor={colorSchema === "light" ? "#000" : "#FFF"}
-                        inputType={"password"}
-                        value={defaultPasswordValue}
-                        onChangeText={(value: SetStateAction<string>) => {
-                            console.log(value);
-                            setDefaultPasswordValue(value);
-                        }}
-                        backgroundColor={colorSchema === "light" ? "#E5E4E2" : "#303030"}
-                    />
-                </View>
-
-                <Text
-                    style={Style.forgetPasswordText}
-                    onPress={() => {
-                        console.log("LoginScreen -> ForgetPasswordPage");
-                        navigation.navigate(Routes.ForgetPasswordPage);
-                    }}
-                >
-                    Forgot Password?
-                </Text>
-                {error.length > 0 && <Text style={Style.error}>{error}</Text>}
-                {/*{facebookError.length > 0 && <Text style={Style.error}>{facebookError}</Text>}*/}
                 <View
-                    style={Style.loginButtonContainer}>
-                    <LoginSignUpButton
-                        text={"Login"}
-                        textColor={"#FFFFFF"}
-                        buttonColor={"#1E232C"}
-                        topMargin={0}
-                        onPress={async () => {
-                            let user = await loginUser(defaultEmailValue, defaultPasswordValue);
-                            if (!user.status) {
-                                setError(user.error);
-                            } else {
-                                setError('');
-                                navigation.navigate(Routes.HomePage);
+                    style={[Style.inputFieldContainer, {backgroundColor: colorSchema === "dark" ? "#000" : "#FFF"}]}>
+                    <View style={Style.emailEditText}>
+                        <EditText
+                            text={"Enter your email"}
+                            textColor={colorSchema === "light" ? "#000" : "#FFF"}
+                            placeHolderTextColor={colorSchema === "light" ? "#000" : "#FFF"}
+                            backgroundColor={colorSchema === "light" ? "#E5E4E2" : "#303030"}
+                            inputType={"email"}
+                            value={defaultEmailValue}
+                            onChangeText={(value: SetStateAction<string>) => {
+                                console.log(value);
+                                setDefaultEmailValue(value);
+                            }}
+                        />
+                    </View>
+
+                    <View style={Style.passwordEditText}>
+                        <EditText
+                            text={"Enter your password"}
+                            textColor={colorSchema === "light" ? "#000" : "#FFF"}
+                            placeHolderTextColor={colorSchema === "light" ? "#000" : "#FFF"}
+                            inputType={"password"}
+                            value={defaultPasswordValue}
+                            onChangeText={(value: SetStateAction<string>) => {
+                                console.log(value);
+                                setDefaultPasswordValue(value);
+                            }}
+                            backgroundColor={colorSchema === "light" ? "#E5E4E2" : "#303030"}
+                        />
+                    </View>
+
+                    <Text
+                        style={Style.forgetPasswordText}
+                        onPress={() => {
+                            console.log("LoginScreen -> ForgetPasswordPage");
+                            navigation.navigate(Routes.ForgetPasswordPage);
+                        }}
+                    >
+                        Forgot Password?
+                    </Text>
+                    {error.length > 0 && <Text style={Style.error}>{error}</Text>}
+                    {/*{facebookError.length > 0 && <Text style={Style.error}>{facebookError}</Text>}*/}
+                    <View
+                        style={Style.loginButtonContainer}>
+                        <LoginSignUpButton
+                            text={"Login"}
+                            textColor={"#FFFFFF"}
+                            buttonColor={"#1E232C"}
+                            topMargin={0}
+                            onPress={async () => {
+                                let user = await loginUser(defaultEmailValue, defaultPasswordValue);
+                                if (!user.status) {
+                                    setError(user.error);
+                                } else {
+                                    setError('');
+                                    navigation.navigate(Routes.HomePage);
+                                }
                             }
-                        }
-                        }
-                        isEnabled={(defaultEmailValue.length > 6 && defaultPasswordValue.length >= 6)}
-                        buttonRadius={8}
-                        leftMargin={0}/>
+                            }
+                            isEnabled={(defaultEmailValue.length > 6 && defaultPasswordValue.length >= 6)}
+                            buttonRadius={8}
+                            leftMargin={0}/>
 
-                    <View style={Style.loginMethodTextContainer}>
-                        <LoginMethodText text={"Or Login with"}/>
+                        <View style={Style.loginMethodTextContainer}>
+                            <LoginMethodText text={"Or Login with"}/>
 
-                        <View style={Style.signInButtonContainer}>
-                            <GoogleButton onPress={() => signInWithGoogle().then(data => {
-                                navigation.navigate(Routes.HomePage);
-                                console.log('user data=>', data);
-                            })
-                            } rightMargin={12}
-                                          buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
-                            <FacebookButton
-                                onPress={() => {
-                                    signInWithFacebook().then(data => {
-                                        try {
-                                            navigation.navigate(Routes.HomePage);
-                                            console.log('user data=>', data);
-                                        } catch (error) {
-                                            console.log(error);
-                                        }
-                                    });
-                                }} buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
+                            <View style={Style.signInButtonContainer}>
+                                <GoogleButton onPress={() => signInWithGoogle().then(data => {
+                                    navigation.navigate(Routes.HomePage);
+                                    console.log('user data=>', data);
+                                })
+                                } rightMargin={12}
+                                              buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
+                                <FacebookButton
+                                    onPress={() => {
+                                        signInWithFacebook().then(data => {
+                                            try {
+                                                navigation.navigate(Routes.HomePage);
+                                                console.log('user data=>', data);
+                                            } catch (error) {
+                                                console.log(error);
+                                            }
+                                        });
+                                    }} buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
+                            </View>
                         </View>
                     </View>
                 </View>
-            </View>
+
+            </KeyboardCoveringContainer>
         </SafeAreaView>
     );
 };

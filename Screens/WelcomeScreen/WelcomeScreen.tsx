@@ -1,4 +1,14 @@
-import {ImageBackground, SafeAreaView, StyleSheet, Text, View} from "react-native";
+import {
+    Dimensions,
+    Image,
+    ImageBackground,
+    SafeAreaView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    useColorScheme,
+    View
+} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
 import GlobalImageBackgroundStyle from "../../Assets/GlobalStyles/GlobalImageBackgroundStyle";
@@ -6,8 +16,11 @@ import Style from "./Style";
 import {Routes} from "../../Navigation/Routes";
 import {useEffect} from "react";
 import auth from "@react-native-firebase/auth";
+import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
+import {scaleFontSize} from "../../Assets/ScalingUtility/ScalingUtility";
 
 const WelcomeScreen = ({navigation}: { navigation: any }) => {
+    const colorSchema = useColorScheme();
     useEffect(() => {
         return auth().onAuthStateChanged(user => {
             if (user) {
@@ -16,55 +29,67 @@ const WelcomeScreen = ({navigation}: { navigation: any }) => {
         });
     }, []);
     return (
-        <SafeAreaView style={[GlobalStyle.globalBackgroundFlex,]}>
+        <SafeAreaView
+            style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'}]}>
+            <StatusBar
+                backgroundColor={'transparent'}
+                barStyle={'light-content'}
+                translucent={true}
+                />
             <ImageBackground
                 style={[GlobalImageBackgroundStyle.imageBackground]}
                 resizeMode={'cover'}
                 source={require('../../Assets/Images/GlobalAppAssets/img.png')}>
 
                 <View style={{...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0, 0, 0, 0.4)'}}/>
+            </ImageBackground>
+
+            <View style={[Style.footerView,]}>
+                <View style={Style.appLogoAndTextContainer}>
+                    <Image
+                        style={GlobalStyle.globalAppLogo}
+                        source={require('../../Assets/Images/GlobalAppAssets/AppLogo.png')}/>
+                    <OptionsHeaderText
+                        text={"DigiWell"}
+                        color={colorSchema === 'dark' ? '#FFF' : '#000'}
+                        fontSize={scaleFontSize(25)}
+                        marginBottom={0}
+                        onPress={() => null}/>
+
+                    <OptionsHeaderText
+                        text={"Balance your digital life"}
+                        color={colorSchema === 'dark' ? '#FFF' : '#000'}
+                        fontSize={scaleFontSize(15)}
+                        marginBottom={0}
+                        onPress={() => null}/>
+                </View>
 
                 <View style={Style.buttonContainer}>
                     <LoginSignUpButton
-                        text={"Login"}
-                        textColor={"#FFF"}
-                        buttonColor={"#1E232C"}
-                        onPress={
-                            () => {
-                                navigation.navigate(Routes.LoginScreen);
-                            }
-                        }
-                        topMargin={0}
-                        isEnabled={true}
-                        buttonRadius={8}
                         leftMargin={0}
-                    />
+                        buttonRadius={8}
+                        text={"Login"}
+                        textColor={colorSchema === 'dark' ? '#FFF' : '#000'}
+                        buttonColor={colorSchema === 'dark' ? '#1E232C' : '#E5E4E2'}
+                        onPress={() => {
+                            navigation.navigate(Routes.LoginScreen)
+                        }}
+                        isEnabled={true}
+                        topMargin={0}/>
 
                     <LoginSignUpButton
-                        text={"Register"}
-                        textColor={"#000"}
-                        buttonColor={"#FFF"}
-                        onPress={
-                            () => {
-                                navigation.navigate(Routes.RegisterScreen);
-                            }
-                        }
-                        topMargin={10}
-                        isEnabled={true}
+                        leftMargin={0}
                         buttonRadius={8}
-                        leftMargin={0}/>
-
-                    <View style={{marginTop: 30}}>
-                        <Text
-                            onPress={() => {
-                                navigation.navigate(Routes.HomePage);
-                            }}
-                            style={Style.textStyle}>
-                            Continue as a guest
-                        </Text>
-                    </View>
+                        text={"Register"}
+                        textColor={colorSchema === 'dark' ? '#FFF' : '#000'}
+                        buttonColor={colorSchema === 'dark' ? '#1E232C' : '#E5E4E2'}
+                        onPress={() => {
+                            navigation.navigate(Routes.RegisterScreen)
+                        }}
+                        isEnabled={true}
+                        topMargin={12}/>
                 </View>
-            </ImageBackground>
+            </View>
         </SafeAreaView>
     );
 };

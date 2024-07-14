@@ -65,7 +65,8 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
     };
 
     return (
-        <SafeAreaView style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'}]}>
+        <SafeAreaView
+            style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'}]}>
             <StatusBar
                 backgroundColor={'transparent'}
                 barStyle={colorSchema === 'dark' ? 'light-content' : 'dark-content'}
@@ -172,8 +173,7 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
                                     navigation.navigate(Routes.HomePage);
                                     console.log('user data=>', data);
                                 })
-                                } rightMargin={12}
-                                              buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
+                                } rightMargin={12} buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
                                 <FacebookButton
                                     onPress={() => {
                                         signInWithFacebook().then(data => {

@@ -1,4 +1,5 @@
 import {StyleSheet} from "react-native";
+import {verticalScale} from "../ScalingUtility/ScalingUtility";
 
 const GlobalStyle = StyleSheet.create({
     globalBackgroundFlex: {
@@ -15,6 +16,11 @@ const GlobalStyle = StyleSheet.create({
         alignItems: 'center',
         width: 96,
         height: 51,
+    },
+    globalAppLogo: {
+        width: 84,
+        height: 84,
+        marginBottom: verticalScale(5)
     }
 });
 

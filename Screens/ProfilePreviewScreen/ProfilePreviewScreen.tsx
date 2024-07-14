@@ -1,6 +1,6 @@
 import React from "react";
 import Style from "./Style";
-import {Appearance, Image, SafeAreaView, Text, TouchableOpacity, useColorScheme, View} from "react-native";
+import {Appearance, Image, SafeAreaView, StatusBar, Text, TouchableOpacity, useColorScheme, View} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
 import {scaleFontSize, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
@@ -22,8 +22,12 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 
     return (
         <SafeAreaView
-            style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'}]}>
-
+            style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'}, {marginTop: StatusBar.currentHeight}]}>
+            <StatusBar
+                translucent={true}
+                backgroundColor={colorSchema === 'dark' ? '#000' : '#FFF'}
+                barStyle={colorSchema === 'light' ? 'dark-content' : 'light-content'}
+            />
             <View style={Style.userDetailContainer}>
                 <Image
                     style={[Style.userImage, {borderColor: colorSchema === 'dark' ? '#FFF' : '#000'}]}

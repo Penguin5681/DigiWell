@@ -1,4 +1,4 @@
-import {Appearance, SafeAreaView, Text, ToastAndroid, useColorScheme, View} from "react-native";
+import {Appearance, SafeAreaView, StatusBar, Text, ToastAndroid, useColorScheme, View} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import Style from "./Style";
 import {SvgXml} from "react-native-svg";
@@ -7,9 +7,9 @@ import LabelText from "../../Components/LabelText/LabelText.tsx";
 import {scaleFontSize} from "../../Assets/ScalingUtility/ScalingUtility";
 import LinearGradient from "react-native-linear-gradient";
 import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import DropDownPicker from "react-native-dropdown-picker";
-const DashboardScreen = () => {
+const DashboardScreen = ({navigation}: {navigation: any}) => {
     const appsInstalled = '12';
     const dailyScreenTime = "3h 12m";
     const colorSchema = useColorScheme();
@@ -23,10 +23,19 @@ const DashboardScreen = () => {
         {label: 'Weekly', value: 'weekly'},
         {label: 'Monthly', value: 'monthly'},
     ]);
+    useEffect(() => {
+        navigation.addListener("beforeRemove", (e: { preventDefault: () => void; }) => {
+            e.preventDefault();
+        })
+    }, [navigation]);
     return (
         <SafeAreaView
-            style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'light' ? '#FFF' : '#000'}]}>
-
+            style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'light' ? '#FFF' : '#000'}, {marginTop: StatusBar.currentHeight}]}>
+            <StatusBar
+                backgroundColor={colorSchema === 'dark' ? '#000' : '#FFF'}
+                barStyle={colorSchema === 'light' ? 'dark-content' : 'light-content'}
+                translucent={true}
+            />
             <View style={Style.headerStatsContainer}>
                 <View style={Style.appsInstalledStatsContainer}>
                     <LinearGradient

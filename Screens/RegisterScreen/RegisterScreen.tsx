@@ -21,6 +21,7 @@ import functions from '@react-native-firebase/functions';
 import {GoogleSignin} from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth";
 import {AccessToken, LoginManager} from "react-native-fbsdk-next";
+import KeyboardCoveringContainer from "../../Components/KeboardCoveringContainer/KeyboardCoveringContainer";
 
 
 const RegisterScreen = ({navigation}: { navigation: any }) => {
@@ -79,119 +80,121 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
 
         return (
             <SafeAreaView style={[GlobalStyle.globalAppBackground, GlobalStyle.globalBackgroundFlex]}>
-                <ImageBackground
-                    source={require("../../Assets/Images/GlobalAppAssets/img.png")}
-                    style={
-                        {flexDirection: "row", flexWrap: "wrap"}
-                    }
-                    resizeMode={"cover"}>
+                <KeyboardCoveringContainer style={undefined}>
+                    <ImageBackground
+                        source={require("../../Assets/Images/GlobalAppAssets/img.png")}
+                        style={
+                            {flexDirection: "row", flexWrap: "wrap"}
+                        }
+                        resizeMode={"cover"}>
 
-                    <View style={{...StyleSheet.absoluteFillObject, backgroundColor: "rgba(0 ,0, 0, 0.6)"}}/>
+                        <View style={{...StyleSheet.absoluteFillObject, backgroundColor: "rgba(0 ,0, 0, 0.6)"}}/>
 
-                    <View
-                        id={"back-button"}
-                        style={Style.backButton}>
-                        <BackButton
-                            onPress={() => {
-                                navigation.navigate(Routes.WelcomeScreen);
-                            }}
-                            backArrowColor={colorSchema === "dark" ? "#FFF" : "#000"}
-                            buttonBackgroundColor={colorSchema === "dark" ? "#000" : "#FFF"}/>
-                    </View>
+                        <View
+                            id={"back-button"}
+                            style={Style.backButton}>
+                            <BackButton
+                                onPress={() => {
+                                    navigation.navigate(Routes.WelcomeScreen);
+                                }}
+                                backArrowColor={colorSchema === "dark" ? "#FFF" : "#000"}
+                                buttonBackgroundColor={colorSchema === "dark" ? "#000" : "#FFF"}/>
+                        </View>
 
-                    <View
-                        id={"header-text-view"}
-                        style={[Style.headerTextView, {marginBottom: 20}]}>
-                        <HeaderText text={"Hello! Register to get started"} textColor={"#FFF"}/>
-                    </View>
-                </ImageBackground>
+                        <View
+                            id={"header-text-view"}
+                            style={[Style.headerTextView, {marginBottom: 20}]}>
+                            <HeaderText text={"Hello! Register to get started"} textColor={"#FFF"}/>
+                        </View>
+                    </ImageBackground>
 
 
-                <View style={[Style.inputFieldContainer, {backgroundColor: colorSchema === "dark" ? "#000" : "#FFF"}]}>
+                    <View style={[Style.inputFieldContainer, {backgroundColor: colorSchema === "dark" ? "#000" : "#FFF"}]}>
 
-                    <View style={Style.emailEditTextContainer}>
-                        <EditText
-                            text={"Email"}
-                            textColor={colorSchema === "light" ? "#000" : "#FFF"}
-                            placeHolderTextColor={colorSchema === "light" ? "#000" : "#FFF"}
-                            backgroundColor={colorSchema === "light" ? "#E5E4E2" : "#303030"}
-                            inputType={"email"}
-                            value={defaultEmailValue}
-                            onChangeText={(value: SetStateAction<string>) => {
-                                console.log(value);
-                                setDefaultEmailValue((value));
-                            }}/>
-                    </View>
+                        <View style={Style.emailEditTextContainer}>
+                            <EditText
+                                text={"Email"}
+                                textColor={colorSchema === "light" ? "#000" : "#FFF"}
+                                placeHolderTextColor={colorSchema === "light" ? "#000" : "#FFF"}
+                                backgroundColor={colorSchema === "light" ? "#E5E4E2" : "#303030"}
+                                inputType={"email"}
+                                value={defaultEmailValue}
+                                onChangeText={(value: SetStateAction<string>) => {
+                                    console.log(value);
+                                    setDefaultEmailValue((value));
+                                }}/>
+                        </View>
 
-                    <View style={Style.passwordEditTextContainer}>
-                        <EditText
-                            text={"Password"}
-                            textColor={colorSchema === "light" ? "#000" : "#FFF"}
-                            placeHolderTextColor={colorSchema === "light" ? "#000" : "#FFF"}
-                            backgroundColor={colorSchema === "light" ? "#E5E4E2" : "#303030"}
-                            inputType={"password"}
-                            value={defaultPasswordValue}
-                            onChangeText={(value: SetStateAction<string>) => {
-                                console.log(value);
-                                setDefaultPasswordValue((value));
-                            }}/>
-                    </View>
+                        <View style={Style.passwordEditTextContainer}>
+                            <EditText
+                                text={"Password"}
+                                textColor={colorSchema === "light" ? "#000" : "#FFF"}
+                                placeHolderTextColor={colorSchema === "light" ? "#000" : "#FFF"}
+                                backgroundColor={colorSchema === "light" ? "#E5E4E2" : "#303030"}
+                                inputType={"password"}
+                                value={defaultPasswordValue}
+                                onChangeText={(value: SetStateAction<string>) => {
+                                    console.log(value);
+                                    setDefaultPasswordValue((value));
+                                }}/>
+                        </View>
 
-                    <View style={Style.confirmPasswordEditTextContainer}>
-                        <EditText
-                            text={"Confirm Password"}
-                            textColor={colorSchema === "light" ? "#000" : "#FFF"}
-                            placeHolderTextColor={colorSchema === "light" ? "#000" : "#FFF"}
-                            backgroundColor={colorSchema === "light" ? "#E5E4E2" : "#303030"}
-                            inputType={"password"}
-                            value={defaultConfirmPasswordValue}
-                            onChangeText={(value: SetStateAction<string>) => {
-                                console.log(value);
-                                setDefaultConfirmPasswordValue((value));
-                            }}/>
-                        {error.length > 0 && <Text style={Style.error}>{error}</Text>}
-                        {success.length > 0 && <Text style={Style.success}>{success}</Text>}
-                    </View>
+                        <View style={Style.confirmPasswordEditTextContainer}>
+                            <EditText
+                                text={"Confirm Password"}
+                                textColor={colorSchema === "light" ? "#000" : "#FFF"}
+                                placeHolderTextColor={colorSchema === "light" ? "#000" : "#FFF"}
+                                backgroundColor={colorSchema === "light" ? "#E5E4E2" : "#303030"}
+                                inputType={"password"}
+                                value={defaultConfirmPasswordValue}
+                                onChangeText={(value: SetStateAction<string>) => {
+                                    console.log(value);
+                                    setDefaultConfirmPasswordValue((value));
+                                }}/>
+                            {error.length > 0 && <Text style={Style.error}>{error}</Text>}
+                            {success.length > 0 && <Text style={Style.success}>{success}</Text>}
+                        </View>
 
-                    <View style={Style.buttonContainer}>
-                        <LoginSignUpButton
-                            text={"Register"}
-                            textColor={"#FFF"}
-                            buttonColor={"#1E232C"}
-                            onPress={() => {
-                                sendOtp();
-                            }}
-                            isEnabled={(defaultEmailValue.length > 6) && ((defaultPasswordValue.length >= 6 && defaultConfirmPasswordValue.length >= 6) && (defaultPasswordValue === defaultConfirmPasswordValue))}
-                            topMargin={15}
-                            buttonRadius={8}
-                            leftMargin={0}/>
+                        <View style={Style.buttonContainer}>
+                            <LoginSignUpButton
+                                text={"Register"}
+                                textColor={"#FFF"}
+                                buttonColor={"#1E232C"}
+                                onPress={() => {
+                                    sendOtp();
+                                }}
+                                isEnabled={(defaultEmailValue.length > 6) && ((defaultPasswordValue.length >= 6 && defaultConfirmPasswordValue.length >= 6) && (defaultPasswordValue === defaultConfirmPasswordValue))}
+                                topMargin={15}
+                                buttonRadius={8}
+                                leftMargin={0}/>
 
-                        <View style={Style.signUpMethodTextContainer}>
-                            <LoginMethodText text={"Or Register with"}/>
+                            <View style={Style.signUpMethodTextContainer}>
+                                <LoginMethodText text={"Or Register with"}/>
 
-                            <View style={Style.signUpButtonContainer}>
+                                <View style={Style.signUpButtonContainer}>
 
-                                <GoogleButton onPress={()=>{
-                                    signInWithGoogle().then(data=>{
-                                        console.log(data);
-                                        navigation.navigate(Routes.HomePage);
-                                    })
-                                }} rightMargin={12}
-                                              buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
-                                <FacebookButton onPress={()=>{
-                                    signInWithFacebook().then(data => {
-                                        try {
+                                    <GoogleButton onPress={()=>{
+                                        signInWithGoogle().then(data=>{
+                                            console.log(data);
                                             navigation.navigate(Routes.HomePage);
-                                            console.log('user data=>', data);
-                                        } catch (error) {
-                                            console.log(error);
-                                        }
-                                    });
-                                }} buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
+                                        })
+                                    }} rightMargin={12} buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
+                                    <FacebookButton onPress={()=>{
+                                        signInWithFacebook().then(data => {
+                                            try {
+                                                navigation.navigate(Routes.HomePage);
+                                                console.log('user data=>', data);
+                                            } catch (error) {
+                                                console.log(error);
+                                            }
+                                        });
+                                    }} buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
+                                </View>
                             </View>
                         </View>
                     </View>
-                </View>
+                </KeyboardCoveringContainer>
+
             </SafeAreaView>
         );
 };

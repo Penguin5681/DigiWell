@@ -72,6 +72,7 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
                 barStyle={colorSchema === 'dark' ? 'light-content' : 'dark-content'}
                 translucent={true}
             />
+
             <ImageBackground
                 source={require("../../Assets/Images/GlobalAppAssets/img.png")}
                 style={
@@ -97,10 +98,7 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
                     <HeaderText text={"Welcome back! Glad to see you, Again!"} textColor={"#FFF"}/>
                 </View>
             </ImageBackground>
-
-
             <KeyboardCoveringContainer style={undefined}>
-
                 <View
                     style={[Style.inputFieldContainer, {backgroundColor: colorSchema === "dark" ? "#000" : "#FFF"}]}>
                     <View style={Style.emailEditText}>
@@ -189,7 +187,6 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
                         </View>
                     </View>
                 </View>
-
             </KeyboardCoveringContainer>
         </SafeAreaView>
     );

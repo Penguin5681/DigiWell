@@ -18,7 +18,6 @@ import {useEffect} from "react";
 import auth from "@react-native-firebase/auth";
 import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
 import {scaleFontSize} from "../../Assets/ScalingUtility/ScalingUtility";
-
 const WelcomeScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
     useEffect(() => {
@@ -41,7 +40,7 @@ const WelcomeScreen = ({navigation}: { navigation: any }) => {
                 resizeMode={'cover'}
                 source={require('../../Assets/Images/GlobalAppAssets/img.png')}>
 
-                <View style={{...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0, 0, 0, 0.4)'}}/>
+                <View style={{...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0, 0, 0, 0.6)'}}/>
             </ImageBackground>
 
             <View style={[Style.footerView,]}>

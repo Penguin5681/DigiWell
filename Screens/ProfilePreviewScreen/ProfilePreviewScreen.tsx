@@ -1,6 +1,16 @@
 import React from "react";
 import Style from "./Style";
-import {Appearance, Image, SafeAreaView, StatusBar, Text, TouchableOpacity, useColorScheme, View} from "react-native";
+import {
+    Appearance,
+    Image,
+    Pressable,
+    SafeAreaView,
+    StatusBar,
+    Text,
+    TouchableOpacity,
+    useColorScheme,
+    View
+} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
 import {scaleFontSize, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
@@ -8,6 +18,7 @@ import {SvgXml} from "react-native-svg";
 import {VectorIcons} from "../../Assets/Images/VectorIcons";
 import LinearGradient from 'react-native-linear-gradient';
 import {Routes} from "../../Navigation/Routes";
+import {firebase} from "@react-native-firebase/auth";
 
 const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
     const colorSchema = useColorScheme();
@@ -207,7 +218,13 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
                                 xml={colorSchema === 'dark' ? VectorIcons.arrowRightVectorWhite : VectorIcons.arrowRightVectorBlack}/>
                         </View>
 
-                        <View style={Style.logoutOption}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                firebase.auth().signOut().then(() => {
+                                    navigation.navigate(Routes.WelcomeScreen)
+                                });
+                            }}
+                            style={Style.logoutOption}>
                             <SvgXml
                                 xml={VectorIcons.logOutVector}/>
                             <Text
@@ -216,7 +233,7 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
                             </Text>
                             <SvgXml
                                 xml={colorSchema === 'dark' ? VectorIcons.arrowRightVectorWhite : VectorIcons.arrowRightVectorBlack}/>
-                        </View>
+                        </TouchableOpacity>
 
                     </LinearGradient>
 

@@ -1815,6 +1815,14 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
+"@shopify/flash-list@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.npmjs.org/@shopify/flash-list/-/flash-list-1.7.0.tgz"
+  integrity sha512-Uys8mWTb0Y34Ts1hD97KrVFbFH9oY7qbj/u1oSrAS5PJAackDFbndUEVuTYyXSyWxHY0sRutF5HgS1yNdhj+0A==
+  dependencies:
+    recyclerlistview "4.2.1"
+    tslib "2.6.3"
+
 "@sideway/address@^4.1.5":
   version "4.1.5"
   dependencies:
@@ -4756,7 +4764,7 @@ lodash.clonedeep@^4.5.0:
   resolved "https://registry.npmjs.org/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz"
   integrity sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ==
 
-lodash.debounce@^4.0.8:
+lodash.debounce@^4.0.8, lodash.debounce@4.0.8:
   version "4.0.8"
 
 lodash.includes@^4.3.0:
@@ -5473,7 +5481,7 @@ prompts@^2.0.1, prompts@^2.4.2:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@^15.7.2, prop-types@^15.8.1, prop-types@15.8.1:
   version "15.8.1"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -5583,10 +5591,6 @@ react-is@^16.7.0:
 
 react-is@^17.0.1:
   version "17.0.2"
-
-"react-native-android-datausage@github:shimatai/react-native-android-datausage":
-  version "1.0.0"
-  resolved "git+ssh://git@github.com/shimatai/react-native-android-datausage.git#68978397896c57c26131f2990e1654fba605037e"
 
 react-native-curved-bottom-bar@^3.2.7:
   version "3.2.7"
@@ -5776,6 +5780,15 @@ recast@^0.21.0:
     esprima "~4.0.0"
     source-map "~0.6.1"
     tslib "^2.0.1"
+
+recyclerlistview@4.2.1:
+  version "4.2.1"
+  resolved "https://registry.npmjs.org/recyclerlistview/-/recyclerlistview-4.2.1.tgz"
+  integrity sha512-NtVYjofwgUCt1rEsTp6jHQg/47TWjnO92TU2kTVgJ9wsc/ely4HnizHHa+f/dI7qaw4+zcSogElrLjhMltN2/g==
+  dependencies:
+    lodash.debounce "4.0.8"
+    prop-types "15.8.1"
+    ts-object-utils "0.0.5"
 
 reflect.getprototypeof@^1.0.4:
   version "1.0.6"
@@ -6349,10 +6362,15 @@ tr46@~0.0.3:
 ts-api-utils@^1.3.0:
   version "1.3.0"
 
+ts-object-utils@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.npmjs.org/ts-object-utils/-/ts-object-utils-0.0.5.tgz"
+  integrity sha512-iV0GvHqOmilbIKJsfyfJY9/dNHCs969z3so90dQWsO1eMMozvTpnB1MEaUbb3FYtZTGjv5sIy/xmslEz0Rg2TA==
+
 tslib@^1.8.1:
   version "1.14.1"
 
-tslib@^2.0.1, tslib@^2.0.3, tslib@^2.1.0:
+tslib@^2.0.1, tslib@^2.0.3, tslib@^2.1.0, tslib@2.6.3:
   version "2.6.3"
 
 tsutils@^3.21.0:

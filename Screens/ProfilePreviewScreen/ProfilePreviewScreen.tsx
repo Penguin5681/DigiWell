@@ -19,6 +19,7 @@ import {VectorIcons} from "../../Assets/Images/VectorIcons";
 import LinearGradient from 'react-native-linear-gradient';
 import {Routes} from "../../Navigation/Routes";
 import {firebase} from "@react-native-firebase/auth";
+import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
 
 const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
     const colorSchema = useColorScheme();
@@ -218,23 +219,32 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
                                 xml={colorSchema === 'dark' ? VectorIcons.arrowRightVectorWhite : VectorIcons.arrowRightVectorBlack}/>
                         </View>
 
-                        <TouchableOpacity
-                            onPress={() => {
-                                firebase.auth().signOut().then(() => {
-                                    navigation.navigate(Routes.WelcomeScreen)
-                                });
-                            }}
-                            style={Style.logoutOption}>
-                            <SvgXml
-                                xml={VectorIcons.logOutVector}/>
-                            <Text
-                                style={[Style.optionLabel, {color: colorSchema === 'dark' ? '#FFF' : '#000'}]}>
-                                Logout
-                            </Text>
-                            <SvgXml
-                                xml={colorSchema === 'dark' ? VectorIcons.arrowRightVectorWhite : VectorIcons.arrowRightVectorBlack}/>
-                        </TouchableOpacity>
+                        {/*<TouchableOpacity*/}
+                        {/*    onPress={() => {*/}
+                        {/*        firebase.auth().signOut().then(() => {*/}
+                        {/*            console.log("signout")*/}
+                        {/*            navigation.navigate(Routes.RegisterScreen)*/}
+                        {/*        });*/}
+                        {/*    }}*/}
+                        {/*    style={Style.logoutOption}>*/}
+                        {/*    <SvgXml*/}
+                        {/*        xml={VectorIcons.logOutVector}/>*/}
+                        {/*    <Text*/}
+                        {/*        style={[Style.optionLabel, {color: colorSchema === 'dark' ? '#FFF' : '#000'}]}>*/}
+                        {/*        Logout*/}
+                        {/*    </Text>*/}
+                        {/*    <SvgXml*/}
+                        {/*        xml={colorSchema === 'dark' ? VectorIcons.arrowRightVectorWhite : VectorIcons.arrowRightVectorBlack}/>*/}
+                        {/*</TouchableOpacity>*/}
 
+                        <LoginSignUpButton text={'SignOut'} onPress={()=>{
+                            firebase.auth().signOut().then(() => {
+                                navigation.navigate(Routes.LoginScreen);
+                            }).catch(error => {
+                                console.log(error)
+                            });
+                        }} buttonColor={'#1936c5'} textColor={'#fff'} isEnabled={true}
+                                           buttonRadius={8} leftMargin={30} topMargin={50}/>
                     </LinearGradient>
 
                 </View>

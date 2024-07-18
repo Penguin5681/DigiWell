@@ -1,4 +1,15 @@
-import {Appearance, SafeAreaView, StatusBar, Text, ToastAndroid, useColorScheme, View} from "react-native";
+import {
+    Alert,
+    BackHandler,
+    Linking,
+    PermissionsAndroid, Platform,
+    SafeAreaView,
+    StatusBar,
+    Text,
+    ToastAndroid,
+    useColorScheme,
+    View
+} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import Style from "./Style";
 import {SvgXml} from "react-native-svg";
@@ -9,7 +20,15 @@ import LinearGradient from "react-native-linear-gradient";
 import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
 import {useEffect, useState} from "react";
 import DropDownPicker from "react-native-dropdown-picker";
-const DashboardScreen = ({navigation}: {navigation: any}) => {
+import UsageStats, {
+    checkForPermission,
+    EventFrequency,
+    queryUsageStats,
+    showUsageAccessSettings
+} from '@brighthustle/react-native-usage-stats-manager'
+import {PERMISSIONS, request} from "react-native-permissions";
+
+const DashboardScreen = ({navigation}: { navigation: any }) => {
     const appsInstalled = '12';
     const dailyScreenTime = "3h 12m";
     const colorSchema = useColorScheme();
@@ -23,13 +42,67 @@ const DashboardScreen = ({navigation}: {navigation: any}) => {
         {label: 'Weekly', value: 'weekly'},
         {label: 'Monthly', value: 'monthly'},
     ]);
+
+    // async function requestLocationPermission() {
+    //     try {
+    //         if (Platform.OS === 'android') {
+    //             const granted = await PermissionsAndroid.request(
+    //                 PermissionsAndroid.PERMISSIONS.PACKAGE_USAGE_STATS,
+    //                 {
+    //                     title: "Location Permission",
+    //                     message:
+    //                         "This app needs access to your location " +
+    //                         "so you can take awesome pictures.",
+    //                     buttonNeutral: "Ask Me Later",
+    //                     buttonNegative: "Cancel",
+    //                     buttonPositive: "OK"
+    //                 }
+    //             );
+    //             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+    //                 console.log("You can use the location");
+    //             } else {
+    //                 console.log("Location permission denied");
+    //             }
+    //         } else {
+    //             // For iOS, permissions are handled through the Info.plist file
+    //         }
+    //     } catch (err) {
+    //         console.warn(err);
+    //     }
+    // }
+    //
+    // requestLocationPermission();
+
+    const startDateString = '2023-06-11T12:34:56';
+    const endDateString = '2023-07-11T12:34:56';
+
+    const startMilliseconds = new Date().getDate();
+    const endMilliseconds = new Date(endDateString).getTime();
+
+    const result = queryUsageStats(
+        EventFrequency.INTERVAL_DAILY,
+        startMilliseconds,
+        endMilliseconds
+    )
     useEffect(() => {
-        navigation.addListener("beforeRemove", (e: { preventDefault: () => void; }) => {
-            e.preventDefault();
-        })
-    }, [navigation]);
+        const checkForPermission=async () => {
+            try {
+                const permissionGranted = await showUsageAccessSettings('');
+                if (!permissionGranted) {
+                    BackHandler.exitApp();
+                    console.log("afafaf")
+                }
+            } catch (error) {
+                console.error('Error checking permission:', error);
+            }
+        };
+        checkForPermission();
+    }, []);
+
+
     return (
         <SafeAreaView
+
             style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'light' ? '#FFF' : '#000'}, {marginTop: StatusBar.currentHeight}]}>
             <StatusBar
                 backgroundColor={colorSchema === 'dark' ? '#000' : '#FFF'}

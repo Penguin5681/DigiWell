@@ -1,5 +1,4 @@
 import {
-    Appearance,
     ImageBackground,
     SafeAreaView,
     StatusBar,
@@ -141,7 +140,6 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
                         Forgot Password?
                     </Text>
                     {error.length > 0 && <Text style={Style.error}>{error}</Text>}
-                    {/*{facebookError.length > 0 && <Text style={Style.error}>{facebookError}</Text>}*/}
                     <View
                         style={Style.loginButtonContainer}>
                         <LoginSignUpButton

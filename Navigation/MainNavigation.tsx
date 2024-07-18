@@ -18,7 +18,6 @@ import PasswordResetLinkSentSuccessfullyScreen
     from '../Screens/PasswordResetLinkSentSuccessfullyScreen/PasswordResetLinkSentSuccessfullyScreen.tsx';
 import ProfileSettingsScreen from '../Screens/ProfileSettingsScreen/ProfileSettingsScreen.tsx';
 import EditProfileScreen from '../Screens/EditProfileScreen/EditProfileScreen.tsx';
-import {useAuth} from "../Components/AuthContext/AuthContext.tsx";
 
 const StackBase = createStackNavigator();
 

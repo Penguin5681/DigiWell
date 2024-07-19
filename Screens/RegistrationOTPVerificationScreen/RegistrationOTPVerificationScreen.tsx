@@ -1,5 +1,15 @@
 import {useState} from "react";
-import {Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, useColorScheme, View} from "react-native";
+import {
+    Alert,
+    Appearance,
+    ImageBackground,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    ToastAndroid,
+    useColorScheme,
+    View
+} from "react-native";
 import Style from "../ForgetPasswordOTPVerificationScreen/Style";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes";
@@ -9,6 +19,8 @@ import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpBut
 import functions from '@react-native-firebase/functions';
 import {useRoute} from "@react-navigation/native";
 import {createUser} from "../../api/user";
+import {text} from "@fortawesome/fontawesome-svg-core";
+import {log} from "firebase-functions/logger";
 
 const RegistrationOTPVerificationScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
@@ -26,6 +38,14 @@ const RegistrationOTPVerificationScreen = ({navigation}: { navigation: any }) =>
     const password = routeParams?.defaultPasswordValue;
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
+    const sendOtp = async () => {
+        try {
+            await functions().httpsCallable('sendOtpEmail')({email: email});
+            navigation.navigate(Routes.RegistrationOTPVerificationScreen, {email, password});
+        } catch (error) {
+            console.log(error)
+        }
+    };
     const verifyOtp = async () => {
         try {
             interface VerifyOtpResponse {
@@ -46,6 +66,33 @@ const RegistrationOTPVerificationScreen = ({navigation}: { navigation: any }) =>
             }
         } catch (error) {
             console.log("Invalid OTP")
+            Alert.alert(
+                'Error Occurred',
+                'Invalid OTP. Please retry.',
+                [
+                    {
+                        text: 'Resend OTP',
+                        onPress: () => {
+                            sendOtp()
+                                .then((r) => {
+                                    console.log('OTP Resent')
+                                });
+                        },
+                        style: 'cancel',
+                    },
+                    {
+                        text: 'Dismiss',
+                        onPress: () => console.log('Dismiss'),
+                        style: 'cancel'
+                    },
+                ],
+                {
+                    cancelable: true,
+                    onDismiss: () => {
+                        ToastAndroid.show('Please re-enter the OTP', ToastAndroid.SHORT);
+                    }
+                }
+            )
         }
     };
     // @ts-ignore
@@ -114,6 +161,9 @@ const RegistrationOTPVerificationScreen = ({navigation}: { navigation: any }) =>
                             verifyOtp()
                                 .then((value) => {
                                     console.log(value)
+                                })
+                                .catch(reason => {
+
                                 })
                         }}
                         isEnabled={defaultOTP.length === 4}

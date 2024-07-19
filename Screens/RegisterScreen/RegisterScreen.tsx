@@ -161,7 +161,9 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
                                 textColor={"#FFF"}
                                 buttonColor={"#1E232C"}
                                 onPress={() => {
-                                    sendOtp();
+                                    sendOtp().then(r => {
+                                        console.log(r)
+                                    });
                                 }}
                                 isEnabled={(defaultEmailValue.length > 6) && ((defaultPasswordValue.length >= 6 && defaultConfirmPasswordValue.length >= 6) && (defaultPasswordValue === defaultConfirmPasswordValue))}
                                 topMargin={15}

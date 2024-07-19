@@ -22,6 +22,11 @@ const Style = StyleSheet.create({
     },
     buttonContainer: {
         marginHorizontal: horizontalScale(20),
+    },
+    imagePreview: {
+        width: 96,
+        height: 96,
+        borderRadius: 100
     }
 
 });

@@ -39,6 +39,7 @@ const AvatarUploadScreen = ({navigation}: { navigation: any }) => {
             throw error;
         }
     }
+    const [selectedImageUri, setSelectedImageUri] = React.useState<string | null>(null);
     let selectedImagePath: string = "";
     return (
         <SafeAreaView
@@ -72,8 +73,8 @@ const AvatarUploadScreen = ({navigation}: { navigation: any }) => {
             <View style={[Style.inputFieldContainer, {backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'}]}>
                 <View style={Style.avatarIconContainer}>
                     <Image
-                        style={{width: 96, height: 96}}
-                        source={colorSchema === 'dark' ? require('../../Assets/Images/avatar_icon_white.png') : require('../../Assets/Images/avatar_icon_black.png')}
+                        style={Style.imagePreview}
+                        source={selectedImageUri ? {uri: selectedImageUri} : (colorSchema === 'dark' ? require('../../Assets/Images/avatar_icon_white.png') : require('../../Assets/Images/avatar_icon_black.png'))}
                     />
                 </View>
 
@@ -93,6 +94,7 @@ const AvatarUploadScreen = ({navigation}: { navigation: any }) => {
                                 })
                                 .then(image => {
                                     selectedImagePath = image.path;
+                                    setSelectedImageUri(image.path);
                                 })
                                 .catch(reason => {
                                    ToastAndroid.show(reason, ToastAndroid.SHORT);
@@ -124,7 +126,6 @@ const AvatarUploadScreen = ({navigation}: { navigation: any }) => {
                         topMargin={20}/>
                 </View>
             </View>
-
         </SafeAreaView>
     );
 };

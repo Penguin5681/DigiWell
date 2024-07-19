@@ -6,7 +6,7 @@ import {
     Pressable,
     SafeAreaView,
     StatusBar,
-    Text,
+    Text, ToastAndroid,
     TouchableOpacity,
     useColorScheme,
     View
@@ -208,7 +208,18 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
                                 xml={colorSchema === 'dark' ? VectorIcons.arrowRightVectorWhite : VectorIcons.arrowRightVectorBlack}/>
                         </View>
 
-                        <View style={Style.deleteOption}>
+                        <TouchableOpacity
+                            style={Style.deleteOption}
+                            onPress={() => {
+                                firebase.auth()
+                                    .currentUser
+                                    ?.delete()
+                                    .then(() => {
+                                        ToastAndroid.show("Account Deleted", ToastAndroid.SHORT);
+                                        navigation.navigate(Routes.WelcomeScreen);
+                                    })
+                            }}
+                        >
                             <SvgXml
                                 xml={colorSchema === 'dark' ? VectorIcons.deleteIconWhiteVector : VectorIcons.deleteIconBlackVector}/>
                             <Text
@@ -217,7 +228,7 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
                             </Text>
                             <SvgXml
                                 xml={colorSchema === 'dark' ? VectorIcons.arrowRightVectorWhite : VectorIcons.arrowRightVectorBlack}/>
-                        </View>
+                        </TouchableOpacity>
 
                         <TouchableOpacity
                             onPress={() => {

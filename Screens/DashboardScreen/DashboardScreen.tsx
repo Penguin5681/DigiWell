@@ -1,12 +1,10 @@
 import {
-    Button,
     SafeAreaView,
     StatusBar,
     Text,
     ToastAndroid,
     useColorScheme,
-    View,
-    NativeModules
+    View
 } from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import Style from "./Style";
@@ -16,7 +14,7 @@ import LabelText from "../../Components/LabelText/LabelText.tsx";
 import {scaleFontSize, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
 import LinearGradient from "react-native-linear-gradient";
 import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 import {
     EventFrequency,

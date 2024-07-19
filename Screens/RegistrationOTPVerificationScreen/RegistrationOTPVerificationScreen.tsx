@@ -10,13 +10,15 @@ import functions from '@react-native-firebase/functions';
 import {useRoute} from "@react-navigation/native";
 import {createUser} from "../../api/user";
 
-const RegistrationOTPVerificationScreen = ({navigation}: {navigation: any}) => {
+const RegistrationOTPVerificationScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
     const [defaultOTP, setDefaultOTP] = useState('');
+
     interface RouteParams {
         defaultEmailValue: string;
         defaultPasswordValue: string;
     }
+
     const route = useRoute();
     const routeParams = route.params as RouteParams | undefined;
 
@@ -25,25 +27,26 @@ const RegistrationOTPVerificationScreen = ({navigation}: {navigation: any}) => {
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
     const verifyOtp = async () => {
-      try {
-          interface VerifyOtpResponse {
-              success: boolean;
-          }
-          const result = await functions().httpsCallable("verifyOtp")({email, otp:      defaultOTP});
-          const data = result.data as VerifyOtpResponse;
-          if (data.success) {
-              let user = await createUser(email, password);
-              if (user.error) {
-                  setError(user.error);
-              } else {
-                  setError('');
-                  setSuccess("Registration Success");
-                  setTimeout(() => navigation.navigate(Routes.HomePage));
-              }
-          }
-      }  catch (error) {
-          console.log("Invalid OTP")
-      }
+        try {
+            interface VerifyOtpResponse {
+                success: boolean;
+            }
+
+            const result = await functions().httpsCallable("verifyOtp")({email, otp: defaultOTP});
+            const data = result.data as VerifyOtpResponse;
+            if (data.success) {
+                let user = await createUser(email, password);
+                if (user.error) {
+                    setError(user.error);
+                } else {
+                    setError('');
+                    setSuccess("Registration Success");
+                    setTimeout(() => navigation.navigate(Routes.HomePage));
+                }
+            }
+        } catch (error) {
+            console.log("Invalid OTP")
+        }
     };
     // @ts-ignore
     return (
@@ -83,7 +86,7 @@ const RegistrationOTPVerificationScreen = ({navigation}: {navigation: any}) => {
                 </View>
             </ImageBackground>
 
-            <View style={[Style.otpInputContainer, { backgroundColor: colorSchema === "dark" ? "#000" : "#FFF" }]}>
+            <View style={[Style.otpInputContainer, {backgroundColor: colorSchema === "dark" ? "#000" : "#FFF"}]}>
                 <View style={Style.otpInputStyle}>
                     <OtpInput
                         numberOfDigits={4}
@@ -108,7 +111,10 @@ const RegistrationOTPVerificationScreen = ({navigation}: {navigation: any}) => {
                         onPress={() => {
                             // navigation.navigate(Routes.PhotoUploadScreen);
                             // console.log(email, password)
-                            verifyOtp();
+                            verifyOtp()
+                                .then((value) => {
+                                    console.log(value)
+                                })
                         }}
                         isEnabled={defaultOTP.length === 4}
                         topMargin={38}

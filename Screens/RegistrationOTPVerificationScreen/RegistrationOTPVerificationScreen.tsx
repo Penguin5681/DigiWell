@@ -58,10 +58,12 @@ const RegistrationOTPVerificationScreen = ({navigation}: { navigation: any }) =>
                 let user = await createUser(email, password);
                 if (user.error) {
                     setError(user.error);
+                    ToastAndroid.show('Registration Failed', ToastAndroid.SHORT);
                 } else {
                     setError('');
                     setSuccess("Registration Success");
-                    setTimeout(() => navigation.navigate(Routes.HomePage));
+                    ToastAndroid.show('Registration Complete', ToastAndroid.SHORT);
+                    setTimeout(() => navigation.navigate(Routes.AvatarUploadScreen));
                 }
             }
         } catch (error) {
@@ -158,13 +160,7 @@ const RegistrationOTPVerificationScreen = ({navigation}: { navigation: any }) =>
                         onPress={() => {
                             // navigation.navigate(Routes.PhotoUploadScreen);
                             // console.log(email, password)
-                            verifyOtp()
-                                .then((value) => {
-                                    console.log(value)
-                                })
-                                .catch(reason => {
-
-                                })
+                            verifyOtp();
                         }}
                         isEnabled={defaultOTP.length === 4}
                         topMargin={38}

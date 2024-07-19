@@ -4,7 +4,7 @@ import {
     StyleSheet,
     Text,
     View,
-    Appearance, useColorScheme,
+    useColorScheme,
 } from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
@@ -54,7 +54,7 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
 
             const {idToken} = await GoogleSignin.signIn();
             const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
-            auth().signInWithCredential(googleCredentials);
+            await auth().signInWithCredential(googleCredentials);
             return userInfo;
         } catch (error) {
             console.log('=> Google Sign In', error);

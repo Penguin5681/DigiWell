@@ -1,5 +1,4 @@
 // noinspection DuplicatedCode
-
 import {
     Image,
     ImageBackground,
@@ -15,7 +14,7 @@ import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
-import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
 import {firebase} from "@react-native-firebase/auth";
 const AvatarUploadScreen = ({navigation}: { navigation: any }) => {

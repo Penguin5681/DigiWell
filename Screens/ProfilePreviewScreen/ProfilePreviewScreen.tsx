@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Style from "./Style";
 import {
     Appearance,
@@ -19,7 +19,7 @@ import {VectorIcons} from "../../Assets/Images/VectorIcons";
 import LinearGradient from 'react-native-linear-gradient';
 import {Routes} from "../../Navigation/Routes";
 import {firebase} from "@react-native-firebase/auth";
-import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
+import {RouteProp, useRoute} from "@react-navigation/native";
 
 const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
@@ -31,6 +31,9 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
     const accountCreationDate = "09/07/2024";
     const darkModeGradientColorList = ['#0c0c0c', '#4C4E52', '#9FA2A8'];
     const lightModeGradientColorList = ['#c6c6d2', '#d0d0e8', '#97a1a3'];
+    useEffect(() => {
+
+    }, []);
 
     return (
         <SafeAreaView

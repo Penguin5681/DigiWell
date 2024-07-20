@@ -1,5 +1,5 @@
 import {
-    BackHandler, Button, NativeModules,
+    BackHandler, NativeModules,
     SafeAreaView,
     StatusBar,
     Text,
@@ -28,11 +28,8 @@ import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
 import AppUsageStatContainerStyle from "./AppUsageStatContainerStyle";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {faGamepad} from "@fortawesome/free-solid-svg-icons";
-import {RESULTS} from "react-native-permissions";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {Routes} from "../../Navigation/Routes";
 
-const DashboardScreen = ({navigation}: { navigation: any }) => {
+const DashboardScreen = () => {
     const appsInstalled = '12';
     const dailyScreenTime = "3h 12m";
     const colorSchema = useColorScheme();

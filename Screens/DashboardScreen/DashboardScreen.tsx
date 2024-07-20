@@ -1,4 +1,5 @@
 import {
+    BackHandler, NativeModules,
     SafeAreaView,
     StatusBar,
     Text,
@@ -14,11 +15,11 @@ import LabelText from "../../Components/LabelText/LabelText.tsx";
 import {scaleFontSize, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
 import LinearGradient from "react-native-linear-gradient";
 import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 import {
     EventFrequency,
-    queryUsageStats
+    queryUsageStats, showUsageAccessSettings
 } from '@brighthustle/react-native-usage-stats-manager'
 import {FlashList} from "@shopify/flash-list";
 import {faInstagram, faYoutube} from "@fortawesome/free-brands-svg-icons";
@@ -28,7 +29,7 @@ import AppUsageStatContainerStyle from "./AppUsageStatContainerStyle";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {faGamepad} from "@fortawesome/free-solid-svg-icons";
 
-const DashboardScreen = ({navigation}: { navigation: any }) => {
+const DashboardScreen = () => {
     const appsInstalled = '12';
     const dailyScreenTime = "3h 12m";
     const colorSchema = useColorScheme();
@@ -141,36 +142,6 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
         );
     }
 
-    // async function requestLocationPermission() {
-    //     try {
-    //         if (Platform.OS === 'android') {
-    //             const granted = await PermissionsAndroid.request(
-    //                 PermissionsAndroid.PERMISSIONS.PACKAGE_USAGE_STATS,
-    //                 {
-    //                     title: "Location Permission",
-    //                     message:
-    //                         "This app needs access to your location " +
-    //                         "so you can take awesome pictures.",
-    //                     buttonNeutral: "Ask Me Later",
-    //                     buttonNegative: "Cancel",
-    //                     buttonPositive: "OK"
-    //                 }
-    //             );
-    //             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //                 console.log("You can use the location");
-    //             } else {
-    //                 console.log("Location permission denied");
-    //             }
-    //         } else {
-    //             // For iOS, permissions are handled through the Info.plist file
-    //         }
-    //     } catch (err) {
-    //         console.warn(err);
-    //     }
-    // }
-    //
-    // requestLocationPermission();
-
     const startDateString = '2023-06-11T12:34:56';
     const endDateString = '2023-07-11T12:34:56';
 
@@ -182,23 +153,36 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
         startMilliseconds,
         endMilliseconds
     )
+    const { UsageStatsModule } = NativeModules;
+    const isUsageAccessPermissionGranted = async () => {
+        try {
+            const granted = await UsageStatsModule.isUsageAccessPermissionGranted();
+            return granted;
+        } catch (error) {
+            console.error('Error checking usage access permission:', error);
+            return false;
+        }
+    };
     // TODO: add a permission check on screen mount
-    // useEffect(() => {
-    //     const checkForPermission = async () => {
-    //         try {
-    //             const permissionGranted = await showUsageAccessSettings('');
-    //             if (!permissionGranted) {
-    //                 BackHandler.exitApp();
-    //             }
-    //         } catch (error) {
-    //             console.error('Error checking permission:', error);
-    //         }
-    //     };
-    //     checkForPermission()
-    //         .then(r => {
-    //
-    //         });
-    // }, []);
+    useEffect(() => {
+        const checkForPermission = async () => {
+            try {
+                const isGranted = await isUsageAccessPermissionGranted();
+                if (!isGranted) {
+                    const permissionGranted = await showUsageAccessSettings('');
+                    if (!permissionGranted) {
+                        BackHandler.exitApp();
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking permission:', error);
+            }
+        };
+        checkForPermission()
+            .then(r => {
+
+            });
+    }, []);
 
 
     return (
@@ -252,7 +236,6 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
                     </LinearGradient>
                 </View>
             </View>
-
             <View style={Style.appUsageStatsContainer}>
                 <View style={Style.appUsageStatsHeaderViewContainer}>
                     {/*    IDEA: Add the {current app view and a kind of dropdown menu (filter) }*/}
@@ -282,7 +265,6 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
                     </View>
                 </View>
             </View>
-
             <View style={AppUsageStatContainerStyle.flashListContainer}>
                 <FlashList
                     showsVerticalScrollIndicator={false}
@@ -296,3 +278,4 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
 };
 
 export default DashboardScreen;
+

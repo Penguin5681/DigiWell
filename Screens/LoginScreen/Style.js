@@ -1,7 +1,6 @@
-import {StyleSheet} from "react-native";
+import {StyleSheet, useColorScheme} from "react-native";
 import { horizontalScale, scaleFontSize, verticalScale } from "../../Assets/ScalingUtility/ScalingUtility";
 import { getInterFontFamily, getUrbanistFontFamily } from "../../Assets/Fonts/helper";
-
 const Style = StyleSheet.create({
     backButton: {
         marginTop: verticalScale(88),
@@ -52,6 +51,7 @@ const Style = StyleSheet.create({
         marginTop:verticalScale(5),
         marginHorizontal: horizontalScale(27),
     },
+
 });
 
 export default Style;

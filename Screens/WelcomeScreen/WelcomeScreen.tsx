@@ -18,6 +18,7 @@ import {useEffect} from "react";
 import auth from "@react-native-firebase/auth";
 import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
 import {scaleFontSize} from "../../Assets/ScalingUtility/ScalingUtility";
+import AwesomeButton from "react-native-really-awesome-button";
 const WelcomeScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
     useEffect(() => {

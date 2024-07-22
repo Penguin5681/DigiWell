@@ -3,16 +3,14 @@ import {
     SafeAreaView,
     StatusBar,
     StyleSheet,
-    Text,
-    useColorScheme,
+    Text, ToastAndroid, useColorScheme,
     View
 } from "react-native";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
-import React, {SetStateAction, useEffect, useState} from "react";
+import React, {SetStateAction, useState} from "react";
 import Style from "./Style";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import EditText from "../../Components/EditText/EditText.tsx";
-import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
 import GoogleButton from "../../Components/GoogleButton/GoogleButton.tsx";
 import FacebookButton from "../../Components/FacebookButton/FacebookButton.tsx";
 import LoginMethodText from "../../Components/LoginMethodText/LoginMethodText.tsx";
@@ -23,12 +21,17 @@ import auth from "@react-native-firebase/auth";
 import {GoogleSignin} from "@react-native-google-signin/google-signin";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import KeyboardCoveringContainer from "../../Components/KeboardCoveringContainer/KeyboardCoveringContainer";
+import AwesomeButton from "react-native-really-awesome-button";
 
 const LoginScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
     const [error, setError] = useState("");
     const [defaultEmailValue, setDefaultEmailValue] = useState("");
     const [defaultPasswordValue, setDefaultPasswordValue] = useState("");
+
+    const fireabseAuthProvider = 'firebase.com';
+    const googleAuthProvider = 'google.com';
+    const facebookAuthProvider = 'facebook.com';
 
     const signInWithGoogle = async () => {
         try {
@@ -41,7 +44,7 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
             const userInfo = await GoogleSignin.signIn();
             const {idToken} = await GoogleSignin.signIn();
             const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
-            auth().signInWithCredential(googleCredentials);
+            await auth().signInWithCredential(googleCredentials);
             return userInfo;
         } catch (error) {
             console.log('=> Google Sign In', error);
@@ -68,7 +71,7 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
             style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'}]}>
             <StatusBar
                 backgroundColor={'transparent'}
-                barStyle={colorSchema === 'dark' ? 'light-content' : 'dark-content'}
+                barStyle={'light-content'}
                 translucent={true}
             />
 
@@ -142,45 +145,70 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
                     {error.length > 0 && <Text style={Style.error}>{error}</Text>}
                     <View
                         style={Style.loginButtonContainer}>
-                        <LoginSignUpButton
-                            text={"Login"}
-                            textColor={"#FFFFFF"}
-                            buttonColor={"#1E232C"}
-                            topMargin={0}
-                            onPress={async () => {
-                                let user = await loginUser(defaultEmailValue, defaultPasswordValue);
-                                if (!user.status) {
-                                    setError(user.error);
-                                } else {
-                                    setError('');
-                                    navigation.navigate(Routes.HomePage);
+                        <AwesomeButton
+                            backgroundColor={colorSchema === 'dark' ? '#1E232C' : '#E5E4E2'}
+                            raiseLevel={0}
+                            progress={true}
+                            stretch={true}
+                            borderRadius={8}
+                            activeOpacity={0.5}
+                            onPress={
+                                async (next) => {
+                                    if (defaultPasswordValue.length === 0 || defaultEmailValue.length === 0) {
+                                        ToastAndroid.show('Fields\'s cannot be empty', ToastAndroid.SHORT);
+                                        if (next) {
+                                            next();
+                                        }
+                                    } else {
+                                        let user = await loginUser(defaultEmailValue, defaultPasswordValue);
+                                        if (!user.status) {
+                                            setError(user.error);
+                                            if (next) {
+                                                next();
+                                            }
+                                        } else {
+                                            setError('');
+                                            navigation.navigate(Routes.HomePage, {authProvider: 'firebase.com'});
+                                        }
+                                    }
                                 }
-                            }
-                            }
-                            isEnabled={(defaultEmailValue.length > 6 && defaultPasswordValue.length >= 6)}
-                            buttonRadius={8}
-                            leftMargin={0}/>
+                            }>
+
+                            <Text
+                                style={{color: colorSchema === 'dark' ? '#FFF' : '#000', fontWeight: '500'}}>
+                                Login
+                            </Text>
+
+                        </AwesomeButton>
 
                         <View style={Style.loginMethodTextContainer}>
                             <LoginMethodText text={"Or Login with"}/>
-
                             <View style={Style.signInButtonContainer}>
-                                <GoogleButton onPress={() => signInWithGoogle().then(data => {
-                                    navigation.navigate(Routes.HomePage);
-                                    console.log('user data=>', data);
-                                })
-                                } rightMargin={12} buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
+                                <GoogleButton
+                                    onPress={() => signInWithGoogle()
+                                        .then(data => {
+                                            navigation.navigate(Routes.HomePage, {authProvider: 'google.com'});
+                                            console.log('user data=>', data);
+                                        })
+                                    }
+                                    rightMargin={12}
+                                    buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
                                 <FacebookButton
                                     onPress={() => {
-                                        signInWithFacebook().then(data => {
-                                            try {
-                                                navigation.navigate(Routes.HomePage);
-                                                console.log('user data=>', data);
-                                            } catch (error) {
-                                                console.log(error);
-                                            }
-                                        });
-                                    }} buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
+                                        signInWithFacebook()
+                                            .then(data => {
+                                                try {
+                                                    navigation.navigate(Routes.HomePage, {authProvider: 'facebook.com'});
+                                                    console.log('user data=>', data);
+                                                } catch (error) {
+                                                    console.log(error);
+                                                }
+                                            })
+                                            .catch(reason => {
+                                                ToastAndroid.show(reason, ToastAndroid.SHORT);
+                                            });
+                                    }}
+                                    buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
                             </View>
                         </View>
                     </View>

@@ -201,7 +201,7 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
                                 AppUsageStatContainerStyle.appNameText,
                                 {}
                             ]}>
-                            {item.usageTime}
+                            {item.usageTime}T
                         </Text>
                         <SvgXml
                             style={{marginTop: verticalScale(2.5)}}

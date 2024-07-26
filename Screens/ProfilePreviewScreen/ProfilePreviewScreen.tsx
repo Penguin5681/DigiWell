@@ -20,6 +20,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {Routes} from "../../Navigation/Routes";
 import {firebase} from "@react-native-firebase/auth";
 import {RouteProp, useRoute} from "@react-navigation/native";
+import {useProviderData} from "../../context/ProviderDataContext.tsx";
 
 const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
@@ -31,8 +32,9 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
     const accountCreationDate = "09/07/2024";
     const darkModeGradientColorList = ['#0c0c0c', '#4C4E52', '#9FA2A8'];
     const lightModeGradientColorList = ['#c6c6d2', '#d0d0e8', '#97a1a3'];
+    const providerData = useProviderData();
     useEffect(() => {
-
+        console.log("AUTH ID: " + providerData.providerData);
     }, []);
 
     return (
@@ -141,7 +143,6 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
                         </View>
                     </LinearGradient>
                 </View>
-
 
                 <View
                     style={[Style.accountStatusContainer]}>
@@ -255,7 +256,6 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
                                 xml={colorSchema === 'dark' ? VectorIcons.arrowRightVectorWhite : VectorIcons.arrowRightVectorBlack}/>
                         </TouchableOpacity>
                     </LinearGradient>
-
                 </View>
             </View>
         </SafeAreaView>

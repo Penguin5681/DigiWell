@@ -30,6 +30,7 @@ import AppUsageStatContainerStyle from "./AppUsageStatContainerStyle";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {faGamepad} from "@fortawesome/free-solid-svg-icons";
 import {Routes} from "../../Navigation/Routes";
+import {useRoute} from "@react-navigation/native";
 
 const DashboardScreen = ({navigation}: { navigation: any }) => {
     const appsInstalled = '12';
@@ -46,6 +47,17 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
         {label: 'Weekly', value: 'weekly'},
         {label: 'Monthly', value: 'monthly'},
     ]);
+
+    interface RouteParams {
+        providerData: string;
+    }
+    const route = useRoute();
+    const routeParams = route.params as RouteParams | undefined;
+
+    var providerId = routeParams?.providerData;
+    useEffect(() => {
+        console.log("AUTH" + providerId)
+    }, []);
 
     const {UsageStatsModule} = NativeModules;
     const isUsageAccessPermissionGranted = async () => {

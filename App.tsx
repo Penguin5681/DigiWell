@@ -5,6 +5,7 @@ import React, {useEffect} from "react";
 import {Platform} from "react-native";
 import SplashScreen from "react-native-splash-screen";
 import {AuthProvider} from "./Components/AuthContext/AuthContext.tsx";
+import {ProviderDataProvider} from "./context/ProviderDataContext.tsx";
 
 const App = () => {
     useEffect(() => {
@@ -12,11 +13,13 @@ const App = () => {
             SplashScreen.hide();
     }, []);
     return (
-        <AuthProvider>
-            <NavigationContainer>
-                <MainNavigation/>
-            </NavigationContainer>
-        </AuthProvider>
+        <ProviderDataProvider>
+            <AuthProvider>
+                <NavigationContainer>
+                    <MainNavigation/>
+                </NavigationContainer>
+            </AuthProvider>
+        </ProviderDataProvider>
     );
 };
 

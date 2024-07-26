@@ -14,17 +14,20 @@ import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpBut
 import GlobalImageBackgroundStyle from "../../Assets/GlobalStyles/GlobalImageBackgroundStyle";
 import Style from "./Style";
 import {Routes} from "../../Navigation/Routes";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import auth from "@react-native-firebase/auth";
 import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
 import {scaleFontSize} from "../../Assets/ScalingUtility/ScalingUtility";
 import AwesomeButton from "react-native-really-awesome-button";
+import {useProviderData} from "../../context/ProviderDataContext.tsx";
 const WelcomeScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
+    const {setProviderData} = useProviderData();
     useEffect(() => {
         return auth().onAuthStateChanged(user => {
             if (user) {
                 navigation.navigate(Routes.HomePage);
+                setProviderData(user.providerData[0].providerId);
             }
         });
     }, []);

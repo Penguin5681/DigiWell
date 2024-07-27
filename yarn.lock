@@ -2241,12 +2241,31 @@
     fast-xml-parser "^4.0.12"
     ora "^5.4.1"
 
-"@react-native-community/cli-platform-ios@13.6.9", "@react-native-community/cli-platform-ios@^13.6.9":
+"@react-native-community/cli-platform-apple@14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/cli-platform-apple/-/cli-platform-apple-14.0.0.tgz#7050af6fbc01b4ebe72e1bdcb48d188cbbf1b9ef"
+  integrity sha512-WniJL8vR4MeIsjqio2hiWWuUYUJEL3/9TDL5aXNwG68hH3tYgK3742+X9C+vRzdjTmf5IKc/a6PwLsdplFeiwQ==
+  dependencies:
+    "@react-native-community/cli-tools" "14.0.0"
+    chalk "^4.1.2"
+    execa "^5.0.0"
+    fast-glob "^3.3.2"
+    fast-xml-parser "^4.2.4"
+    ora "^5.4.1"
+
+"@react-native-community/cli-platform-ios@13.6.9":
   version "13.6.9"
   resolved "https://registry.npmjs.org/@react-native-community/cli-platform-ios/-/cli-platform-ios-13.6.9.tgz"
   integrity sha512-CiUcHlGs8vE0CAB4oi1f+dzniqfGuhWPNrDvae2nm8dewlahTBwIcK5CawyGezjcJoeQhjBflh9vloska+nlnw==
   dependencies:
     "@react-native-community/cli-platform-apple" "13.6.9"
+
+"@react-native-community/cli-platform-ios@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/cli-platform-ios/-/cli-platform-ios-14.0.0.tgz#7c7c393a13415bf61aaad82f1a3583c30afb110e"
+  integrity sha512-8kxGv7mZ5nGMtueQDq+ndu08f0ikf3Zsqm3Ix8FY5KCXpSgP14uZloO2GlOImq/zFESij+oMhCkZJGggpWpfAw==
+  dependencies:
+    "@react-native-community/cli-platform-apple" "14.0.0"
 
 "@react-native-community/cli-server-api@13.6.9":
   version "13.6.9"
@@ -2274,6 +2293,22 @@
     find-up "^5.0.0"
     mime "^2.4.1"
     node-fetch "^2.6.0"
+    open "^6.2.0"
+    ora "^5.4.1"
+    semver "^7.5.2"
+    shell-quote "^1.7.3"
+    sudo-prompt "^9.0.0"
+
+"@react-native-community/cli-tools@14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/cli-tools/-/cli-tools-14.0.0.tgz#07b57a8942a131618c198e3b64fb1ec846cd631d"
+  integrity sha512-L7GX5hyYYv0ZWbAyIQKzhHuShnwDqlKYB0tqn57wa5riGCaxYuRPTK+u4qy+WRCye7+i8M4Xj6oQtSd4z0T9cA==
+  dependencies:
+    appdirsjs "^1.2.4"
+    chalk "^4.1.2"
+    execa "^5.0.0"
+    find-up "^5.0.0"
+    mime "^2.4.1"
     open "^6.2.0"
     ora "^5.4.1"
     semver "^7.5.2"

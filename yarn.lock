@@ -2325,10 +2325,10 @@
   dependencies:
     plist "^3.1.0"
 
-"@react-native-firebase/functions@^20.1.0":
-  version "20.1.0"
-  resolved "https://registry.npmjs.org/@react-native-firebase/functions/-/functions-20.1.0.tgz"
-  integrity sha512-A0z3kVnbDKLkHEze4sY0iZpZ6qiUKNFbxwXjCP8AVPwanIyjQhea2o6yMxn5gMcY4W4CAihp6H5qrHu63lx7ig==
+"@react-native-firebase/functions@^20.3.0":
+  version "20.3.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/functions/-/functions-20.3.0.tgz#cb929a4238961dfb897d4835dc2d733e9d449c69"
+  integrity sha512-vig6WO2hPVTVfEONYSLoX/4ld9dhwrjglRpeBQNZOU1Xqe1RZpRRIcQpcLnDtygna1W7jhrNx/JyGJBxwDsEzw==
 
 "@react-native-firebase/storage@^20.3.0":
   version "20.3.0"

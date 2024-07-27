@@ -2322,6 +2322,7 @@
     fast-xml-parser "^4.2.4"
     ora "^5.4.1"
 
+"@react-native-community/cli-platform-ios@13.6.9":
 "@react-native-community/cli-platform-ios@13.6.9", "@react-native-community/cli-platform-ios@^13.6.9":
   version "13.6.9"
   resolved "https://registry.npmjs.org/@react-native-community/cli-platform-ios/-/cli-platform-ios-13.6.9.tgz"
@@ -2329,6 +2330,7 @@
   dependencies:
     "@react-native-community/cli-platform-apple" "13.6.9"
 
+"@react-native-community/cli-platform-ios@^14.0.0":
 "@react-native-community/cli-platform-ios@14.0.0":
   version "14.0.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli-platform-ios/-/cli-platform-ios-14.0.0.tgz#7c7c393a13415bf61aaad82f1a3583c30afb110e"

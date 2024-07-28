@@ -20,5 +20,6 @@ export const Routes = {
     ProfileScreen: "ProfileScreen",
     ProfileUpdatedScreen: "ProfileUpdatedScreen",
     AppLimitsScreen: 'AppLimitsScreen',
-    PasswordResetLinkSentSuccessfullyScreen: "PasswordResetLinkSentSuccessfullyScreen"
+    PasswordResetLinkSentSuccessfullyScreen: "PasswordResetLinkSentSuccessfullyScreen",
+    CreateUsernameScreen: "CreateUsernameScreen",
 };

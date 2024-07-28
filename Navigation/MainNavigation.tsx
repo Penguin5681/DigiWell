@@ -18,6 +18,7 @@ import PasswordResetLinkSentSuccessfullyScreen
     from '../Screens/PasswordResetLinkSentSuccessfullyScreen/PasswordResetLinkSentSuccessfullyScreen.tsx';
 import ProfileSettingsScreen from '../Screens/ProfileSettingsScreen/ProfileSettingsScreen.tsx';
 import EditProfileScreen from '../Screens/EditProfileScreen/EditProfileScreen.tsx';
+import CreateUsernameScreen from "../Screens/CreateUsernameScreen/CreateUsernameScreen.tsx";
 
 const StackBase = createStackNavigator();
 
@@ -86,6 +87,8 @@ const MainNavigation: React.FC = () => {
                               component={EditProfileScreen}/>
             <StackBase.Screen name={Routes.AvatarUploadScreen}
                               component={AvatarUploadScreen}/>
+            <StackBase.Screen name={Routes.CreateUsernameScreen}
+                              component={CreateUsernameScreen}/>
         </StackBase.Navigator>
     );
 };

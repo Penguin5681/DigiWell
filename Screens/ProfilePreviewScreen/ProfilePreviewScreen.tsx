@@ -18,24 +18,52 @@ import {SvgXml} from "react-native-svg";
 import {VectorIcons} from "../../Assets/Images/VectorIcons";
 import LinearGradient from 'react-native-linear-gradient';
 import {Routes} from "../../Navigation/Routes";
-import {firebase} from "@react-native-firebase/auth";
+import firebaseAuth, {firebase} from "@react-native-firebase/auth";
 import {RouteProp, useRoute} from "@react-navigation/native";
 import {useProviderData} from "../../context/ProviderDataContext.tsx";
+import {generateRandomUsername} from "../../Assets/RandomUsernameGenerator/RandomUsernameGenerator";
+import firestore from "@react-native-firebase/firestore";
+import database from "@react-native-firebase/database";
 
 const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
+
     // This data will be realtime soon
     const dailyScreenTime = '3h 28m';
     const weeklyScreenTime = '13h 42m';
     const dailyMostUsedApp = "Brave";
     const weeklyMostUsedApp = "Chrome";
     const accountCreationDate = "09/07/2024";
+    // fr
+
     const darkModeGradientColorList = ['#0c0c0c', '#4C4E52', '#9FA2A8'];
     const lightModeGradientColorList = ['#c6c6d2', '#d0d0e8', '#97a1a3'];
     const providerData = useProviderData();
+    const authenticationProvider = providerData.providerData;
+    // possible values: password, google.com
+
     useEffect(() => {
-        console.log("AUTH ID: " + providerData.providerData);
+        // console.log("AUTH ID: " + providerData.providerData);
+        console.log(generateRandomUsername())
+        // const database = getDatabase();
+        // console.log(database)
+        // firestore().collection('users').doc('email').set({
+        //     username: generateRandomUsername(),
+        // }).then(value => {
+        //     console.log(value)
+        // }).catch(reason => {
+        //     console.error(reason)
+        // })
     }, []);
+
+    const fetchGoogleProfileData = () => {
+        const currentGoogleUser = firebaseAuth().currentUser;
+        return currentGoogleUser?.displayName;
+    };
+
+    const fetchFirebaseProfileData = () => {
+        const currentFirebaseUser = firebaseAuth().currentUser;
+    }
 
     return (
         <SafeAreaView
@@ -51,7 +79,7 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
                     source={require('../../Assets/Images/monkey.jpg')}/>
                 <View style={Style.userLabelContainer}>
                     <OptionsHeaderText
-                        text={'Monkey'}
+                        text={''}
                         color={'#309CFF'}
                         fontSize={scaleFontSize(30)}
                         marginBottom={0}

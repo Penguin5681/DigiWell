@@ -1,10 +1,8 @@
 // noinspection DuplicatedCode
 import {
     Image,
-    ImageBackground,
-    SafeAreaView,
-    StyleSheet, ToastAndroid,
-    useColorScheme,
+    ImageBackground, SafeAreaView,
+    StyleSheet, Text, ToastAndroid, TouchableOpacity, useColorScheme,
     View
 } from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
@@ -13,10 +11,11 @@ import Style from "./Style";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes";
-import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
 import ImagePicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
 import {firebase} from "@react-native-firebase/auth";
+import AwesomeButton from "react-native-really-awesome-button";
+import {verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
 const AvatarUploadScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
     const userEmail = firebase.auth().currentUser?.email;
@@ -30,7 +29,7 @@ const AvatarUploadScreen = ({navigation}: { navigation: any }) => {
             await storageReference.put(blob);
             const imageUri = await storageReference.getDownloadURL();
             console.log("Image Uploaded Successfully");
-            setTimeout(() => {navigation.navigate(Routes.HomePage)});
+            setTimeout(() => {navigation.navigate(Routes.CreateUsernameScreen)});
             ToastAndroid.show('Welcome', ToastAndroid.SHORT);
             return imageUri;
         } catch (error) {
@@ -78,12 +77,15 @@ const AvatarUploadScreen = ({navigation}: { navigation: any }) => {
                 </View>
 
                 <View style={Style.buttonContainer}>
-                    <LoginSignUpButton
-                        leftMargin={0}
-                        buttonRadius={8}
-                        text={"Browse"}
-                        textColor={'#FFF'}
-                        buttonColor={colorSchema === 'light' ? '#4C4E52' : '#1E232C'}
+                    <AwesomeButton
+                        style={{marginTop: verticalScale(20)}}
+                        backgroundColor={colorSchema === 'dark' ? '#1E232C' : '#E5E4E2'}
+                        raiseLevel={0}
+                        progress={true}
+                        stretch={true}
+                        borderRadius={8}
+                        activeOpacity={0.5}
+                        disabled={false}
                         onPress={() => {
                             ImagePicker
                                 .openPicker({
@@ -96,33 +98,61 @@ const AvatarUploadScreen = ({navigation}: { navigation: any }) => {
                                     setSelectedImageUri(image.path);
                                 })
                                 .catch(reason => {
-                                   ToastAndroid.show(reason, ToastAndroid.SHORT);
+                                    ToastAndroid.show(reason, ToastAndroid.SHORT);
                                 });
                         }}
-                        isEnabled={true}
-                        topMargin={30}/>
+                    >
+                        <Text
+                            style={{color: colorSchema === 'dark' ? '#FFF' : '#000', fontWeight: '500'}}>
+                            Browse
+                        </Text>
 
-                    <LoginSignUpButton
-                        leftMargin={0}
-                        buttonRadius={8}
-                        text={"Upload"}
-                        textColor={'#FFF'}
-                        buttonColor={colorSchema === 'light' ? '#4C4E52' : '#1E232C'}
-                        onPress={() => {
+                    </AwesomeButton>
+
+                    <AwesomeButton
+                        style={{marginTop: verticalScale(15)}}
+                        backgroundColor={colorSchema === 'dark' ? '#1E232C' : '#E5E4E2'}
+                        raiseLevel={0}
+                        progress={true}
+                        stretch={true}
+                        borderRadius={8}
+                        activeOpacity={0.5}
+                        disabled={false}
+                        onPress={async (next) => {
                             if (!userEmail) {
                                 console.log(userEmail + ' is possibly null')
                                 return;
                             }
-                            uploadToFirebase(selectedImagePath, userEmail)
+                            await uploadToFirebase(selectedImagePath, userEmail)
                                 .then(value => {
                                     console.log(value);
                                 })
                                 .catch(reason => {
                                     console.log(reason);
-                                })
+                                });
+
+                            if (next) {
+                                next();
+                            }
                         }}
-                        isEnabled={true}
-                        topMargin={20}/>
+                    >
+                        <Text
+                            style={{color: colorSchema === 'dark' ? '#FFF' : '#000', fontWeight: '500'}}>
+                            Continue
+                        </Text>
+
+                    </AwesomeButton>
+
+                    <TouchableOpacity
+                        style={{marginRight: -20}}
+                        onPress={() => {
+                            navigation.navigate(Routes.CreateUsernameScreen);
+                        }}>
+                        <Text style={Style.skipText}>
+                            Upload Later
+                        </Text>
+                    </TouchableOpacity>
+
                 </View>
             </View>
         </SafeAreaView>

@@ -1,5 +1,6 @@
 import {StyleSheet} from "react-native";
 import {horizontalScale, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
+import {getUrbanistFontFamily} from "../../Assets/Fonts/helper";
 
 const Style = StyleSheet.create({
     backButton: {
@@ -27,7 +28,15 @@ const Style = StyleSheet.create({
         width: 96,
         height: 96,
         borderRadius: 100
-    }
+    },
+    skipText: {
+        fontFamily: getUrbanistFontFamily('Urbanist', '700'),
+        fontSize: 13.86,
+        color: "#35C2C1",
+        textAlign: 'right',
+        marginRight: horizontalScale(28),
+        marginTop: verticalScale(10.84),
+    },
 
 });
 

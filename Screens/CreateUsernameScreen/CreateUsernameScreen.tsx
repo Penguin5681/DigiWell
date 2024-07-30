@@ -4,13 +4,12 @@ import {
     SafeAreaView,
     StatusBar,
     StyleSheet,
-    Text,
-    ToastAndroid,
+    Text, ToastAndroid,
     useColorScheme,
     View
 } from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
-import React, {SetStateAction, useState} from "react";
+import React, {SetStateAction, useEffect, useState} from "react";
 import Style from "./Style";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes";
@@ -20,7 +19,6 @@ import AwesomeButton from "react-native-really-awesome-button";
 import {useRoute} from "@react-navigation/native";
 import KeyboardCoveringContainer from "../../Components/KeboardCoveringContainer/KeyboardCoveringContainer";
 import firestore from "@react-native-firebase/firestore";
-import database from "@react-native-firebase/database";
 import {generateRandomUsername} from "../../Assets/RandomUsernameGenerator/RandomUsernameGenerator";
 
 const CreateUsernameScreen = ({navigation}: { navigation: any }) => {
@@ -35,6 +33,11 @@ const CreateUsernameScreen = ({navigation}: { navigation: any }) => {
     const routeParams = route.params as RouteParams | undefined;
     const email = routeParams?.userEmail ?? '';
     // const email = 'abc@example.com';
+
+    useEffect(() => {
+        console.log(email);
+    }, []);
+
     return (
         <SafeAreaView style={[GlobalStyle.globalAppBackground, GlobalStyle.globalBackgroundFlex]}>
             <StatusBar
@@ -57,7 +60,7 @@ const CreateUsernameScreen = ({navigation}: { navigation: any }) => {
                         style={Style.backButton}>
                         <BackButton
                             onPress={() => {
-                                navigation.navigate(Routes.WelcomeScreen);
+                                navigation.navigate(Routes.AvatarUploadScreen);
                             }}
                             backArrowColor={colorSchema === "dark" ? "#FFF" : "#000"}
                             buttonBackgroundColor={colorSchema === "dark" ? "#000" : "#FFF"}/>
@@ -98,12 +101,17 @@ const CreateUsernameScreen = ({navigation}: { navigation: any }) => {
                         activeOpacity={0.5}
                         disabled={!(defaultUsernameValue.length >= 5)}
                         onPress={async (next) => {
+                            // DO NOT PUT '/' in collection path
                             await firestore()
                                 .collection('users')
-                                .doc(email.replace('.', ','))
+                                .doc(email.replace(/[@.]/g, '_'))
                                 .set({
                                     userEmail: email,
                                     userName: defaultUsernameValue,
+                                })
+                                .then(() => {
+                                    ToastAndroid.show("Welcome: " + defaultUsernameValue, ToastAndroid.SHORT);
+                                    navigation.navigate(Routes.ProfilePreviewScreen);
                                 })
                                 .catch((reason) => {
                                     console.error(reason);
@@ -118,16 +126,23 @@ const CreateUsernameScreen = ({navigation}: { navigation: any }) => {
                                             {
                                                 text: 'Generate a random username',
                                                 onPress: () => {
+                                                    const randomUsername = generateRandomUsername();
                                                     firestore()
                                                         .collection('users')
                                                         .doc(email.replace('.', ','))
                                                         .set({
                                                             userEmail: email,
-                                                            userName: generateRandomUsername()
+                                                            userName: randomUsername,
+                                                        })
+                                                        .then(() => {
+                                                            console.log('Random username generated');
+                                                            ToastAndroid.show("Welcome: " + randomUsername, ToastAndroid.SHORT);
+                                                            navigation.navigate(Routes.ProfilePreviewScreen);
                                                         })
                                                         .catch((error) => {
+                                                            setTimeout(() => {navigation.navigate(Routes.ProfilePreviewScreen)})
                                                             console.error(error);
-                                                        })
+                                                        });
                                                 }
                                             },
                                         ]
@@ -141,7 +156,6 @@ const CreateUsernameScreen = ({navigation}: { navigation: any }) => {
                             style={{color: colorSchema === 'dark' ? '#FFF' : '#000', fontWeight: '500'}}>
                             Continue
                         </Text>
-
                     </AwesomeButton>
                 </View>
             </KeyboardCoveringContainer>

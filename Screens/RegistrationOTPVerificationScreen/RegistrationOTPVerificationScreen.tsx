@@ -1,4 +1,4 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import {
     Alert,
     Appearance,
@@ -21,6 +21,10 @@ import {useRoute} from "@react-navigation/native";
 import {createUser} from "../../api/user";
 import {text} from "@fortawesome/fontawesome-svg-core";
 import {log} from "firebase-functions/logger";
+import firestore from "@react-native-firebase/firestore";
+import {generateRandomUsername} from "../../Assets/RandomUsernameGenerator/RandomUsernameGenerator";
+import AwesomeButton from "react-native-really-awesome-button";
+import {verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
 
 const RegistrationOTPVerificationScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
@@ -60,10 +64,10 @@ const RegistrationOTPVerificationScreen = ({navigation}: { navigation: any }) =>
                     setError(user.error);
                     ToastAndroid.show('Registration Failed', ToastAndroid.SHORT);
                 } else {
+                    navigation.navigate(Routes.AvatarUploadScreen)
                     setError('');
                     setSuccess("Registration Success");
                     ToastAndroid.show('Registration Complete', ToastAndroid.SHORT);
-                    setTimeout(() => navigation.navigate(Routes.AvatarUploadScreen));
                 }
             }
         } catch (error) {
@@ -143,9 +147,10 @@ const RegistrationOTPVerificationScreen = ({navigation}: { navigation: any }) =>
                         focusColor={"#35C2C1"}
                         onTextChange={(value) => {
                             // setDefaultOTP(value);
+                            console.log("onTextChange() => " + value)
                         }}
                         onFilled={(value) => {
-                            console.log(value);
+                            console.log("onFilled() => " + value);
                             setDefaultOTP(value)
                         }}
                         autoFocus={false}
@@ -153,20 +158,38 @@ const RegistrationOTPVerificationScreen = ({navigation}: { navigation: any }) =>
                 </View>
 
                 <View style={Style.verifyButtonContainer}>
-                    <LoginSignUpButton
-                        text={"Verify"}
-                        textColor={"#FFF"}
-                        buttonColor={"#1E232C"}
-                        onPress={() => {
-                            // navigation.navigate(Routes.PhotoUploadScreen);
-                            // console.log(email, password)
-                            verifyOtp();
+                    <AwesomeButton
+                        style={{marginTop: verticalScale(38)}}
+                        backgroundColor={colorSchema === 'dark' ? '#1E232C' : '#E5E4E2'}
+                        raiseLevel={0}
+                        progress={true}
+                        stretch={true}
+                        borderRadius={8}
+                        activeOpacity={0.5}
+                        disabled={!(defaultOTP.length === 4)}
+                        onPress={async (next) => {
+                            await verifyOtp()
+                                .then(() => {
+                                    console.log("OTP: Verified")
+                                })
+                                .catch((reason) => {
+                                    console.error("Firebase Error: " + reason)
+                                });
+
+                            if (next) {
+                                next();
+                            }
                         }}
-                        isEnabled={defaultOTP.length === 4}
-                        topMargin={38}
-                        buttonRadius={8}
-                        leftMargin={0}
-                    />
+
+                    >
+
+                        <Text
+                            style={{color: colorSchema === 'dark' ? '#FFF' : '#000', fontWeight: '500'}}>
+                            Verify OTP
+                        </Text>
+
+                    </AwesomeButton>
+
                 </View>
             </View>
         </SafeAreaView>

@@ -1,8 +1,12 @@
-// noinspection DuplicatedCode
 import {
     Image,
-    ImageBackground, SafeAreaView,
-    StyleSheet, Text, ToastAndroid, TouchableOpacity, useColorScheme,
+    ImageBackground,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    ToastAndroid,
+    TouchableOpacity,
+    useColorScheme,
     View
 } from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
@@ -16,12 +20,16 @@ import storage from '@react-native-firebase/storage';
 import {firebase} from "@react-native-firebase/auth";
 import AwesomeButton from "react-native-really-awesome-button";
 import {verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
+
 const AvatarUploadScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
     const userEmail = firebase.auth().currentUser?.email;
+    const [selectedImageUri, setSelectedImageUri] = React.useState<string | null>(null);
+    const [selectedImagePath, setSelectedImagePath] = React.useState<string>("");
+
     const uploadToFirebase = async (imagePath: string, userEmail: string) => {
-        const imageFileName = userEmail.replace(/[@.]/g, '_') + '.jpg';
-        const storagePathString = 'user_profile_images/' +  imageFileName;
+        const imageFileName = userEmail.replace(/[@.]/g, '_'); // + '.jpg';
+        const storagePathString = 'user_profile_images/' + imageFileName;
         const storageReference = storage().ref().child(storagePathString);
         const blob = await fetch(imagePath).then((response) => response.blob());
 
@@ -29,16 +37,17 @@ const AvatarUploadScreen = ({navigation}: { navigation: any }) => {
             await storageReference.put(blob);
             const imageUri = await storageReference.getDownloadURL();
             console.log("Image Uploaded Successfully");
-            setTimeout(() => {navigation.navigate(Routes.CreateUsernameScreen)});
+            setTimeout(() => {
+                navigation.navigate(Routes.CreateUsernameScreen, {userEmail: userEmail});
+            });
             ToastAndroid.show('Welcome', ToastAndroid.SHORT);
             return imageUri;
         } catch (error) {
-            console.log(error);
+            console.log("uploadToFirebase(): " + error);
             throw error;
         }
     }
-    const [selectedImageUri, setSelectedImageUri] = React.useState<string | null>(null);
-    let selectedImagePath: string = "";
+
     return (
         <SafeAreaView
             style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'}]}>
@@ -86,20 +95,25 @@ const AvatarUploadScreen = ({navigation}: { navigation: any }) => {
                         borderRadius={8}
                         activeOpacity={0.5}
                         disabled={false}
-                        onPress={() => {
-                            ImagePicker
+                        onPress={async (next) => {
+                            await ImagePicker
                                 .openPicker({
                                     width: 300,
                                     height: 400,
                                     cropping: true,
                                 })
                                 .then(image => {
-                                    selectedImagePath = image.path;
+                                    console.log(image.path);
+                                    setSelectedImagePath(image.path);
                                     setSelectedImageUri(image.path);
                                 })
                                 .catch(reason => {
-                                    ToastAndroid.show(reason, ToastAndroid.SHORT);
+                                    ToastAndroid.show("ImagePicker: " + reason, ToastAndroid.SHORT);
                                 });
+
+                            if (next) {
+                                next();
+                            }
                         }}
                     >
                         <Text
@@ -124,13 +138,9 @@ const AvatarUploadScreen = ({navigation}: { navigation: any }) => {
                                 return;
                             }
                             await uploadToFirebase(selectedImagePath, userEmail)
-                                .then(value => {
-                                    console.log(value);
-                                })
                                 .catch(reason => {
-                                    console.log(reason);
-                                });
-
+                                    console.log("Continue: " + reason);
+                                })
                             if (next) {
                                 next();
                             }
@@ -146,7 +156,7 @@ const AvatarUploadScreen = ({navigation}: { navigation: any }) => {
                     <TouchableOpacity
                         style={{marginRight: -20}}
                         onPress={() => {
-                            navigation.navigate(Routes.CreateUsernameScreen);
+                            navigation.navigate(Routes.CreateUsernameScreen, {userEmail: userEmail});
                         }}>
                         <Text style={Style.skipText}>
                             Upload Later

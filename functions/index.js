@@ -24,7 +24,7 @@ exports.sendOtpEmail = functions.https.onCall(async (data, context) => {
         text: `Your One-Time Password (OTP) is: ${otp}
 ` +
             "\n" +
-            "This OTP is valid for 5 minutes. Please use it to complete your registration/login process.\n" +
+            "This OTP is valid for 5 minutes. Please use it to complete your Registration/Login process.\n" +
             "\n" +
             "Thank you,\n" +
             "DigiWell Team\n" +

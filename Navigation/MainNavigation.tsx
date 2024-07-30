@@ -12,7 +12,6 @@ import PasswordChangedScreen from '../Screens/PasswordChangedScreen/PasswordChan
 import BottomTabNavigation from './BottomTabNavigation.tsx';
 import RegistrationOTPVerificationScreen
     from '../Screens/RegistrationOTPVerificationScreen/RegistrationOTPVerificationScreen.tsx';
-import PhotoUploadScreen from '../Screens/PhotoUploadScreen/PhotoUploadScreen.tsx';
 import AvatarUploadScreen from '../Screens/AvatarUploadScreen/AvatarUploadScreen.tsx';
 import PasswordResetLinkSentSuccessfullyScreen
     from '../Screens/PasswordResetLinkSentSuccessfullyScreen/PasswordResetLinkSentSuccessfullyScreen.tsx';
@@ -67,8 +66,6 @@ const MainNavigation: React.FC = () => {
                               component={RegisterScreen}/>
             <StackBase.Screen name={Routes.RegistrationOTPVerificationScreen}
                               component={RegistrationOTPVerificationScreen}/>
-            <StackBase.Screen name={Routes.PhotoUploadScreen}
-                              component={PhotoUploadScreen}/>
             <StackBase.Screen name={Routes.ForgetPasswordPage}
                               component={ForgetPasswordPage}/>
             <StackBase.Screen name={Routes.ForgetPasswordOTPVerificationScreen}

@@ -103,10 +103,12 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
                                         console.log("setHasPermission",setHasPermission);
 
                                         if (permissionGranted){
-                                            navigation.navigate(Routes.ProfilePreviewScreen);
+                                            // navigation.navigate(Routes.ProfilePreviewScreen);
+                                            ToastAndroid.show("Permission Granted", ToastAndroid.SHORT);
                                         }
-                                        else{
-                                            killApp()
+                                        else {
+                                            // killApp()
+                                            ToastAndroid.show("Please grant usage access permission", ToastAndroid.SHORT);
                                         }
                                     }
                                 },
@@ -213,7 +215,7 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
                                 AppUsageStatContainerStyle.appNameText,
                                 {}
                             ]}>
-                            {item.usageTime}T
+                            {item.usageTime}
                         </Text>
                         <SvgXml
                             style={{marginTop: verticalScale(2.5)}}

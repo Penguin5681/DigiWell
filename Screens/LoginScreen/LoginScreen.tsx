@@ -22,6 +22,7 @@ import {GoogleSignin} from "@react-native-google-signin/google-signin";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import KeyboardCoveringContainer from "../../Components/KeboardCoveringContainer/KeyboardCoveringContainer";
 import AwesomeButton from "react-native-really-awesome-button";
+import {horizontalScale} from "../../Assets/ScalingUtility/ScalingUtility";
 
 const LoginScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
@@ -188,10 +189,10 @@ const LoginScreen = ({navigation}: { navigation: any }) => {
                                     onPress={() => signInWithGoogle()
                                         .then(data => {
                                             navigation.navigate(Routes.HomePage, {authProvider: 'google.com'});
-                                            console.log('user data=>', data);
+                                            console.log('UserData =>', data);
                                         })
                                     }
-                                    rightMargin={12}
+                                    rightMargin={horizontalScale(12)}
                                     buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
                                 <FacebookButton
                                     onPress={() => {

@@ -29,6 +29,8 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
 
     // This data will be realtime soon
+    // TODO: Will write the core backend soon,
+    // TODO:
     const dailyScreenTime = '3h 28m';
     const weeklyScreenTime = '13h 42m';
     const dailyMostUsedApp = "Brave";
@@ -41,19 +43,12 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
     const providerData = useProviderData();
     const authenticationProvider = providerData.providerData;
     // possible values: password, google.com
+    const userEmail = firebase.auth().currentUser?.email;
 
     useEffect(() => {
-        // console.log("AUTH ID: " + providerData.providerData);
+        console.log("AUTH ID: " + providerData.providerData);
         console.log(generateRandomUsername())
-        // const database = getDatabase();
-        // console.log(database)
-        // firestore().collection('users').doc('email').set({
-        //     username: generateRandomUsername(),
-        // }).then(value => {
-        //     console.log(value)
-        // }).catch(reason => {
-        //     console.error(reason)
-        // })
+        console.log("UserEmail: " + userEmail);
     }, []);
 
     const fetchGoogleProfileData = () => {
@@ -63,6 +58,7 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
 
     const fetchFirebaseProfileData = () => {
         const currentFirebaseUser = firebaseAuth().currentUser;
+        const userName = firestore().collection('users').doc();
     }
 
     return (
@@ -79,21 +75,21 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
                     source={require('../../Assets/Images/monkey.jpg')}/>
                 <View style={Style.userLabelContainer}>
                     <OptionsHeaderText
-                        text={''}
+                        text={'penguin'}
                         color={'#309CFF'}
                         fontSize={scaleFontSize(30)}
                         marginBottom={0}
                         onPress={() => {
                         }}/>
                     <OptionsHeaderText
-                        text={'Motihari'}
+                        text={'Surat'}
                         color={colorSchema === 'dark' ? '#FFF' : '#000'}
                         fontSize={scaleFontSize(19)}
                         marginBottom={0}
                         onPress={() => {
                         }}/>
                     <OptionsHeaderText
-                        text={'Since 2022'}
+                        text={'Since 2024'}
                         color={colorSchema === 'dark' ? '#FFF' : '#000'}
                         fontSize={scaleFontSize(19)}
                         marginBottom={0}

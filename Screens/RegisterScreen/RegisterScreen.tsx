@@ -211,7 +211,7 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
                                     signInWithFacebook().then(data => {
                                         try {
                                             navigation.navigate(Routes.HomePage);
-                                            console.log('user data=>', data);
+                                            console.log('user data => ', data);
                                         } catch (error) {
                                             console.log(error);
                                         }
@@ -222,7 +222,6 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
                     </View>
                 </View>
             </KeyboardCoveringContainer>
-
         </SafeAreaView>
     );
 };

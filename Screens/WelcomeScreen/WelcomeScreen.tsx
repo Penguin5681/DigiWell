@@ -1,11 +1,12 @@
 import {
+    Alert,
     Dimensions,
     Image,
-    ImageBackground,
+    ImageBackground, NativeModules,
     SafeAreaView,
     StatusBar,
     StyleSheet,
-    Text,
+    Text, ToastAndroid,
     useColorScheme,
     View
 } from "react-native";
@@ -20,6 +21,7 @@ import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderT
 import {scaleFontSize} from "../../Assets/ScalingUtility/ScalingUtility";
 import AwesomeButton from "react-native-really-awesome-button";
 import {useProviderData} from "../../context/ProviderDataContext.tsx";
+import {showUsageAccessSettings} from "@brighthustle/react-native-usage-stats-manager";
 const WelcomeScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
     const {setProviderData} = useProviderData();
@@ -31,6 +33,78 @@ const WelcomeScreen = ({navigation}: { navigation: any }) => {
             }
         });
     }, []);
+
+    const {UsageStatsModule} = NativeModules;
+    const isUsageAccessPermissionGranted = async () => {
+        try {
+            const granted = await UsageStatsModule.isUsageAccessPermissionGranted();
+            console.log(granted)
+            if (granted){
+                navigation.navigate(Routes.DashboardScreen);
+            }
+            return granted;
+        } catch (error) {
+            console.error('Error checking usage access permission:', error);
+            return false;
+        }
+    };
+    const [hasPermission, setHasPermission] = useState(false);
+    const { KillApp } = NativeModules;
+    function killApp() {
+        KillApp.kill();
+    }
+
+    useEffect(() => {
+        const checkForPermission = async () => {
+            try {
+                const isGranted = await isUsageAccessPermissionGranted();
+                setHasPermission(isGranted);
+                console.log("isGranted",isGranted)
+                if (isGranted) {
+                    navigation.navigate(Routes.DashboardScreen); // Navigate immediately if permission is granted
+                }
+                else {
+                    if (hasPermission){
+                        navigation.navigate(Routes.DashboardScreen);
+                    }
+                    if (!hasPermission) {
+                        Alert.alert(
+                            'Permission Required',
+                            'Usage access permission is required. Please enable it in the settings.',
+                            [
+                                {
+                                    text: 'Open Settings', onPress: () => {
+                                        const permissionGranted = showUsageAccessSettings('');
+                                        console.log("setHasPermission",setHasPermission);
+
+                                        if (permissionGranted){
+                                            // navigation.navigate(Routes.ProfilePreviewScreen);
+                                            ToastAndroid.show("Permission Granted", ToastAndroid.SHORT);
+                                        }
+                                        else {
+                                            // killApp()
+                                            ToastAndroid.show("Please grant usage access permission", ToastAndroid.SHORT);
+                                        }
+                                    }
+                                },
+                                {text: 'Exit', onPress: () => {
+                                        killApp();
+                                    }}
+                            ]);
+
+                    }
+
+                }
+            } catch (error) {
+                console.error('Error checking permission:', error);
+                setHasPermission(false);
+            }
+        };
+        checkForPermission().then(r => {
+
+        });
+    }, [hasPermission]);
+
     return (
         <SafeAreaView
             style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'}]}>

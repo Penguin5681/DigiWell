@@ -111,7 +111,7 @@ const CreateUsernameScreen = ({navigation}: { navigation: any }) => {
                                 })
                                 .then(() => {
                                     ToastAndroid.show("Welcome: " + defaultUsernameValue, ToastAndroid.SHORT);
-                                    navigation.navigate(Routes.ProfilePreviewScreen);
+                                    navigation.navigate(Routes.DashboardScreen);
                                 })
                                 .catch((reason) => {
                                     console.error(reason);
@@ -137,10 +137,10 @@ const CreateUsernameScreen = ({navigation}: { navigation: any }) => {
                                                         .then(() => {
                                                             console.log('Random username generated');
                                                             ToastAndroid.show("Welcome: " + randomUsername, ToastAndroid.SHORT);
-                                                            navigation.navigate(Routes.ProfilePreviewScreen);
+                                                            navigation.navigate(Routes.DashboardScreen);
                                                         })
                                                         .catch((error) => {
-                                                            setTimeout(() => {navigation.navigate(Routes.ProfilePreviewScreen)})
+                                                            setTimeout(() => {navigation.navigate(Routes.DashboardScreen)})
                                                             console.error(error);
                                                         });
                                                 }

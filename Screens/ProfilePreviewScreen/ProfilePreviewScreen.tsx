@@ -1,16 +1,6 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import Style from "./Style";
-import {
-    Appearance,
-    Image,
-    Pressable,
-    SafeAreaView,
-    StatusBar,
-    Text, ToastAndroid,
-    TouchableOpacity,
-    useColorScheme,
-    View
-} from "react-native";
+import {Image, SafeAreaView, StatusBar, Text, ToastAndroid, TouchableOpacity, useColorScheme, View} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
 import {scaleFontSize, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
@@ -18,48 +8,120 @@ import {SvgXml} from "react-native-svg";
 import {VectorIcons} from "../../Assets/Images/VectorIcons";
 import LinearGradient from 'react-native-linear-gradient';
 import {Routes} from "../../Navigation/Routes";
-import firebaseAuth, {firebase} from "@react-native-firebase/auth";
-import {RouteProp, useRoute} from "@react-navigation/native";
+import {firebase} from "@react-native-firebase/auth";
 import {useProviderData} from "../../context/ProviderDataContext.tsx";
-import {generateRandomUsername} from "../../Assets/RandomUsernameGenerator/RandomUsernameGenerator";
+import storage from "@react-native-firebase/storage";
 import firestore from "@react-native-firebase/firestore";
-import database from "@react-native-firebase/database";
+import {generateRandomUsername} from "../../Assets/RandomUsernameGenerator/RandomUsernameGenerator";
 
 const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
-
+    const [defaultImageUrl, setDefaultImageUrl] = useState('');
+    const [defaultDisplayName, setDefaultDisplayName] = useState('');
+    const [] = useState('')
     // This data will be realtime soon
-    // TODO: Will write the core backend soon,
-    // TODO:
+
+
+    // TODO: Will write the core backend soon, (saturday is the day)
     const dailyScreenTime = '3h 28m';
     const weeklyScreenTime = '13h 42m';
     const dailyMostUsedApp = "Brave";
     const weeklyMostUsedApp = "Chrome";
     const accountCreationDate = "09/07/2024";
-    // fr
+    // TODO: YEAH BAYBEE
 
     const darkModeGradientColorList = ['#0c0c0c', '#4C4E52', '#9FA2A8'];
     const lightModeGradientColorList = ['#c6c6d2', '#d0d0e8', '#97a1a3'];
     const providerData = useProviderData();
     const authenticationProvider = providerData.providerData;
-    // possible values: password, google.com
-    const userEmail = firebase.auth().currentUser?.email;
+    // possible values: password, google.com,
+    // Will do something about the facebook key hash thing later on; fuck you meta
+    let firebaseUserData = [];
+    let googleUserData = [];
+    const fetchProfileImageUrl = async (imagePath: string) => {
+        try {
+            return await storage()
+                .ref(imagePath)
+                .getDownloadURL();
+        } catch (error) {
+            console.error("Firebase Storage Error: " + error);
+            return null;
+        }
+    }
+    const fetchDisplayName = async (collectionName: string) => {
+        try {
+            const dataSnapshot = await firestore().collection(collectionName).get();
+            return dataSnapshot.docs.map(doc => doc.data());
+        } catch (error) {
+            console.error("Error fetching the data: " + error);
+            return null;
+        }
+    };
+    const fetchGoogleProfile = async () => {
+    };
+    const fetchFirebaseProfile = async () => {
+        const email = firebase.auth().currentUser?.email?.replace('@', '_').replace('.', '_') || '';
+        const displayName = firestore()
+            .collection('users')
+            .doc(email)
+            .get()
+            .then(snapshot => {
+                if (snapshot.exists) {
+                    const userNameSnapshot = snapshot.get('userName');
+                    if (userNameSnapshot) {
+                        const userName = userNameSnapshot.toString();
+                        console.log("USERNAME: " + userName);
+                        setDefaultDisplayName(userName);
+                    } else {
+                        console.log("USERNAME IS POSSIBLY NULL");
+                        setDefaultDisplayName(generateRandomUsername());
+                    }
+                }
+            })
 
-    useEffect(() => {
-        console.log("AUTH ID: " + providerData.providerData);
-        console.log(generateRandomUsername())
-        console.log("UserEmail: " + userEmail);
-    }, []);
+        if (displayName !== null) {
+            console.log("displayName: " + displayName);
+        } else {
+            console.error("You fucked up something!");
+        }
 
-    const fetchGoogleProfileData = () => {
-        const currentGoogleUser = firebaseAuth().currentUser;
-        return currentGoogleUser?.displayName;
+        const imagePath = 'user_profile_images/' + email;
+        const defaultProfileImagePath = colorSchema === 'light' ? 'default_profile_images/' + 'avatar_icon_black.png' : 'default_profile_images/' + 'avatar_icon_white';
+        const url = await fetchProfileImageUrl(imagePath);
+        if (url !== null) {
+            setDefaultImageUrl(url);
+            console.log("URL FETCH COMPLETE RAHHHHH!: " + url)
+        } else {
+            // TODO: Test this code later on
+            const defaultProfileImageUrl = fetchProfileImageUrl(defaultProfileImagePath);
+            console.error("No Image found at this location! :(");
+            console.log("Loaded the default image: " + defaultProfileImageUrl)
+        }
     };
 
-    const fetchFirebaseProfileData = () => {
-        const currentFirebaseUser = firebaseAuth().currentUser;
-        const userName = firestore().collection('users').doc();
-    }
+    useEffect(() => {
+        try {
+            switch (authenticationProvider) {
+                case 'password':
+                    fetchFirebaseProfile()
+                        .then((response) => {
+
+                        });
+                    break;
+                case 'google.com':
+                    fetchGoogleProfile()
+                        .then((response) => {
+
+                        });
+                    break;
+                default:
+                    // Can occur in the cases where the app for some reason proceeds to fuck up by itself
+                    console.error("Invalid Authentication")
+            }
+        } catch (error) {
+            throw error;
+        }
+    }, []);
 
     return (
         <SafeAreaView

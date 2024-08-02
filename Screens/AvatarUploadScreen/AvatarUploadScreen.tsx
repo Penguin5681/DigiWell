@@ -28,7 +28,7 @@ const AvatarUploadScreen = ({navigation}: { navigation: any }) => {
     const [selectedImagePath, setSelectedImagePath] = React.useState<string>("");
 
     const uploadToFirebase = async (imagePath: string, userEmail: string) => {
-        const imageFileName = userEmail.replace(/[@.]/g, '_'); // + '.jpg';
+        const imageFileName = userEmail.replace(/[@.]/g, '_') + '.jpg';
         const storagePathString = 'user_profile_images/' + imageFileName;
         const storageReference = storage().ref().child(storagePathString);
         const blob = await fetch(imagePath).then((response) => response.blob());

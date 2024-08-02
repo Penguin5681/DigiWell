@@ -42,6 +42,13 @@ const RegistrationOTPVerificationScreen = ({navigation}: { navigation: any }) =>
     const password = routeParams?.defaultPasswordValue;
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
+    const getFormattedDate = () => {
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0');
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const year = today.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
     const sendOtp = async () => {
         try {
             await functions().httpsCallable('sendOtpEmail')({email: email});
@@ -67,6 +74,13 @@ const RegistrationOTPVerificationScreen = ({navigation}: { navigation: any }) =>
                     navigation.navigate(Routes.AvatarUploadScreen)
                     setError('');
                     setSuccess("Registration Success");
+                    await firestore()
+                        .collection('users')
+                        .doc(email?.replace('.', '_').replace('@', '_'))
+                        .set({accountCreationDate: getFormattedDate()})
+                        .then(() => {
+                            console.log("Account Created on: " + getFormattedDate());
+                        })
                     ToastAndroid.show('Registration Complete', ToastAndroid.SHORT);
                 }
             }

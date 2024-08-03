@@ -32,7 +32,6 @@ const CreateUsernameScreen = ({navigation}: { navigation: any }) => {
     const route = useRoute();
     const routeParams = route.params as RouteParams | undefined;
     const email = routeParams?.userEmail ?? '';
-    // const email = 'abc@example.com';
 
     useEffect(() => {
         console.log(email);
@@ -101,7 +100,6 @@ const CreateUsernameScreen = ({navigation}: { navigation: any }) => {
                         activeOpacity={0.5}
                         disabled={!(defaultUsernameValue.length >= 5)}
                         onPress={async (next) => {
-                            // DO NOT PUT '/' in collection path
                             await firestore()
                                 .collection('users')
                                 .doc(email.replace(/[@.]/g, '_'))

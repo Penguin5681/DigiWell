@@ -1,6 +1,16 @@
 import React, {useEffect, useState} from "react";
 import Style from "./Style";
-import {Image, SafeAreaView, StatusBar, Text, ToastAndroid, TouchableOpacity, useColorScheme, View} from "react-native";
+import {
+    Image,
+    NativeModules,
+    SafeAreaView,
+    StatusBar,
+    Text,
+    ToastAndroid,
+    TouchableOpacity,
+    useColorScheme,
+    View
+} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
 import {scaleFontSize, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
@@ -16,6 +26,7 @@ import {generateRandomUsername} from "../../Assets/RandomUsernameGenerator/Rando
 
 const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
+    const [defaultEmail, setDefaultEmail] = useState('');
     const [defaultImageUrl, setDefaultImageUrl] = useState('');
     const [defaultDisplayName, setDefaultDisplayName] = useState('');
     const [] = useState('')
@@ -48,19 +59,14 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
             return null;
         }
     }
-    const fetchDisplayName = async (collectionName: string) => {
-        try {
-            const dataSnapshot = await firestore().collection(collectionName).get();
-            return dataSnapshot.docs.map(doc => doc.data());
-        } catch (error) {
-            console.error("Error fetching the data: " + error);
-            return null;
-        }
-    };
     const fetchGoogleProfile = async () => {
+        setDefaultEmail(firebase.auth().currentUser?.email || 'emailNotFound');
+        setDefaultDisplayName(firebase.auth().currentUser?.displayName || generateRandomUsername());
+        setDefaultImageUrl(firebase.auth().currentUser?.photoURL || (colorSchema === 'light' ? require('../../Assets/Images/avatar_icon_black.png') : require('../../Assets/Images/avatar_icon_white.png')));
     };
     const fetchFirebaseProfile = async () => {
         const email = firebase.auth().currentUser?.email?.replace('@', '_').replace('.', '_') || '';
+        setDefaultEmail(firebase.auth().currentUser?.email || 'emailNotFound')
         const displayName = firestore()
             .collection('users')
             .doc(email)
@@ -115,13 +121,17 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
                         });
                     break;
                 default:
-                    // Can occur in the cases where the app for some reason proceeds to fuck up by itself
                     console.error("Invalid Authentication")
             }
         } catch (error) {
             throw error;
         }
     }, []);
+
+    const { KillApp } = NativeModules;
+    function killApp() {
+        KillApp.kill();
+    }
 
     return (
         <SafeAreaView
@@ -134,10 +144,12 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
             <View style={Style.userDetailContainer}>
                 <Image
                     style={[Style.userImage, {borderColor: colorSchema === 'dark' ? '#FFF' : '#000'}]}
-                    source={require('../../Assets/Images/monkey.jpg')}/>
+                    // source={require('../../Assets/Images/monkey.jpg')}
+                    source={{uri: defaultImageUrl}}
+                />
                 <View style={Style.userLabelContainer}>
                     <OptionsHeaderText
-                        text={'penguin'}
+                        text={defaultDisplayName}
                         color={'#309CFF'}
                         fontSize={scaleFontSize(30)}
                         marginBottom={0}
@@ -148,15 +160,14 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
                         color={colorSchema === 'dark' ? '#FFF' : '#000'}
                         fontSize={scaleFontSize(19)}
                         marginBottom={0}
-                        onPress={() => {
-                        }}/>
+                        onPress={() => null}
+                    />
                     <OptionsHeaderText
                         text={'Since 2024'}
                         color={colorSchema === 'dark' ? '#FFF' : '#000'}
                         fontSize={scaleFontSize(19)}
                         marginBottom={0}
-                        onPress={() => {
-                        }}/>
+                        onPress={() => null}/>
 
                     <TouchableOpacity
                         style={[Style.editProfileButton, {backgroundColor: colorSchema === 'dark' ? '#FFF' : '#E5E4E2'}]}
@@ -325,7 +336,7 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
                                 firebase.auth().signOut()
                                     .then(() => {
                                         console.log("Sign out complete")
-                                        navigation.navigate(Routes.LoginScreen)
+                                        killApp();
                                     })
                                     .catch(reason => {
                                         console.log(reason)

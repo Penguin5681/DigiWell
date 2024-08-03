@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {
     Alert,
     Appearance,
-    ImageBackground,
+    ImageBackground, NativeModules,
     SafeAreaView,
     StyleSheet,
     Text,
@@ -29,6 +29,7 @@ import {verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
 const RegistrationOTPVerificationScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
     const [defaultOTP, setDefaultOTP] = useState('');
+
 
     interface RouteParams {
         defaultEmailValue: string;

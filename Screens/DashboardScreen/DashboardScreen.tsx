@@ -6,7 +6,8 @@ import {
     Text,
     ToastAndroid,
     useColorScheme,
-    View
+    View,
+    AppState, BackHandler
 } from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import Style from "./Style";
@@ -16,7 +17,7 @@ import LabelText from "../../Components/LabelText/LabelText.tsx";
 import {scaleFontSize, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
 import LinearGradient from "react-native-linear-gradient";
 import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 import {
     EventFrequency,
@@ -30,7 +31,8 @@ import AppUsageStatContainerStyle from "./AppUsageStatContainerStyle";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {faGamepad} from "@fortawesome/free-solid-svg-icons";
 import {Routes} from "../../Navigation/Routes";
-import {useRoute} from "@react-navigation/native";
+import {useFocusEffect, useRoute} from "@react-navigation/native";
+import {getUrbanistFontFamily} from "../../Assets/Fonts/helper";
 
 const DashboardScreen = ({navigation}: { navigation: any }) => {
     const appsInstalled = '12';
@@ -47,7 +49,29 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
         {label: 'Weekly', value: 'weekly'},
         {label: 'Monthly', value: 'monthly'},
     ]);
+    const [permissionGranted, setPermissionGranted] = useState(false);
+    const [backPressedTime, setBackPressedTime] = useState(0);
+    useFocusEffect(
+        useCallback(() => {
+            const onBackPress = () => {
+                const BACK_BUTTON_DELAY = 2000;
+                const currentTime = Date.now();
 
+                if (backPressedTime && currentTime - backPressedTime < BACK_BUTTON_DELAY) {
+                    BackHandler.exitApp();
+                } else {
+                    ToastAndroid.show("Press back again to exit", ToastAndroid.SHORT);
+                    setBackPressedTime(currentTime);
+                }
+                return true;
+            };
+
+            BackHandler.addEventListener('hardwareBackPress', onBackPress);
+            return () => {
+                BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+            }
+        }, [backPressedTime])
+    )
     interface RouteParams {
         providerData: string;
     }
@@ -55,29 +79,43 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
     const route = useRoute();
     const routeParams = route.params as RouteParams | undefined;
 
-    var providerId = routeParams?.providerData;
     useEffect(() => {
-        if (isUsageAccessPermissionGranted()) {
-            console.log("Permission in granted, mounting the Dashboard");
-        } else {
-            ToastAndroid.show("Please grant the permissions: ", ToastAndroid.SHORT);
-        }
+        const checkPermission = async () => {
+            try {
+                const granted = await UsageStatsModule.isUsageAccessPermissionGranted();
+                setPermissionGranted(granted);
+                if (!granted) {
+                    Alert.alert(
+                        "Permission Required",
+                        "Usage access permission is required. Please enable it in the settings.",
+                        [
+                            {text: "Open Settings", onPress: () => showUsageAccessSettings('')},
+                            {text: "Exit", onPress: () => navigation.goBack()}
+                        ],
+                        {cancelable: false}
+                    );
+                }
+            } catch (error) {
+                console.error('Error checking usage access permission:', error);
+            }
+        };
+
+        checkPermission().then(r => {
+        });
+
+        const appStateListener = AppState.addEventListener("change", (nextAppState) => {
+            if (nextAppState === "active") {
+                checkPermission().then(r => {
+                });
+            }
+        });
+
+        return () => {
+            appStateListener.remove();
+        };
     }, []);
 
     const {UsageStatsModule} = NativeModules;
-    const isUsageAccessPermissionGranted = () => {
-        try {
-            const granted = UsageStatsModule.isUsageAccessPermissionGranted();
-            console.log(granted)
-            if (granted) {
-                navigation.navigate(Routes.DashboardScreen);
-            }
-            return granted;
-        } catch (error) {
-            console.error('Error checking usage access permission:', error);
-            return false;
-        }
-    };
 
     const appData = [
         {
@@ -186,7 +224,19 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
         EventFrequency.INTERVAL_DAILY,
         startMilliseconds,
         endMilliseconds
-    )
+    );
+
+    if (!permissionGranted) {
+        return (
+            <SafeAreaView
+                style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'}, {marginTop: StatusBar.currentHeight}]}>
+                <Text style={{fontFamily: getUrbanistFontFamily('Urbanist', '700')}}>
+                    Please grant usage access permission to load the Dashboard!
+                </Text>
+            </SafeAreaView>
+        );
+    }
+
     return (
         <SafeAreaView
             style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'light' ? '#FFF' : '#000'}, {marginTop: StatusBar.currentHeight},]}>
@@ -240,8 +290,6 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
             </View>
             <View style={Style.appUsageStatsContainer}>
                 <View style={Style.appUsageStatsHeaderViewContainer}>
-                    {/*    IDEA: Add the {current app view and a kind of dropdown menu (filter) }*/}
-                    {/*    Also categorize the apps into: Social Media, Entertainment */}
                     <OptionsHeaderText
                         text={currentAppListView}
                         color={colorSchema === 'light' ? '#000' : '#FFF'}
@@ -276,50 +324,7 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
                 />
             </View>
         </SafeAreaView>
-
-    );
-
-    // else if (!hasPermission)
-    // {
-    //     return (
-    //         <SafeAreaView>
-    //             <View style={{marginRight:30,marginLeft:30}}>
-    //                 <LoginSignUpButton
-    //                     text={"Grant Usage Access"}
-    //                     textColor={"#FFFFFF"}
-    //                     buttonColor={"#1E232C"}
-    //                     topMargin={250}
-    //                     onPress={() => {
-    //                         const checkForPermission = async () => {
-    //                             try {
-    //                                 const isGranted = await isUsageAccessPermissionGranted();
-    //                                 console.log("granted",isGranted);
-    //                                 setHasPermission(isGranted);
-    //                                 if (!isGranted) {
-    //                                         const permissionGranted = showUsageAccessSettings('');
-    //                                         console.log(permissionGranted)
-    //                                         if (!permissionGranted) {
-    //                                             BackHandler.exitApp();
-    //                                         }
-    //                                     }
-    //                             } catch (error) {
-    //                                 console.error('Error checking permission:', error);
-    //                                 setHasPermission(false);
-    //                             }
-    //                         };
-    //                         checkForPermission()
-    //                             .then(r => {
-    //
-    //                             });
-    //                     }
-    //                     }
-    //                     buttonRadius={8}
-    //                     leftMargin={0} isEnabled={true}/>
-    //             </View>
-    //         </SafeAreaView>
-    //     );
-    // }
+    )
 }
 
 export default DashboardScreen;
-

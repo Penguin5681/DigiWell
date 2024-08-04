@@ -23,6 +23,7 @@ class MainApplication : Application(), ReactApplication {
               // add(MyReactNativePackage())
               add(UsageStatsPackage())
               add(MyAppPackage())
+              add(AppUsagePackage())
             }
 
         override fun getJSMainModuleName(): String = "index"

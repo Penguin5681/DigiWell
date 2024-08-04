@@ -25,6 +25,7 @@ import storage from "@react-native-firebase/storage";
 import firestore from "@react-native-firebase/firestore";
 import {generateRandomUsername} from "../../Assets/RandomUsernameGenerator/RandomUsernameGenerator";
 import {useFocusEffect} from "@react-navigation/native";
+const { AppUsageModule } = NativeModules;
 
 const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
@@ -321,7 +322,12 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
                                 xml={colorSchema === 'dark' ? VectorIcons.arrowRightVectorWhite : VectorIcons.arrowRightVectorBlack}/>
                         </View>
 
-                        <View style={Style.shareOption}>
+                        <TouchableOpacity style={Style.shareOption}
+                            onPress={async () => {
+                                const usageData = await AppUsageModule.getUsageStats('daily');
+                                console.log(usageData);
+                            }}
+                        >
                             <SvgXml
                                 xml={colorSchema === 'dark' ? VectorIcons.shareIconWhite : VectorIcons.shareIconBlack}/>
                             <Text
@@ -330,7 +336,7 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
                             </Text>
                             <SvgXml
                                 xml={colorSchema === 'dark' ? VectorIcons.arrowRightVectorWhite : VectorIcons.arrowRightVectorBlack}/>
-                        </View>
+                        </TouchableOpacity>
 
                         <TouchableOpacity
                             style={Style.deleteOption}

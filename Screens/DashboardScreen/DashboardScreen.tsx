@@ -7,7 +7,7 @@ import {
     ToastAndroid,
     useColorScheme,
     View,
-    AppState, BackHandler, ActivityIndicator
+    AppState, BackHandler, ActivityIndicator, Image
 } from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import Style from "./Style";
@@ -23,23 +23,20 @@ import {
     EventFrequency,
     queryUsageStats, showUsageAccessSettings
 } from '@brighthustle/react-native-usage-stats-manager'
-// import {FlashList} from "@shopify/flash-list";
-const FlashList = lazy(() => import('@shopify/flash-list').then(module => ({default: module.FlashList})));
+const FlashList = lazy(() => import('@shopify/flash-list').then(module=> ({default: module.FlashList})));
 import {faInstagram, faYoutube} from "@fortawesome/free-brands-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
 import AppUsageStatContainerStyle from "./AppUsageStatContainerStyle";
-import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {faGamepad} from "@fortawesome/free-solid-svg-icons";
-import {Routes} from "../../Navigation/Routes";
 import {useFocusEffect, useRoute} from "@react-navigation/native";
 import {getUrbanistFontFamily} from "../../Assets/Fonts/helper";
+const { AppUsageModule } = NativeModules;
 
 const DashboardScreen = ({navigation}: { navigation: any }) => {
     const appsInstalled = '12';
     const dailyScreenTime = "3h 12m";
     const colorSchema = useColorScheme();
-    const insets = useSafeAreaInsets();
     const darkModeGradientColorList = ['#3f3c3c', '#313334', '#1a1a1a'];
     const lightModeGradientColorList = ['#c6c6d2', '#d0d0e8', '#b8c0c2'];
     const currentAppListView = 'Today';
@@ -50,8 +47,14 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
         {label: 'Weekly', value: 'weekly'},
         {label: 'Monthly', value: 'monthly'},
     ]);
+    const INTERVAL = {
+        DAILY: 'daily',
+        WEEKLY: 'weekly',
+        MONTHLY: 'monthly',
+    }
     const [permissionGranted, setPermissionGranted] = useState(false);
     const [backPressedTime, setBackPressedTime] = useState(0);
+    const [appUsageData, setAppUsageData] = useState('');
     useFocusEffect(
         useCallback(() => {
             const onBackPress = () => {
@@ -107,8 +110,7 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
 
         const appStateListener = AppState.addEventListener("change", (nextAppState) => {
             if (nextAppState === "active") {
-                checkPermission().then(r => {
-                });
+                checkPermission().then(r => {});
             }
         });
 
@@ -118,6 +120,18 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
     }, []);
 
     const {UsageStatsModule} = NativeModules;
+    const loadAppUsageData = async (interval: string) => {
+        return await AppUsageModule.getUsageStats(interval);
+    }
+    useEffect(() => {
+        loadAppUsageData(INTERVAL.DAILY)
+            .then(value => {
+                setAppUsageData(value);
+            })
+            .catch(error => {
+                console.error("appUsageData: " + error);
+            })
+    }, []);
 
     const appData = [
         {
@@ -161,7 +175,7 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
     interface AppDataItem {
         appName: string;
         icon: IconDefinition;
-        usageTime: string;
+        totalTimeInForeground: string;
         category: string;
     }
 
@@ -171,10 +185,9 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
                 style={AppUsageStatContainerStyle.linearGradient}
                 colors={colorSchema === 'dark' ? darkModeGradientColorList : lightModeGradientColorList}>
                 <View style={AppUsageStatContainerStyle.appStat}>
-                    <FontAwesomeIcon
-                        icon={item.icon}
-                        color={"#FFF"}
-                        size={37}
+                    <Image
+                        source={{uri: `data:image/png;base64,${item.icon}`}}
+                        style={{ width: 40, height: 40, marginRight: 10 }}
                     />
                     <View style={AppUsageStatContainerStyle.appNameAndCategoryNest}>
                         <Text
@@ -193,7 +206,7 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
                                         {alignSelf: 'baseline'}
                                     ]}
                             >
-                                {item.category}
+                                    Games
                             </Text>
                         </View>
                     </View>
@@ -204,7 +217,7 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
                                 AppUsageStatContainerStyle.appNameText,
                                 {}
                             ]}>
-                            {item.usageTime}
+                            {item.totalTimeInForeground}
                         </Text>
                         <SvgXml
                             style={{marginTop: verticalScale(2.5)}}
@@ -323,7 +336,7 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
                     <FlashList
                         showsVerticalScrollIndicator={false}
                         renderItem={renderAppUsage}
-                        data={appData}
+                        data={appUsageData}
                         estimatedItemSize={65}/>
                 </View>
             </Suspense>

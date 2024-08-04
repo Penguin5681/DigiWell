@@ -3,12 +3,18 @@ package com.digiwell
 import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.util.Base64
 import androidx.annotation.RequiresApi
 import com.facebook.react.bridge.*
 import com.facebook.react.module.annotations.ReactModule
+import java.io.ByteArrayOutputStream
 import java.util.*
 
 @ReactModule(name = AppUsageModule.NAME)
@@ -35,26 +41,56 @@ class AppUsageModule(reactContext: ReactApplicationContext) : ReactContextBaseJa
         }
 
         val stats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime)
-        val result = WritableNativeArray()
+        val appDataList = mutableListOf<WritableMap>()
 
         for (usageStat in stats) {
-            val appInfo = WritableNativeMap()
-            appInfo.putString("packageName", usageStat.packageName)
-            appInfo.putDouble("totalTimeInForeground", usageStat.totalTimeInForeground.toDouble())
-
             val pm = reactApplicationContext.packageManager
             try {
-                val icon = pm.getApplicationIcon(usageStat.packageName)
-                appInfo.putString("icon", iconToBase64(icon))
-            } catch (e: PackageManager.NameNotFoundException) {
-                appInfo.putString("icon", "")
-            }
+                val appInfo = pm.getApplicationInfo(usageStat.packageName, 0)
+                if (usageStat.totalTimeInForeground == 0L) {
+                    continue
+                }
 
-            result.pushMap(appInfo)
+                // if ((appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0) {
+                //    continue
+                // }
+
+                val appData = WritableNativeMap()
+                appData.putString("packageName", usageStat.packageName)
+                appData.putString("appName", pm.getApplicationLabel(appInfo).toString())
+                appData.putString("totalTimeInForeground", formatTime(usageStat.totalTimeInForeground))
+
+                val icon = pm.getApplicationIcon(usageStat.packageName)
+                appData.putString("icon", iconToBase64(icon))
+
+                appDataList.add(appData)
+
+//                Log.d("AppUsageModule", "App: ${pm.getApplicationLabel(appInfo)}, Package: ${usageStat.packageName}, Time: ${usageStat.totalTimeInForeground}")
+            } catch (e: PackageManager.NameNotFoundException) {}
+        }
+
+        appDataList.sortByDescending { it.getString("totalTimeInForeground") }
+
+        val result = WritableNativeArray()
+        for (appData in appDataList) {
+            result.pushMap(appData)
         }
 
         promise.resolve(result)
     }
+
+    private fun formatTime(timeInMillis: Long): String {
+        val totalMinutes = timeInMillis / 1000 / 60
+        val hours = totalMinutes / 60
+        val minutes = totalMinutes % 60
+
+        return if (hours > 0) {
+            "${hours}h ${minutes}m"
+        } else {
+            "${minutes}m"
+        }
+    }
+
 
     private fun iconToBase64(icon: Drawable): String {
         val bitmap = drawableToBitmap(icon)

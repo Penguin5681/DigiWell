@@ -25,7 +25,6 @@ import storage from "@react-native-firebase/storage";
 import firestore from "@react-native-firebase/firestore";
 import {generateRandomUsername} from "../../Assets/RandomUsernameGenerator/RandomUsernameGenerator";
 import {useFocusEffect} from "@react-navigation/native";
-const { AppUsageModule } = NativeModules;
 
 const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
@@ -324,8 +323,7 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
 
                         <TouchableOpacity style={Style.shareOption}
                             onPress={async () => {
-                                const usageData = await AppUsageModule.getUsageStats('daily');
-                                console.log(usageData);
+
                             }}
                         >
                             <SvgXml

@@ -53,7 +53,7 @@ const RegistrationOTPVerificationScreen = ({navigation}: { navigation: any }) =>
     const sendOtp = async () => {
         try {
             await functions().httpsCallable('sendOtpEmail')({email: email});
-            navigation.navigate(Routes.RegistrationOTPVerificationScreen, {email, password});
+            navigation.navigate('RegistrationOTPVerificationScreen', {email, password});
         } catch (error) {
             console.log(error)
         }
@@ -72,7 +72,6 @@ const RegistrationOTPVerificationScreen = ({navigation}: { navigation: any }) =>
                     setError(user.error);
                     ToastAndroid.show('Registration Failed', ToastAndroid.SHORT);
                 } else {
-                    navigation.navigate(Routes.AvatarUploadScreen)
                     setError('');
                     setSuccess("Registration Success");
                     await firestore()
@@ -82,6 +81,7 @@ const RegistrationOTPVerificationScreen = ({navigation}: { navigation: any }) =>
                         .then(() => {
                             console.log("Account Created on: " + getFormattedDate());
                         })
+                    navigation.navigate(Routes.DashboardScreen)
                     ToastAndroid.show('Registration Complete', ToastAndroid.SHORT);
                 }
             }

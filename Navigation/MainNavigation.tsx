@@ -76,7 +76,7 @@ const MainNavigation: React.FC = () => {
                               component={PasswordChangedScreen}/>
             <StackBase.Screen name={Routes.PasswordResetLinkSentSuccessfullyScreen}
                               component={PasswordResetLinkSentSuccessfullyScreen}/>
-            <StackBase.Screen name={Routes.HomePage}
+            <StackBase.Screen name={Routes.DashboardScreen}
                               component={BottomTabNavigation}/>
             <StackBase.Screen name={Routes.ProfileSettingScreen}
                               component={ProfileSettingsScreen}/>

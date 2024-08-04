@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import Style from "./Style";
 import {
+    Alert, BackHandler,
     Image,
     NativeModules,
     SafeAreaView,
@@ -23,14 +24,35 @@ import {useProviderData} from "../../context/ProviderDataContext.tsx";
 import storage from "@react-native-firebase/storage";
 import firestore from "@react-native-firebase/firestore";
 import {generateRandomUsername} from "../../Assets/RandomUsernameGenerator/RandomUsernameGenerator";
+import {useFocusEffect} from "@react-navigation/native";
 
 const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
     const [defaultEmail, setDefaultEmail] = useState('');
     const [defaultImageUrl, setDefaultImageUrl] = useState('');
     const [defaultDisplayName, setDefaultDisplayName] = useState('');
-    const [] = useState('')
-    // This data will be realtime soon
+    const [backPressedTime, setBackPressedTime] = useState(0)
+    useFocusEffect(
+        useCallback(() => {
+            const onBackPress = () => {
+                const BACK_BUTTON_DELAY = 2000;
+                const currentTime = Date.now();
+
+                if (backPressedTime && currentTime - backPressedTime < BACK_BUTTON_DELAY) {
+                    BackHandler.exitApp();
+                } else {
+                    ToastAndroid.show("Press back again to exit", ToastAndroid.SHORT);
+                    setBackPressedTime(currentTime);
+                }
+                return true;
+            };
+
+            BackHandler.addEventListener('hardwareBackPress', onBackPress);
+            return () => {
+                BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+            }
+        }, [backPressedTime])
+    )
 
 
     // TODO: Will write the core backend soon, (saturday is the day)
@@ -128,7 +150,8 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
         }
     }, []);
 
-    const { KillApp } = NativeModules;
+    const {KillApp} = NativeModules;
+
     function killApp() {
         KillApp.kill();
     }
@@ -144,17 +167,17 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
             <View style={Style.userDetailContainer}>
                 <Image
                     style={[Style.userImage, {borderColor: colorSchema === 'dark' ? '#FFF' : '#000'}]}
-                    // source={require('../../Assets/Images/monkey.jpg')}
                     source={{uri: defaultImageUrl}}
                 />
-                <View style={Style.userLabelContainer}>
-                    <OptionsHeaderText
-                        text={defaultDisplayName}
-                        color={'#309CFF'}
-                        fontSize={scaleFontSize(30)}
-                        marginBottom={0}
-                        onPress={() => {
-                        }}/>
+                <View style={[Style.userLabelContainer, {alignItems: 'baseline'}]}>
+                    <View style={{width: 'auto'}}>
+                        <OptionsHeaderText
+                            text={defaultDisplayName}
+                            color={'#309CFF'}
+                            fontSize={scaleFontSize(25)}
+                            marginBottom={0}
+                            onPress={() => null}/>
+                    </View>
                     <OptionsHeaderText
                         text={'Surat'}
                         color={colorSchema === 'dark' ? '#FFF' : '#000'}
@@ -312,13 +335,32 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
                         <TouchableOpacity
                             style={Style.deleteOption}
                             onPress={() => {
-                                firebase.auth()
-                                    .currentUser
-                                    ?.delete()
-                                    .then(() => {
-                                        ToastAndroid.show("Account Deleted", ToastAndroid.SHORT);
-                                        navigation.navigate(Routes.WelcomeScreen);
-                                    })
+                                Alert.alert(
+                                    'Are you sure?',
+                                    'Your Account will be deleted permanently',
+                                    [
+                                        {
+                                            text: 'Cancel',
+                                            onPress: () => {
+                                                console.log("Dismiss");
+                                            },
+                                            style: 'cancel',
+                                        },
+                                        {
+                                            text: 'Confirm Delete',
+                                            onPress: () => {
+                                                firebase
+                                                    .auth()
+                                                    .currentUser
+                                                    ?.delete()
+                                                    .then(() => {
+                                                        navigation.navigate(Routes.WelcomeScreen);
+                                                    })
+                                            },
+                                            style: 'cancel',
+                                        }
+                                    ]
+                                )
                             }}
                         >
                             <SvgXml

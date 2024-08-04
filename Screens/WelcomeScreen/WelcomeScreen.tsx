@@ -22,13 +22,14 @@ import {scaleFontSize} from "../../Assets/ScalingUtility/ScalingUtility";
 import AwesomeButton from "react-native-really-awesome-button";
 import {useProviderData} from "../../context/ProviderDataContext.tsx";
 import {showUsageAccessSettings} from "@brighthustle/react-native-usage-stats-manager";
+import DashboardScreen from "../DashboardScreen/DashboardScreen.tsx";
 const WelcomeScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
     const {setProviderData} = useProviderData();
     useEffect(() => {
         return auth().onAuthStateChanged(user => {
             if (user) {
-                navigation.navigate(Routes.HomePage);
+                navigation.navigate(DashboardScreen);
                 setProviderData(user.providerData[0].providerId);
             }
         });
@@ -64,7 +65,7 @@ const WelcomeScreen = ({navigation}: { navigation: any }) => {
                     navigation.navigate(Routes.DashboardScreen); // Navigate immediately if permission is granted
                 }
                 else {
-                    if (hasPermission){
+                    if (hasPermission) {
                         navigation.navigate(Routes.DashboardScreen);
                     }
                     if (!hasPermission) {

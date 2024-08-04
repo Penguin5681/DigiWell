@@ -7,7 +7,7 @@ import {
     ToastAndroid,
     useColorScheme,
     View,
-    AppState, BackHandler
+    AppState, BackHandler, ActivityIndicator
 } from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import Style from "./Style";
@@ -17,13 +17,14 @@ import LabelText from "../../Components/LabelText/LabelText.tsx";
 import {scaleFontSize, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
 import LinearGradient from "react-native-linear-gradient";
 import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {lazy, Suspense, useCallback, useEffect, useState} from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 import {
     EventFrequency,
     queryUsageStats, showUsageAccessSettings
 } from '@brighthustle/react-native-usage-stats-manager'
-import {FlashList} from "@shopify/flash-list";
+// import {FlashList} from "@shopify/flash-list";
+const FlashList = lazy(() => import('@shopify/flash-list').then(module => ({default: module.FlashList})));
 import {faInstagram, faYoutube} from "@fortawesome/free-brands-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
@@ -72,6 +73,7 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
             }
         }, [backPressedTime])
     )
+
     interface RouteParams {
         providerData: string;
     }
@@ -315,14 +317,16 @@ const DashboardScreen = ({navigation}: { navigation: any }) => {
                     </View>
                 </View>
             </View>
-            <View style={AppUsageStatContainerStyle.flashListContainer}>
-                <FlashList
-                    showsVerticalScrollIndicator={false}
-                    renderItem={renderAppUsage}
-                    data={appData}
-                    estimatedItemSize={65}
-                />
-            </View>
+            <Suspense
+                fallback={<ActivityIndicator size={'large'} color={colorSchema === 'dark' ? '#FFFFFF' : '#000000'}/>}>
+                <View style={AppUsageStatContainerStyle.flashListContainer}>
+                    <FlashList
+                        showsVerticalScrollIndicator={false}
+                        renderItem={renderAppUsage}
+                        data={appData}
+                        estimatedItemSize={65}/>
+                </View>
+            </Suspense>
         </SafeAreaView>
     )
 }

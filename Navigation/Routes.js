@@ -12,7 +12,6 @@ export const Routes = {
     RegistrationOTPVerificationScreen: "RegistrationOTPVerificationScreen",
     CreateNewPasswordPageScreen: "CreateNewPasswordPageScreen",
     PasswordChangedScreen: 'PasswordChangedScreen',
-    HomePage: "HomePage",
     DashboardScreen: "DashboardScreen",
     AppUsageScreen: "AppUsageScreen",
     DetailedAppUsageScreen: "DetailedAppUsageScreen",

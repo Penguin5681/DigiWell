@@ -1,7 +1,7 @@
 import React, {SetStateAction, useState} from "react";
 import {Appearance, Image, SafeAreaView, Text, useColorScheme, View} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
-import Style from "./Style";
+import Style from "./Style.ts";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {SvgXml} from "react-native-svg";
 import {horizontalScale, scaleFontSize, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";

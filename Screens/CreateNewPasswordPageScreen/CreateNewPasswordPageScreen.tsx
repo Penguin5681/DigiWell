@@ -1,5 +1,5 @@
 import {Appearance, ImageBackground, SafeAreaView, StyleSheet, Text, useColorScheme, View} from "react-native";
-import Style from "./Style";
+import Style from "./Style.ts";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes.ts";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";

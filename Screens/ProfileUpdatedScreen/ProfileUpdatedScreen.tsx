@@ -1,6 +1,6 @@
 import {Image, SafeAreaView, Text, useColorScheme, View} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
-import Style from "./Style";
+import Style from "./Style.ts";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
 

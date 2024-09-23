@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Appearance, Image, ImageBackground, SafeAreaView, Switch, Text, useColorScheme, View} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import SettingsPageHeaderText from "../../Components/SettingsPageHeaderText/SettingsPageHeaderText.tsx";
-import Style from "./Style";
+import Style from "./Style.ts";
 import {SvgXml} from "react-native-svg";
 import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
 import {scaleFontSize, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";

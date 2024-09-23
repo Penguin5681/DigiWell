@@ -16,7 +16,7 @@ import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpBut
 import LoginMethodText from "../../Components/LoginMethodText/LoginMethodText.tsx";
 import GoogleButton from "../../Components/GoogleButton/GoogleButton.tsx";
 import FacebookButton from "../../Components/FacebookButton/FacebookButton.tsx";
-import Style from "./Style";
+import Style from "./Style.ts";
 import functions from '@react-native-firebase/functions';
 import {GoogleSignin} from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth";

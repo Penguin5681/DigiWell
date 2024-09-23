@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from "react";
-import Style from "./Style";
+import Style from "./Style.ts";
 import {
     Alert, BackHandler,
     Image,

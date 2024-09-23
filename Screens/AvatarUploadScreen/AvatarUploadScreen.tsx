@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import React from "react";
-import Style from "./Style";
+import Style from "./Style.ts";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes.ts";

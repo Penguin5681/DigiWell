@@ -27,7 +27,7 @@ const FlashList = lazy(() => import('@shopify/flash-list').then(module=> ({defau
 import {faInstagram, faYoutube} from "@fortawesome/free-brands-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
-import AppUsageStatContainerStyle from "./AppUsageStatContainerStyle";
+import AppUsageStatContainerStyle from "./AppUsageStatContainerStyle.ts";
 import {faGamepad} from "@fortawesome/free-solid-svg-icons";
 import {useFocusEffect, useRoute} from "@react-navigation/native";
 import {getUrbanistFontFamily} from "../../Assets/Fonts/helper";

@@ -65,6 +65,10 @@ const CreateAnAccount = ({navigation} : {navigation : any}) => {
                         text={'Create an Account'}
                         textColor={'#FFF'}
                     />
+
+                    <Text style={Style.subHeaderText}>
+                        Please verify your email to continue
+                    </Text>
                 </View>
             </ImageBackground>
 
@@ -101,8 +105,7 @@ const CreateAnAccount = ({navigation} : {navigation : any}) => {
                         if (next) {
                             next();
                         }
-                    }}
-                >
+                    }}>
                     <Text
                         style={{
                             color: colorSchema === 'dark' ? '#FFF' : '#000',

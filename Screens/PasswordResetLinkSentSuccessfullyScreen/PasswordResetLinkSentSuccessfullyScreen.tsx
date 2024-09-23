@@ -3,7 +3,7 @@ import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import Style from "./Style";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
-import {Routes} from "../../Navigation/Routes";
+import {Routes} from "../../Navigation/Routes.ts";
 import {useEffect} from "react";
 
 const PasswordResetLinkSentSuccessfullyScreen = ({navigation}: { navigation: any }) => {

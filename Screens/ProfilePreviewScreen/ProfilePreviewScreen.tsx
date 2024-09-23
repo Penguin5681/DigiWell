@@ -18,7 +18,7 @@ import {scaleFontSize, verticalScale} from "../../Assets/ScalingUtility/ScalingU
 import {SvgXml} from "react-native-svg";
 import {VectorIcons} from "../../Assets/Images/VectorIcons";
 import LinearGradient from 'react-native-linear-gradient';
-import {Routes} from "../../Navigation/Routes";
+import {Routes} from "../../Navigation/Routes.ts";
 import {firebase} from "@react-native-firebase/auth";
 import {useProviderData} from "../../context/ProviderDataContext.tsx";
 import storage from "@react-native-firebase/storage";

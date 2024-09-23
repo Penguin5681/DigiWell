@@ -10,9 +10,9 @@ import {
     useColorScheme,
     View
 } from "react-native";
-import Style from "../ForgetPasswordOTPVerificationScreen/Style";
+import Style from "../ForgetPasswordOTPVerificationScreen/Style.ts";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
-import {Routes} from "../../Navigation/Routes";
+import {Routes} from "../../Navigation/Routes.ts";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import {OtpInput} from "react-native-otp-entry";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";

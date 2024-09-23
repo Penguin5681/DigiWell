@@ -12,7 +12,7 @@ import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import React, {SetStateAction, useEffect, useState} from "react";
 import Style from "./Style";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
-import {Routes} from "../../Navigation/Routes";
+import {Routes} from "../../Navigation/Routes.ts";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import EditText from "../../Components/EditText/EditText.tsx";
 import AwesomeButton from "react-native-really-awesome-button";

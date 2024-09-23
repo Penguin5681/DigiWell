@@ -20,4 +20,5 @@ export const Routes = {
     AppLimitsScreen: 'AppLimitsScreen',
     PasswordResetLinkSentSuccessfullyScreen: "PasswordResetLinkSentSuccessfullyScreen",
     CreateUsernameScreen: "CreateUsernameScreen",
+    CreateAnAccount: "CreateAnAccount",
 };

@@ -10,7 +10,7 @@ import {
     AppState, BackHandler, ActivityIndicator, Image
 } from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
-import Style from "./Style";
+import Style from "./Style.ts";
 import {SvgXml} from "react-native-svg";
 import {VectorIcons} from "../../Assets/Images/VectorIcons";
 import LabelText from "../../Components/LabelText/LabelText.tsx";

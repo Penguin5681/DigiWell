@@ -11,7 +11,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faHome} from "@fortawesome/free-solid-svg-icons/faHome";
 import Style from "../Assets/BottomNavigationBarStyle/Style";
 import {faClock, faGear, faHourglassHalf, faSearch, faUser, faWarning} from "@fortawesome/free-solid-svg-icons";
-import {Routes} from "./Routes";
+import {Routes} from "./Routes.ts";
 import DashboardScreen from "../Screens/DashboardScreen/DashboardScreen.tsx";
 import AppUsageScreen from "../Screens/AppUsageScreen/AppUsageScreen.tsx";
 import DetailedAppUsageScreen from "../Screens/DetailedAppUsageScreen/DetailedAppUsageScreen.tsx";

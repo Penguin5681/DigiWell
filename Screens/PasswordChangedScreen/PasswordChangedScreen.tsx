@@ -4,7 +4,7 @@ import Style from "./Style";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import {getUrbanistFontFamily} from "../../Assets/Fonts/helper";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
-import {Routes} from "../../Navigation/Routes";
+import {Routes} from "../../Navigation/Routes.ts";
 
 const PasswordChangedScreen = ({navigation}: {navigation: any}) => {
     const colorSchema = useColorScheme();

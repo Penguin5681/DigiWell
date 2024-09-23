@@ -7,7 +7,7 @@ import {SvgXml} from "react-native-svg";
 import OptionsHeaderText from "../../Components/OptionsHeaderText/OptionsHeaderText.tsx";
 import {scaleFontSize, verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
-import {Routes} from "../../Navigation/Routes";
+import {Routes} from "../../Navigation/Routes.ts";
 import setColorScheme = Appearance.setColorScheme;
 import addChangeListener = Appearance.addChangeListener;
 

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Style from "./Style";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
-import {Routes} from "../../Navigation/Routes";
+import {Routes} from "../../Navigation/Routes.ts";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import EditText from "../../Components/EditText/EditText.tsx";
 import {SetStateAction, useState} from "react";

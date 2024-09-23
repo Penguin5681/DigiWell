@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
-import {Routes} from "../../Navigation/Routes";
+import {Routes} from "../../Navigation/Routes.ts";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import EditText from "../../Components/EditText/EditText.tsx";
 import React, {SetStateAction, useState} from "react";
@@ -65,22 +65,6 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
             return null;
         }
     };
-
-
-    const signInWithFacebook = async () => {
-        const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
-
-        if (result.isCancelled) {
-            throw 'User cancelled the login process';
-        }
-        const data = await AccessToken.getCurrentAccessToken();
-        if (!data) {
-            throw 'Something went wrong obtaining access token';
-        }
-        const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
-        return auth().signInWithCredential(facebookCredential);
-    };
-
 
     return (
         <SafeAreaView style={[GlobalStyle.globalAppBackground, GlobalStyle.globalBackgroundFlex]}>
@@ -202,21 +186,11 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
                                     onPress={() => {
                                         signInWithGoogle().then(data => {
                                             console.log(data);
-                                            navigation.navigate(Routes.HomePage);
+                                            navigation.navigate(Routes.DashboardScreen);
                                         })
                                     }}
                                     rightMargin={12}
                                     buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
-                                <FacebookButton onPress={() => {
-                                    signInWithFacebook().then(data => {
-                                        try {
-                                            navigation.navigate(Routes.HomePage);
-                                            console.log('user data => ', data);
-                                        } catch (error) {
-                                            console.log(error);
-                                        }
-                                    });
-                                }} buttonBackgroundColor={colorSchema === "dark" ? "#FFF" : "#E5E4E2"}/>
                             </View>
                         </View>
                     </View>

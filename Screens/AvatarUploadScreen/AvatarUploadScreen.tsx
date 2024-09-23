@@ -14,7 +14,7 @@ import React from "react";
 import Style from "./Style";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import BackButton from "../../Components/BackButton/BackButton.tsx";
-import {Routes} from "../../Navigation/Routes";
+import {Routes} from "../../Navigation/Routes.ts";
 import ImagePicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
 import {firebase} from "@react-native-firebase/auth";

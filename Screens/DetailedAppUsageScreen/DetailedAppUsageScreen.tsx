@@ -1,6 +1,6 @@
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import { SafeAreaView, Text } from "react-native";
-import { Routes } from "../../Navigation/Routes";
+import { Routes } from "../../Navigation/Routes.ts";
 
 const DetailedAppUsageScreen = () => {
     return (

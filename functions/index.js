@@ -24,7 +24,7 @@ exports.sendOtpEmail = functions.https.onCall(async (data, context) => {
         text: `Your One-Time Password (OTP) is: ${otp}
 ` +
             "\n" +
-            "This OTP is valid for 5 minutes. Please use it to complete your Registration/Login process.\n" +
+            "This OTP is valid for 10 minutes. Please use it to complete your Registration/Login process.\n" +
             "\n" +
             "Thank you,\n" +
             "DigiWell Team\n" +
@@ -38,7 +38,7 @@ exports.sendOtpEmail = functions.https.onCall(async (data, context) => {
         await admin.firestore().collection('otps').doc(email).set({
             otp: otp,
             createdAt: admin.firestore.FieldValue.serverTimestamp(),
-            expiresAt: admin.firestore.Timestamp.fromDate(new Date(Date.now() + 10 * 60000)) // 10 minutes
+            expiresAt: admin.firestore.Timestamp.fromDate(new Date(Date.now() + 10 * 60000)) // the otp be valid for 10 minutes, haven't tested this code yet. My impatient ass can't wait for 10 minutes
         });
         console.log(`OTP ${otp} stored for ${email}`);
         return {success: true};

@@ -6,6 +6,7 @@ import {Platform} from "react-native";
 import SplashScreen from "react-native-splash-screen";
 import {AuthProvider} from "./Components/AuthContext/AuthContext.tsx";
 import {ProviderDataProvider} from "./context/ProviderDataContext.tsx";
+import FlashMessage from "react-native-flash-message";
 
 const App = () => {
     useEffect(() => {
@@ -19,6 +20,7 @@ const App = () => {
                     <MainNavigation/>
                 </NavigationContainer>
             </AuthProvider>
+            <FlashMessage position={'top'}/>
         </ProviderDataProvider>
     );
 };

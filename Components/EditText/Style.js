@@ -5,6 +5,7 @@ import {getUrbanistFontFamily} from "../../Assets/Fonts/helper";
 
 const Style = StyleSheet.create({
     inputStyle: {
+        flex: 1,
         paddingTop: verticalScale(14.6),
         paddingBottom: verticalScale(14.6),
         paddingLeft: horizontalScale(16.6),

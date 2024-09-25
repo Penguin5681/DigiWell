@@ -22,7 +22,7 @@ const Style = StyleSheet.create({
         backgroundColor: '#000'
     },
     otpInputStyle: {
-        marginTop: verticalScale(32),
+        marginTop: verticalScale(24),
         marginHorizontal: horizontalScale(40),
     },
     verifyButtonContainer: {

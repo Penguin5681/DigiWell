@@ -11,7 +11,7 @@ import BackButton from "../../Components/BackButton/BackButton.tsx";
 import {Routes} from "../../Navigation/Routes.ts";
 import HeaderText from "../../Components/HeaderText/HeaderText.tsx";
 import EditText from "../../Components/EditText/EditText.tsx";
-import React, {SetStateAction, useState} from "react";
+import React, {SetStateAction, useEffect, useState} from "react";
 import LoginSignUpButton from "../../Components/LoginSignUpButton/LoginSignUpButton.tsx";
 import LoginMethodText from "../../Components/LoginMethodText/LoginMethodText.tsx";
 import GoogleButton from "../../Components/GoogleButton/GoogleButton.tsx";
@@ -24,18 +24,27 @@ import {AccessToken, LoginManager} from "react-native-fbsdk-next";
 import KeyboardCoveringContainer from "../../Components/KeboardCoveringContainer/KeyboardCoveringContainer";
 import AwesomeButton from "react-native-really-awesome-button";
 import {loginUser} from "../../api/user";
+import {useRoute} from "@react-navigation/native";
 
 
 const RegisterScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();
     const [defaultEmailValue, setDefaultEmailValue] = useState("");
+    const [defaultUsernameValue, setDefaultUsernameValue] = useState("");
     const [defaultPasswordValue, setDefaultPasswordValue] = useState("");
     const [defaultConfirmPasswordValue, setDefaultConfirmPasswordValue] = useState("");
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
     const firebaseAuthProvider = 'firebase.com';
     const googleAuthProvider = 'google.com';
-    const facebookAuthProvider = 'facebook.com';
+
+    interface RouteParams {
+        defaultEmailValue: string,
+    }
+
+    const route = useRoute();
+    const routeParams = route.params as RouteParams | undefined;
+    const email = routeParams?.defaultEmailValue;
 
     const sendOtp = async () => {
         try {
@@ -65,6 +74,10 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
             return null;
         }
     };
+
+    useEffect(() => {
+        setDefaultEmailValue(email ? email : "");
+    }, []);
 
     return (
         <SafeAreaView style={[GlobalStyle.globalAppBackground, GlobalStyle.globalBackgroundFlex]}>
@@ -111,11 +124,27 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
                             textColor={colorSchema === "light" ? "#000" : "#FFF"}
                             placeHolderTextColor={colorSchema === "light" ? "#000" : "#FFF"}
                             backgroundColor={colorSchema === "light" ? "#E5E4E2" : "#303030"}
+                            leftMargin={0}
+                            rightMargin={0}
                             inputType={"email"}
                             value={defaultEmailValue}
                             onChangeText={(value: SetStateAction<string>) => {
                                 console.log(value);
                                 setDefaultEmailValue((value));
+                            }}/>
+
+                        <EditText
+                            text={"Username"}
+                            textColor={colorSchema === "light" ? "#000" : "#FFF"}
+                            placeHolderTextColor={colorSchema === "light" ? "#000" : "#FFF"}
+                            backgroundColor={colorSchema === "light" ? "#E5E4E2" : "#303030"}
+                            leftMargin={10}
+                            rightMargin={0}
+                            inputType={"text"}
+                            value={defaultUsernameValue}
+                            onChangeText={(value: SetStateAction<string>) => {
+                                console.log(value);
+                                setDefaultUsernameValue((value));
                             }}/>
                     </View>
 
@@ -125,6 +154,8 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
                             textColor={colorSchema === "light" ? "#000" : "#FFF"}
                             placeHolderTextColor={colorSchema === "light" ? "#000" : "#FFF"}
                             backgroundColor={colorSchema === "light" ? "#E5E4E2" : "#303030"}
+                            leftMargin={0}
+                            rightMargin={0}
                             inputType={"password"}
                             value={defaultPasswordValue}
                             onChangeText={(value: SetStateAction<string>) => {
@@ -139,6 +170,8 @@ const RegisterScreen = ({navigation}: { navigation: any }) => {
                             textColor={colorSchema === "light" ? "#000" : "#FFF"}
                             placeHolderTextColor={colorSchema === "light" ? "#000" : "#FFF"}
                             backgroundColor={colorSchema === "light" ? "#E5E4E2" : "#303030"}
+                            leftMargin={0}
+                            rightMargin={0}
                             inputType={"password"}
                             value={defaultConfirmPasswordValue}
                             onChangeText={(value: SetStateAction<string>) => {

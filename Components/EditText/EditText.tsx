@@ -10,6 +10,8 @@ interface EditTextProps {
     backgroundColor: string,
     placeHolderTextColor: string,
     textColor: string,
+    leftMargin: number,
+    rightMargin: number,
 }
 
 const inputTypes = ["text", "password", "numeric", "email"];
@@ -33,7 +35,12 @@ const getKeyboardType = (inputType: string) => {
 const EditText = (props: EditTextProps) => {
     return (
         <TextInput
-            style={[Style.inputStyle, {backgroundColor: props.backgroundColor}, {color: props.textColor}]}
+            style={[Style.inputStyle, {
+                backgroundColor: props.backgroundColor,
+                color: props.textColor,
+                marginLeft: props.leftMargin,
+                marginRight: props.rightMargin,
+            }]}
             placeholder={props.text}
             placeholderTextColor={props.placeHolderTextColor}
             value={props.value}
@@ -52,6 +59,8 @@ EditText.propTypes = {
     backgroundColor: PropTypes.string,
     placeHolderTextColor: PropTypes.string,
     textColor: PropTypes.string,
+    leftMargin: PropTypes.number,
+    rightMargin: PropTypes.number,
 }
 
 export default EditText;

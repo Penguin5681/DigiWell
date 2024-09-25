@@ -30,11 +30,7 @@ const RegistrationOTPVerificationScreen = ({navigation}: {navigation: any}) => {
 
 	const route = useRoute();
 	const routeParams = route.params as RouteParams | undefined;
-
 	const email = routeParams?.defaultEmailValue;
-
-	const [success, setSuccess] = useState('');
-	const [error, setError] = useState('');
 
 	const showFlashMessage = (
 		message: string,
@@ -50,7 +46,6 @@ const RegistrationOTPVerificationScreen = ({navigation}: {navigation: any}) => {
 	const sendOtp = async () => {
 		try {
 			await functions().httpsCallable('sendOtpEmail')({email: email});
-			// TODO: navigate somewhere onSuccess()
 		} catch (error) {
 			console.log(error);
 		}
@@ -68,6 +63,7 @@ const RegistrationOTPVerificationScreen = ({navigation}: {navigation: any}) => {
 			const data = result.data as VerifyOtpResponse;
 			if (data.success) {
 				showFlashMessage('OTP has been verified successfully', 'success');
+				navigation.replace(Routes.RegisterScreen, {defaultEmailValue: email});
 			}
 		} catch (error) {
 			showFlashMessage('OTP verification failed', 'danger');
@@ -144,20 +140,19 @@ const RegistrationOTPVerificationScreen = ({navigation}: {navigation: any}) => {
 						focusStickBlinkingDuration={700}
 						focusColor={'#35C2C1'}
 						onTextChange={value => {
-							// setDefaultOTP(value);
 							console.log('onTextChange() => ' + value);
 						}}
 						onFilled={value => {
 							console.log('onFilled() => ' + value);
 							setDefaultOTP(value);
 						}}
-						autoFocus={false}
+						autoFocus={true}
 					/>
 				</View>
 
 				<View style={Style.verifyButtonContainer}>
 					<AwesomeButton
-						style={{marginTop: verticalScale(38)}}
+						style={{marginTop: verticalScale(24)}}
 						backgroundColor={colorSchema === 'dark' ? '#1E232C' : '#E5E4E2'}
 						raiseLevel={0}
 						progress={true}

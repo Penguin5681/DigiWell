@@ -20,6 +20,8 @@ const Style = StyleSheet.create({
         backgroundColor: "#000",
     },
     emailEditTextContainer: {
+        flexDirection: 'row',
+        justifyContent: "space-between",
         marginHorizontal: horizontalScale(27),
         marginTop: verticalScale(15),
         marginBottom: verticalScale(10.8),

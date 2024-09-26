@@ -16,12 +16,14 @@ import React, {SetStateAction, useEffect, useState} from 'react';
 import LoginMethodText from '../../Components/LoginMethodText/LoginMethodText.tsx';
 import GoogleButton from '../../Components/GoogleButton/GoogleButton.tsx';
 import Style from './Style.ts';
-import functions from '@react-native-firebase/functions';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import KeyboardCoveringContainer from '../../Components/KeboardCoveringContainer/KeyboardCoveringContainer';
 import AwesomeButton from 'react-native-really-awesome-button';
 import {useRoute} from '@react-navigation/native';
+import {showMessage} from 'react-native-flash-message';
+import firestore from "@react-native-firebase/firestore";
+import {createUser} from "../../api/user";
 
 const RegisterScreen = ({navigation}: {navigation: any}) => {
 	const colorSchema = useColorScheme();
@@ -32,24 +34,102 @@ const RegisterScreen = ({navigation}: {navigation: any}) => {
 		useState('');
 	const [success, setSuccess] = useState('');
 	const [error, setError] = useState('');
-	const firebaseAuthProvider = 'firebase.com';
-	const googleAuthProvider = 'google.com';
 
 	interface RouteParams {
 		defaultEmailValue: string;
 	}
 
+	const encryptPassword = (password: string, shift: number): string => {
+		return password
+			.split('')
+			.map(char => {
+				const charCode = char.charCodeAt(0);
+				return String.fromCharCode(charCode + shift);
+			})
+			.join('');
+	};
+
+	const decryptPassword = (encrypted: string, shift: number): string => {
+		return encrypted
+			.split('')
+			.map(char => {
+				const charCode = char.charCodeAt(0);
+				return String.fromCharCode(charCode - shift);
+			})
+			.join('');
+	};
+
 	const route = useRoute();
 	const routeParams = route.params as RouteParams | undefined;
 	const email = routeParams?.defaultEmailValue;
+	const shift = 7;
+	const showFlashMessage = (
+		message: string,
+		type: 'success' | 'warning' | 'danger',
+	) => {
+		showMessage({
+			message: message,
+			type: type,
+			statusBarHeight: StatusBar.currentHeight,
+		});
+	};
 
-	const validateUsername = () => {
-		// TODO: Continue from here next day. My eyes are burning
-	}
+	const getCurrentDateTime = () => {
+		const now = new Date();
 
-	const handleSignUp = async () => {
+		const day = String(now.getDate()).padStart(2, '0');
+		const month = String(now.getMonth() + 1).padStart(2, '0');
+		const year = now.getFullYear();
 
-	}
+		const hours = String(now.getHours()).padStart(2, '0');
+		const minutes = String(now.getMinutes()).padStart(2, '0');
+		const seconds = String(now.getSeconds()).padStart(2, '0');
+
+		return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+	};
+
+	const collectData = async (username: string, password: string) => {
+		const sanitizedEmail = email?.replace(/[@.]/g, '_');
+		await firestore()
+			.collection('users')
+			.doc(sanitizedEmail)
+			.set({
+				username: username,
+				email: email,
+				password: encryptPassword(password, shift),
+				accountCreationTime: getCurrentDateTime(),
+			})
+			.then(() => {
+				console.log("Data Collected")
+			})
+			.catch((error) => {
+				console.error(error);
+			})
+	};
+
+	const createUserAccount = async (email: string, password: string) => {
+		let user = await createUser(email, password)
+			.then(() => {
+				console.log("Account created: " + user);
+				collectData(defaultUsernameValue, defaultPasswordValue);
+			})
+			.catch((error: Error) => {
+				console.error(error.message);
+			});
+	};
+
+	const handleUserSignUp = () => {
+		if (defaultUsernameValue.trim() === '') {
+			showFlashMessage("Username can't be empty", 'warning');
+		} else if (!(defaultPasswordValue === defaultConfirmPasswordValue)) {
+			showFlashMessage('Passwords do not match', 'danger');
+		} else {
+			showFlashMessage('Registration Complete', 'success');
+			createUserAccount(defaultEmailValue, defaultPasswordValue)
+				.then(() => null)
+				.catch(() => null);
+		}
+	};
 
 	const signInWithGoogle = async () => {
 		try {
@@ -136,7 +216,7 @@ const RegisterScreen = ({navigation}: {navigation: any}) => {
 							inputType={'email'}
 							value={defaultEmailValue}
 							onChangeText={(value: SetStateAction<string>) => {
-								setDefaultEmailValue(value);
+								// setDefaultEmailValue(value);
 							}}
 						/>
 
@@ -206,10 +286,12 @@ const RegisterScreen = ({navigation}: {navigation: any}) => {
 								)
 							}
 							activeOpacity={0.5}
-							onPress={() => {
-
-							}}
-						>
+							onPress={next => {
+								handleUserSignUp();
+								if (next) {
+									next();
+								}
+							}}>
 							<Text
 								style={{
 									color: colorSchema === 'dark' ? '#FFF' : '#000',

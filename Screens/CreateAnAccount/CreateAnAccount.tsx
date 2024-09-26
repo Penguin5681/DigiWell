@@ -102,6 +102,8 @@ const CreateAnAccount = ({navigation} : {navigation : any}) => {
 						textColor={colorSchema === 'light' ? '#000' : '#FFF'}
 						placeHolderTextColor={colorSchema === 'light' ? '#000' : '#FFF'}
 						backgroundColor={colorSchema === 'light' ? '#E5E4E2' : '#303030'}
+						leftMargin={0}
+						rightMargin={0}
 						inputType={'email'}
 						value={defaultEmailValue}
 						onChangeText={(value: SetStateAction<string>) => {

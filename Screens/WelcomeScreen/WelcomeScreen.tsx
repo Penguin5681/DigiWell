@@ -19,12 +19,10 @@ import {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import OptionsHeaderText from '../../Components/OptionsHeaderText/OptionsHeaderText.tsx';
 import {scaleFontSize} from '../../Assets/ScalingUtility/ScalingUtility';
-import {useProviderData} from '../../context/ProviderDataContext.tsx';
 import {showUsageAccessSettings} from '@brighthustle/react-native-usage-stats-manager';
 
 const WelcomeScreen = ({navigation}: {navigation: any}) => {
     const colorSchema = useColorScheme();
-    const {setProviderData} = useProviderData();
     const [hasPermission, setHasPermission] = useState(false);
     const {KillApp, UsageStatsModule} = NativeModules;
 
@@ -73,8 +71,8 @@ const WelcomeScreen = ({navigation}: {navigation: any}) => {
     useEffect(() => {
         const unsubscribe = auth().onAuthStateChanged(user => {
             if (user) {
-                setProviderData(user.providerData[0].providerId);
-                checkUsageAccessPermission().then(r => null);
+                checkUsageAccessPermission()
+                    .then(r => null);
             }
         });
 

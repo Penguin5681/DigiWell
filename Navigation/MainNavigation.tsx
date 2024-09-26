@@ -56,8 +56,12 @@ const MainNavigation: React.FC = () => {
 					};
 				},
 			}}>
-			<StackBase.Screen name={Routes.WelcomeScreen} component={WelcomeScreen} />
-			<StackBase.Screen name={Routes.LoginScreen} component={LoginScreen} />
+			<StackBase.Screen
+				name={Routes.WelcomeScreen}
+				component={WelcomeScreen} />
+			<StackBase.Screen
+				name={Routes.LoginScreen}
+				component={LoginScreen} />
 			<StackBase.Screen
 				name={Routes.RegisterScreen}
 				component={RegisterScreen}

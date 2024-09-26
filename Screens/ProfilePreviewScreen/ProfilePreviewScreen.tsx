@@ -20,7 +20,6 @@ import {VectorIcons} from "../../Assets/Images/VectorIcons";
 import LinearGradient from 'react-native-linear-gradient';
 import {Routes} from "../../Navigation/Routes.ts";
 import {firebase} from "@react-native-firebase/auth";
-import {useProviderData} from "../../context/ProviderDataContext.tsx";
 import storage from "@react-native-firebase/storage";
 import firestore from "@react-native-firebase/firestore";
 import {generateRandomUsername} from "../../Assets/RandomUsernameGenerator/RandomUsernameGenerator";
@@ -65,12 +64,6 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
 
     const darkModeGradientColorList = ['#0c0c0c', '#4C4E52', '#9FA2A8'];
     const lightModeGradientColorList = ['#c6c6d2', '#d0d0e8', '#97a1a3'];
-    const providerData = useProviderData();
-    const authenticationProvider = providerData.providerData;
-    // possible values: password, google.com,
-    // Will do something about the facebook key hash thing later on; fuck you meta
-    let firebaseUserData = [];
-    let googleUserData = [];
     const fetchProfileImageUrl = async (imagePath: string) => {
         try {
             return await storage()
@@ -126,35 +119,6 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
             console.log("Loaded the default image: " + defaultProfileImageUrl)
         }
     };
-
-    useEffect(() => {
-        try {
-            switch (authenticationProvider) {
-                case 'password':
-                    fetchFirebaseProfile()
-                        .then((response) => {
-
-                        });
-                    break;
-                case 'google.com':
-                    fetchGoogleProfile()
-                        .then((response) => {
-
-                        });
-                    break;
-                default:
-                    console.error("Invalid Authentication")
-            }
-        } catch (error) {
-            throw error;
-        }
-    }, []);
-
-    const {KillApp} = NativeModules;
-
-    function killApp() {
-        KillApp.kill();
-    }
 
     return (
         <SafeAreaView
@@ -379,10 +343,12 @@ const ProfilePreviewScreen = ({navigation}: { navigation: any }) => {
 
                         <TouchableOpacity
                             onPress={() => {
-                                firebase.auth().signOut()
+                                firebase
+                                    .auth()
+                                    .signOut()
                                     .then(() => {
-                                        console.log("Sign out complete")
-                                        killApp();
+                                        console.log("Sign out complete");
+                                        navigation.replace(Routes.WelcomeScreen);
                                     })
                                     .catch(reason => {
                                         console.log(reason)

@@ -66,10 +66,6 @@ const CreateNewPasswordScreen = ({navigation}: {navigation: any}) => {
 		}
 	};
 
-	useEffect(() => {
-		console.log(Routes.CreateNewPasswordScreen + " " + email)
-	}, []);
-
 	return (
 		<SafeAreaView>
 			<ImageBackground

@@ -4,7 +4,7 @@ import {
 	StatusBar,
 	StyleSheet,
 	Text,
-	ToastAndroid,
+	ToastAndroid, TouchableOpacity,
 	useColorScheme,
 	View,
 } from 'react-native';
@@ -133,14 +133,16 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 						/>
 					</View>
 
-					<Text
-						style={Style.forgetPasswordText}
+
+					<TouchableOpacity
 						onPress={() => {
 							console.log('LoginScreen -> ForgetPasswordPage');
 							navigation.navigate(Routes.ForgetPasswordPage);
 						}}>
-						Forgot Password?
-					</Text>
+						<Text style={Style.forgetPasswordText}>
+							Forgot Password?
+						</Text>
+					</TouchableOpacity>
 					{error.length > 0 && <Text style={Style.error}>{error}</Text>}
 					<View style={Style.loginButtonContainer}>
 						<AwesomeButton

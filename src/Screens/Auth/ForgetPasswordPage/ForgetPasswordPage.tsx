@@ -1,6 +1,6 @@
 import {
 	ImageBackground,
-	SafeAreaView,
+	SafeAreaView, StatusBar,
 	StyleSheet,
 	Text,
 	useColorScheme,
@@ -11,28 +11,39 @@ import BackButton from '../../../Components/BackButton/BackButton.tsx';
 import {Routes} from '../../../Navigation/Routes.ts';
 import HeaderText from '../../../Components/HeaderText/HeaderText.tsx';
 import EditText from '../../../Components/EditText/EditText.tsx';
-import {SetStateAction, useState} from 'react';
-import LoginSignUpButton from '../../../Components/LoginSignUpButton/LoginSignUpButton.tsx';
+import React, {SetStateAction, useState} from 'react';
 import functions from '@react-native-firebase/functions';
+import GlobalStyle from "../../../Assets/GlobalStyles/GlobalStyle";
+import AwesomeButton from "react-native-really-awesome-button";
+import {showMessage} from "react-native-flash-message";
 
 const ForgetPasswordPage = ({navigation}: {navigation: any}) => {
 	const colorSchema = useColorScheme();
 	const [defaultEmailValue, setDefaultEmailValue] = useState('');
 	const sendOtp = async () => {
 		try {
-			await functions().httpsCallable('sendOtpEmail')({
+			await functions().httpsCallable('sendPasswordResetOtp')({
 				email: defaultEmailValue,
 			});
+			showFlashMessage('OTP Sent Successfully', 'success');
 			navigation.navigate(Routes.ForgetPasswordOTPVerificationScreen, {
 				defaultEmailValue,
 			});
 		} catch (error) {
+			showFlashMessage('Error sending OTP!', 'danger');
 			console.log(error);
 		}
 	};
+	const showFlashMessage = (message: string, type: 'danger' | 'success' | 'warning') => {
+		showMessage({
+			message: message,
+			type: type,
+			statusBarHeight: StatusBar.currentHeight,
+		})
+	}
 	// @ts-ignore
 	return (
-		<SafeAreaView>
+		<SafeAreaView style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'light' ? '#FFF' : '#000'}]}>
 			<ImageBackground
 				source={require('../../../Assets/Images/GlobalAppAssets/img.png')}
 				style={{flexDirection: 'row', flexWrap: 'wrap'}}
@@ -63,40 +74,47 @@ const ForgetPasswordPage = ({navigation}: {navigation: any}) => {
 				</View>
 			</ImageBackground>
 
-			<View
-				style={[
-					Style.inputFieldContainer,
-					{backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'},
-				]}>
-				<View style={Style.emailEditTextContainer}>
-					<EditText
-						text={'Enter your email'}
-						textColor={colorSchema === 'light' ? '#000' : '#FFF'}
-						placeHolderTextColor={colorSchema === 'light' ? '#000' : '#FFF'}
-						backgroundColor={colorSchema === 'light' ? '#E5E4E2' : '#303030'}
-						inputType={'email'}
-						leftMargin={0}
-						rightMargin={0}
-						value={defaultEmailValue}
-						onChangeText={(value: SetStateAction<string>) => {
-							console.log(value);
-							setDefaultEmailValue(value);
-						}}
-					/>
+			<View style={Style.inputFieldContainer}>
+				<EditText
+					text={'Email'}
+					textColor={colorSchema === 'light' ? '#000' : '#FFF'}
+					placeHolderTextColor={colorSchema === 'light' ? '#000' : '#FFF'}
+					backgroundColor={colorSchema === 'light' ? '#E5E4E2' : '#303030'}
+					leftMargin={0}
+					rightMargin={0}
+					inputType={'email'}
+					value={defaultEmailValue}
+					onChangeText={(value: SetStateAction<string>) => {
+						setDefaultEmailValue(value);
+					}}
+				/>
 
-					<LoginSignUpButton
-						text={'Send Code'}
-						textColor={'#FFF'}
-						buttonColor={'#1E232C'}
-						onPress={() => {
-							sendOtp();
-						}}
-						isEnabled={defaultEmailValue.length >= 6}
-						topMargin={20}
-						buttonRadius={8}
-						leftMargin={0}
-					/>
-				</View>
+				<AwesomeButton
+					style={{marginTop: 25}}
+					backgroundColor={colorSchema === 'dark' ? '#1E232C' : '#E5E4E2'}
+					raiseLevel={0}
+					progress={true}
+					stretch={true}
+					onPress={async (next) => {
+						await sendOtp()
+							.then((response) => null)
+							.catch((error) => null);
+
+						if (next) {
+							next();
+						}
+					}}
+					borderRadius={8}
+					activeOpacity={0.5}>
+					<Text
+						style={{
+							color: colorSchema === 'dark' ? '#FFF' : '#000',
+							fontWeight: '500',
+						}}>
+						Send OTP
+					</Text>
+				</AwesomeButton>
+
 			</View>
 		</SafeAreaView>
 	);

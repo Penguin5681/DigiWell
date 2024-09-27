@@ -31,6 +31,7 @@ const Style = StyleSheet.create({
         textAlign: 'right',
         marginRight: horizontalScale(28),
         marginTop: verticalScale(10.84),
+        marginBottom: verticalScale(-10)
     },
     loginButtonContainer: {
         marginHorizontal: horizontalScale(27),

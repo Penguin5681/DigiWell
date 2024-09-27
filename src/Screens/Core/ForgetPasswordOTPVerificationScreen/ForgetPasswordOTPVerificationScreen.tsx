@@ -1,10 +1,11 @@
 import {
-	Alert,
 	ImageBackground,
 	SafeAreaView,
+	StatusBar,
 	StyleSheet,
 	Text,
 	ToastAndroid,
+	TouchableOpacity,
 	useColorScheme,
 	View,
 } from 'react-native';
@@ -12,12 +13,13 @@ import Style from './Style.ts';
 import BackButton from '../../../Components/BackButton/BackButton.tsx';
 import {Routes} from '../../../Navigation/Routes.ts';
 import HeaderText from '../../../Components/HeaderText/HeaderText.tsx';
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {OtpInput} from 'react-native-otp-entry';
-import LoginSignUpButton from '../../../Components/LoginSignUpButton/LoginSignUpButton.tsx';
 import functions from '@react-native-firebase/functions';
 import {useRoute} from '@react-navigation/native';
-import firebaseAuth from '@react-native-firebase/auth';
+import {showMessage} from 'react-native-flash-message';
+import AwesomeButton from 'react-native-really-awesome-button';
+import {verticalScale} from '../../../Assets/ScalingUtility/ScalingUtility';
 
 const ForgetPasswordOTPVerificationScreen = ({
 												 navigation,
@@ -37,15 +39,23 @@ const ForgetPasswordOTPVerificationScreen = ({
 	const defaultEmailValue = routeParams?.defaultEmailValue;
 	const sendOtp = async () => {
 		try {
-			await functions().httpsCallable('sendOtpEmail')({
+			await functions().httpsCallable('sendPasswordResetOtp')({
 				email: defaultEmailValue,
-			});
-			navigation.navigate(Routes.ForgetPasswordOTPVerificationScreen, {
-				defaultEmailValue,
 			});
 		} catch (error) {
 			console.log(error);
 		}
+	};
+
+	const showFlashMessage = (
+		message: string,
+		type: 'danger' | 'success' | 'warning',
+	) => {
+		showMessage({
+			message: message,
+			type: type,
+			statusBarHeight: StatusBar.currentHeight,
+		});
 	};
 
 	const verifyOtp = async () => {
@@ -54,20 +64,17 @@ const ForgetPasswordOTPVerificationScreen = ({
 				success: boolean;
 			}
 
-			const result = await functions().httpsCallable('verifyOtp')({
+			const result = await functions().httpsCallable('verifyPasswordResetOtp')({
 				email,
 				otp: defaultOTP,
 			});
 			const data = result.data as VerifyOtpResponse;
 			if (data.success) {
-				if (email != null) {
-					await firebaseAuth().sendPasswordResetEmail(email);
-				}
-				navigation.navigate(Routes.PasswordResetLinkSentSuccessfullyScreen);
+				showFlashMessage(`OTP Verification Success!`, 'success');
+				navigation.replace(Routes.CreateNewPasswordScreen, {defaultEmailValue});
 			}
 		} catch (error) {
-			Alert.alert('Error Occurred', `OTP Verification failed`);
-			console.log(error, 'Invalid OTP');
+			showFlashMessage('OTP Verification Failed!', 'danger');
 		}
 	};
 	// @ts-ignore
@@ -122,33 +129,43 @@ const ForgetPasswordOTPVerificationScreen = ({
 				</View>
 
 				<View style={Style.resendOTPContainer}>
-					<Text
-						style={Style.resendOTPText}
+					<TouchableOpacity
 						onPress={() => {
 							sendOtp().catch(error => {
 								console.log('OTP Error Occurred: ' + error);
 							});
 							ToastAndroid.show('OTP Sent', ToastAndroid.SHORT);
 						}}>
-						Didn't receive OTP? Re-send
-					</Text>
+						<Text style={Style.resendOTPText}>Didn't receive OTP? Re-send</Text>
+					</TouchableOpacity>
 				</View>
 
 				<View style={Style.verifyButtonContainer}>
-					<LoginSignUpButton
-						text={'Verify'}
-						textColor={'#FFF'}
-						buttonColor={'#1E232C'}
-						onPress={() => {
-							verifyOtp().catch(error => {
-								console.log(`OTP Verification Occurred: ${error}`);
-							});
+					<AwesomeButton
+						style={{marginTop: verticalScale(38)}}
+						backgroundColor={colorSchema === 'dark' ? '#1E232C' : '#E5E4E2'}
+						raiseLevel={0}
+						progress={true}
+						stretch={true}
+						borderRadius={8}
+						onPress={async next => {
+							await verifyOtp()
+								.then(() => {})
+								.catch(() => {});
+
+							if (next) {
+								next();
+							}
 						}}
-						isEnabled={defaultOTP.length === 4}
-						topMargin={38}
-						buttonRadius={8}
-						leftMargin={0}
-					/>
+						activeOpacity={0.5}>
+						<Text
+							style={{
+								color: colorSchema === 'dark' ? '#FFF' : '#000',
+								fontWeight: '500',
+							}}>
+							Verify
+						</Text>
+					</AwesomeButton>
 				</View>
 			</View>
 		</SafeAreaView>

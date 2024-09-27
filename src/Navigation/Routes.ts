@@ -10,7 +10,7 @@ export const Routes = {
     ProfileSettingScreen: "ProfileSettingScreen",
     ForgetPasswordOTPVerificationScreen: "ForgetPasswordOTPVerificationScreen",
     RegistrationOTPVerificationScreen: "RegistrationOTPVerificationScreen",
-    CreateNewPasswordPageScreen: "CreateNewPasswordPageScreen",
+    CreateNewPasswordScreen: "CreateNewPasswordScreen",
     PasswordChangedScreen: 'PasswordChangedScreen',
     DashboardScreen: "DashboardScreen",
     AppUsageScreen: "AppUsageScreen",

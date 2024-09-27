@@ -24,6 +24,7 @@ import {useRoute} from '@react-navigation/native';
 import {showMessage} from 'react-native-flash-message';
 import firestore from "@react-native-firebase/firestore";
 import {createUser} from "../../../api/user";
+import functions from "@react-native-firebase/functions";
 
 const RegisterScreen = ({navigation}: {navigation: any}) => {
 	const colorSchema = useColorScheme();
@@ -45,16 +46,6 @@ const RegisterScreen = ({navigation}: {navigation: any}) => {
 			.map(char => {
 				const charCode = char.charCodeAt(0);
 				return String.fromCharCode(charCode + shift);
-			})
-			.join('');
-	};
-
-	const decryptPassword = (encrypted: string, shift: number): string => {
-		return encrypted
-			.split('')
-			.map(char => {
-				const charCode = char.charCodeAt(0);
-				return String.fromCharCode(charCode - shift);
 			})
 			.join('');
 	};
@@ -89,10 +80,10 @@ const RegisterScreen = ({navigation}: {navigation: any}) => {
 	};
 
 	const collectData = async (username: string, password: string) => {
-		const sanitizedEmail = email?.replace(/[@.]/g, '_');
+		// const sanitizedEmail = email?.replace(/[@.]/g, '_');
 		await firestore()
 			.collection('users')
-			.doc(sanitizedEmail)
+			.doc(email)
 			.set({
 				username: username,
 				email: email,
@@ -112,20 +103,21 @@ const RegisterScreen = ({navigation}: {navigation: any}) => {
 			.then(() => {
 				console.log("Account created: " + user);
 				collectData(defaultUsernameValue, defaultPasswordValue);
+				showFlashMessage('Registration Complete', 'success');
+				sendWelcomeEmail();
 			})
 			.catch((error: Error) => {
 				console.error(error.message);
 			});
 	};
 
-	const handleUserSignUp = () => {
+	const handleUserSignUp = async () => {
 		if (defaultUsernameValue.trim() === '') {
 			showFlashMessage("Username can't be empty", 'warning');
 		} else if (!(defaultPasswordValue === defaultConfirmPasswordValue)) {
 			showFlashMessage('Passwords do not match', 'danger');
 		} else {
-			showFlashMessage('Registration Complete', 'success');
-			createUserAccount(defaultEmailValue, defaultPasswordValue)
+			await createUserAccount(defaultEmailValue, defaultPasswordValue)
 				.then(() => null)
 				.catch(() => null);
 		}
@@ -149,6 +141,16 @@ const RegisterScreen = ({navigation}: {navigation: any}) => {
 		} catch (error) {
 			console.log('=> Google Sign In', error);
 			return null;
+		}
+	};
+
+	const sendWelcomeEmail = async () => {
+		try {
+			await functions().httpsCallable('sendWelcomeMail')({
+				email: defaultEmailValue,
+			})
+		} catch (error) {
+			console.error("sendWelcomeMail(): function called failed. Check GCC logs");
 		}
 	};
 
@@ -286,8 +288,10 @@ const RegisterScreen = ({navigation}: {navigation: any}) => {
 								)
 							}
 							activeOpacity={0.5}
-							onPress={next => {
-								handleUserSignUp();
+							onPress={async (next) => {
+								await handleUserSignUp()
+									.then(() => {})
+									.catch((error) => {});
 								if (next) {
 									next();
 								}

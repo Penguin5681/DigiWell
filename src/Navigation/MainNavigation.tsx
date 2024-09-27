@@ -6,12 +6,11 @@ import LoginScreen from '../Screens/Auth/LoginScreen/LoginScreen.tsx';
 import RegisterScreen from '../Screens/Auth/RegisterScreen/RegisterScreen.tsx';
 import ForgetPasswordPage from '../Screens/Auth/ForgetPasswordPage/ForgetPasswordPage.tsx';
 import ForgetPasswordOTPVerificationScreen from '../Screens/Core/ForgetPasswordOTPVerificationScreen/ForgetPasswordOTPVerificationScreen.tsx';
-import CreateNewPasswordPageScreen from '../Screens/Auth/CreateNewPasswordPageScreen/CreateNewPasswordPageScreen.tsx';
+import CreateNewPasswordScreen from '../Screens/Auth/CreateNewPasswordScreen/CreateNewPasswordScreen.tsx';
 import PasswordChangedScreen from '../Screens/Auth/PasswordChangedScreen/PasswordChangedScreen.tsx';
 import BottomTabNavigation from './BottomTabNavigation.tsx';
 import RegistrationOTPVerificationScreen from '../Screens/Auth/RegistrationOTPVerificationScreen/RegistrationOTPVerificationScreen.tsx';
 import AvatarUploadScreen from '../Screens/Core/AvatarUploadScreen/AvatarUploadScreen.tsx';
-import PasswordResetLinkSentSuccessfullyScreen from '../Screens/Core/PasswordResetLinkSentSuccessfullyScreen/PasswordResetLinkSentSuccessfullyScreen.tsx';
 import ProfileSettingsScreen from '../Screens/Core/ProfileSettingsScreen/ProfileSettingsScreen.tsx';
 import EditProfileScreen from '../Screens/Core/EditProfileScreen/EditProfileScreen.tsx';
 import CreateUsernameScreen from '../Screens/Auth/CreateUsernameScreen/CreateUsernameScreen.tsx';
@@ -79,16 +78,12 @@ const MainNavigation: React.FC = () => {
 				component={ForgetPasswordOTPVerificationScreen}
 			/>
 			<StackBase.Screen
-				name={Routes.CreateNewPasswordPageScreen}
-				component={CreateNewPasswordPageScreen}
+				name={Routes.CreateNewPasswordScreen}
+				component={CreateNewPasswordScreen}
 			/>
 			<StackBase.Screen
 				name={Routes.PasswordChangedScreen}
 				component={PasswordChangedScreen}
-			/>
-			<StackBase.Screen
-				name={Routes.PasswordResetLinkSentSuccessfullyScreen}
-				component={PasswordResetLinkSentSuccessfullyScreen}
 			/>
 			<StackBase.Screen
 				name={Routes.DashboardScreen}

@@ -108,12 +108,7 @@ const RegistrationOTPVerificationScreen = ({navigation}: {navigation: any}) => {
 				<View id={'back-button'} style={Style.backButton}>
 					<BackButton
 						onPress={() => {
-							navigation.navigate(Routes.RegisterScreen);
-							console.log(
-								Routes.RegistrationOTPVerificationScreen +
-								' => ' +
-								Routes.RegisterScreen,
-							);
+							navigation.navigate(Routes.CreateAnAccount);
 						}}
 						backArrowColor={colorSchema === 'dark' ? '#FFF' : '#000'}
 						buttonBackgroundColor={colorSchema === 'dark' ? '#000' : '#FFF'}

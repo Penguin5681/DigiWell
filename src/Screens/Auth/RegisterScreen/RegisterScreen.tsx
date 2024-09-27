@@ -183,7 +183,7 @@ const RegisterScreen = ({navigation}: {navigation: any}) => {
 					<View id={'back-button'} style={Style.backButton}>
 						<BackButton
 							onPress={() => {
-								navigation.navigate(Routes.WelcomeScreen);
+								navigation.replace(Routes.CreateAnAccount);
 							}}
 							backArrowColor={colorSchema === 'dark' ? '#FFF' : '#000'}
 							buttonBackgroundColor={colorSchema === 'dark' ? '#000' : '#FFF'}

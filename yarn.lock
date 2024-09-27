@@ -4506,7 +4506,7 @@ __metadata:
     eslint: ^9.8.0
     eslint-plugin-react-hooks: ^4.6.2
     firebase-admin: ^12.2.0
-    firebase-functions: ^5.0.1
+    firebase-functions: ^5.1.1
     jest: ^29.7.0
     prettier: 3.3.2
     prop-types: ^15.8.1
@@ -7118,9 +7118,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"firebase-functions@npm:^5.0.1":
-  version: 5.0.1
-  resolution: "firebase-functions@npm:5.0.1"
+"firebase-functions@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "firebase-functions@npm:5.1.1"
   dependencies:
     "@types/cors": ^2.8.5
     "@types/express": 4.17.3
@@ -7131,7 +7131,7 @@ __metadata:
     firebase-admin: ^11.10.0 || ^12.0.0
   bin:
     firebase-functions: lib/bin/firebase-functions.js
-  checksum: b9ce576eb9953b8f362bd9fd08ffc470e9a74f3a795111b07962270eb2bdd5c3b4e4313e8da7f8f6e33fd9c18eab1ea5652f127fb6f21ca14d252a5404b9ffe6
+  checksum: cea11d1525002582342cbdf752f82f5df2684b87d211bc3fa003d3b4e3c2bc8585b9a79d7603585405bcf1116b402a8c4e8bb7b3d00ff4847065bca0b8d7e1c6
   languageName: node
   linkType: hard
 

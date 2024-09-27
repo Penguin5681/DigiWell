@@ -1,4 +1,4 @@
-# Note: This app is still under development.
+# Note: This app is still under development
 
 # Get the app running:
 

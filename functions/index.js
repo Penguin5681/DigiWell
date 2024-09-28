@@ -218,3 +218,28 @@ exports.verifyPasswordResetOtp = functions.https.onCall(
         }
     },
 );
+
+exports.updateUserPassword = functions.https.onCall(async (data, context) => {
+    const uid = data.uid;
+    const password = data.password;
+
+    if (!uid || !password) {
+        // return res.status(400).send("Missing required fields: uid or password");
+        throw new functions.https.HttpsError(
+            'not-found',
+            'Missing uid or newPassword',
+        );
+    }
+
+    try {
+        await admin.auth().updateUser(uid, {
+            password: password,
+        });
+        return {success: true}
+    } catch (error) {
+        throw new functions.https.HttpsError(
+            'unknown',
+            'Error updating the password',
+        );
+    }
+});

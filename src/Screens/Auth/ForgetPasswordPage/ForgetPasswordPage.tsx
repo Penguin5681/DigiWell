@@ -11,15 +11,26 @@ import BackButton from '../../../Components/BackButton/BackButton.tsx';
 import {Routes} from '../../../Navigation/Routes.ts';
 import HeaderText from '../../../Components/HeaderText/HeaderText.tsx';
 import EditText from '../../../Components/EditText/EditText.tsx';
-import React, {SetStateAction, useState} from 'react';
+import React, {SetStateAction, useEffect, useState} from 'react';
 import functions from '@react-native-firebase/functions';
 import GlobalStyle from "../../../Assets/GlobalStyles/GlobalStyle";
 import AwesomeButton from "react-native-really-awesome-button";
 import {showMessage} from "react-native-flash-message";
+import firestore from '@react-native-firebase/firestore';
 
 const ForgetPasswordPage = ({navigation}: {navigation: any}) => {
 	const colorSchema = useColorScheme();
 	const [defaultEmailValue, setDefaultEmailValue] = useState('');
+	const [uidValue, setUidValue] = useState('');
+	const fetchUid = async () => {
+		await firestore()
+			.collection('users')
+			.doc(defaultEmailValue)
+			.get()
+			.then(snapshot => {
+				setUidValue(snapshot.get('uid'));
+			});
+	};
 	const sendOtp = async () => {
 		try {
 			await functions().httpsCallable('sendPasswordResetOtp')({
@@ -41,6 +52,9 @@ const ForgetPasswordPage = ({navigation}: {navigation: any}) => {
 			statusBarHeight: StatusBar.currentHeight,
 		})
 	}
+	useEffect(() => {
+		fetchUid().then();
+	}, []);
 	// @ts-ignore
 	return (
 		<SafeAreaView style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'light' ? '#FFF' : '#000'}]}>

@@ -1,6 +1,7 @@
 import {
 	ImageBackground,
 	SafeAreaView,
+	StatusBar,
 	StyleSheet,
 	Text,
 	useColorScheme,
@@ -8,21 +9,53 @@ import {
 } from 'react-native';
 import Style from './Style.ts';
 import BackButton from '../../../Components/BackButton/BackButton.tsx';
-import {Routes} from "../../../Navigation/Routes.ts";
+import {Routes} from '../../../Navigation/Routes.ts';
 import HeaderText from '../../../Components/HeaderText/HeaderText.tsx';
 import EditText from '../../../Components/EditText/EditText.tsx';
 import React, {SetStateAction, useEffect, useState} from 'react';
-import LoginSignUpButton from '../../../Components/LoginSignUpButton/LoginSignUpButton.tsx';
-import {verticalScale} from "../../../Assets/ScalingUtility/ScalingUtility";
-import AwesomeButton from "react-native-really-awesome-button";
-import firestore from "@react-native-firebase/firestore";
-import {useRoute} from "@react-navigation/native";
+import {verticalScale} from '../../../Assets/ScalingUtility/ScalingUtility';
+import AwesomeButton from 'react-native-really-awesome-button';
+import firestore from '@react-native-firebase/firestore';
+import {useRoute} from '@react-navigation/native';
+import {showMessage} from 'react-native-flash-message';
+import functions from '@react-native-firebase/functions';
 
 const CreateNewPasswordScreen = ({navigation}: {navigation: any}) => {
 	const colorSchema = useColorScheme();
 	const [defaultNewPasswordValue, setDefaultNewPasswordValue] = useState('');
 	const [defaultConfirmPasswordValue, setDefaultConfirmPasswordValue] =
 		useState('');
+	const [previousPasswordValue, setPreviousPasswordValue] = useState('');
+	const [uidValue, setUidValue] = useState('');
+	const showFlashMessage = (
+		message: string,
+		type: 'success' | 'warning' | 'danger',
+	) => {
+		showMessage({
+			message: message,
+			type: type,
+			statusBarHeight: StatusBar.currentHeight,
+		});
+	};
+
+	const updatePassword = async () => {
+		try {
+			await functions().httpsCallable('updateUserPassword')({
+				uid: uidValue,
+				password: defaultConfirmPasswordValue,
+			});
+			showFlashMessage('Password Updated Successfully', 'success');
+			await firestore()
+				.collection('users')
+				.doc(email)
+				.update({
+					password: encryptPassword(defaultNewPasswordValue, 7)
+				})
+		} catch (error: any) {
+			console.error(error)
+			showFlashMessage('Error updating the password', 'danger');
+		}
+	};
 
 	interface RouteParams {
 		defaultEmailValue: string;
@@ -55,19 +88,41 @@ const CreateNewPasswordScreen = ({navigation}: {navigation: any}) => {
 
 	const validatePassword = () => {
 		return defaultNewPasswordValue === defaultConfirmPasswordValue;
-	}
-
-	const checkPreviouslyUsedPassword = async () => {
-		if (email != null) {
-			const passwordDoc = await firestore()
-				.doc('users')
-				.collection(email)
-				.get()
-		}
 	};
+
+	const fetchPreviouslyUsedPassword = async () => {
+		await firestore()
+			.collection('users')
+			.doc(email)
+			.get()
+			.then(snapshot => {
+				setPreviousPasswordValue(decryptPassword(snapshot.get('password'), 7));
+			});
+	};
+
+	const fetchUid = async () => {
+		await firestore()
+			.collection('users')
+			.doc(email)
+			.get()
+			.then(snapshot => {
+				setUidValue(snapshot.get('uid'));
+			});
+	};
+
+	useEffect(() => {
+		fetchPreviouslyUsedPassword().then(() => null);
+		fetchUid().then(() => null);
+
+	}, []);
 
 	return (
 		<SafeAreaView>
+			<StatusBar
+				backgroundColor={'transparent'}
+				barStyle={'light-content'}
+				translucent={true}
+			/>
 			<ImageBackground
 				source={require('../../../Assets/Images/GlobalAppAssets/img.png')}
 				style={{flexDirection: 'row', flexWrap: 'wrap'}}
@@ -143,6 +198,29 @@ const CreateNewPasswordScreen = ({navigation}: {navigation: any}) => {
 						stretch={true}
 						borderRadius={8}
 						onPress={async next => {
+							if (
+								validatePassword() &&
+								defaultConfirmPasswordValue !== previousPasswordValue
+							) {
+								await updatePassword()
+									.then()
+									.catch();
+							} else {
+								if (!validatePassword()) {
+									showFlashMessage('Passwords do not match', 'warning');
+								} else {
+									if (
+										validatePassword() &&
+										defaultConfirmPasswordValue === previousPasswordValue
+									) {
+										showFlashMessage(
+											'Current password can not be the same as the old one',
+											'danger',
+										);
+									}
+								}
+							}
+
 							if (next) {
 								next();
 							}

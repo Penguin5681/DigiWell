@@ -17,7 +17,7 @@ import LoginMethodText from '../../../Components/LoginMethodText/LoginMethodText
 import GoogleButton from '../../../Components/GoogleButton/GoogleButton.tsx';
 import Style from './Style.ts';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import auth from '@react-native-firebase/auth';
+import auth, {firebase} from '@react-native-firebase/auth';
 import KeyboardCoveringContainer from '../../../Components/KeboardCoveringContainer/KeyboardCoveringContainer';
 import AwesomeButton from 'react-native-really-awesome-button';
 import {useRoute} from '@react-navigation/native';
@@ -85,6 +85,7 @@ const RegisterScreen = ({navigation}: {navigation: any}) => {
 			.collection('users')
 			.doc(email)
 			.set({
+				uid: firebase.auth().currentUser?.uid,
 				username: username,
 				email: email,
 				password: encryptPassword(password, shift),

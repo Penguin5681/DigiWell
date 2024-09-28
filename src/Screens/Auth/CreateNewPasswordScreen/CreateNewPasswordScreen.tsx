@@ -19,6 +19,7 @@ import firestore from '@react-native-firebase/firestore';
 import {useRoute} from '@react-navigation/native';
 import {showMessage} from 'react-native-flash-message';
 import functions from '@react-native-firebase/functions';
+import KeyboardCoveringContainer from '../../../Components/KeboardCoveringContainer/KeyboardCoveringContainer';
 
 const CreateNewPasswordScreen = ({navigation}: {navigation: any}) => {
 	const colorSchema = useColorScheme();
@@ -118,124 +119,126 @@ const CreateNewPasswordScreen = ({navigation}: {navigation: any}) => {
 
 	return (
 		<SafeAreaView>
-			<StatusBar
-				backgroundColor={'transparent'}
-				barStyle={'light-content'}
-				translucent={true}
-			/>
-			<ImageBackground
-				source={require('../../../Assets/Images/GlobalAppAssets/img.png')}
-				style={{flexDirection: 'row', flexWrap: 'wrap'}}
-				resizeMode={'cover'}>
-				<View
-					style={{
-						...StyleSheet.absoluteFillObject,
-						backgroundColor: 'rgba(0 ,0, 0, 0.6)',
-					}}
+			<KeyboardCoveringContainer style={undefined}>
+				<StatusBar
+					backgroundColor={'transparent'}
+					barStyle={'light-content'}
+					translucent={true}
 				/>
-
-				<View id={'back-button'} style={Style.backButton}>
-					<BackButton
-						onPress={() => {
-							navigation.navigate(Routes.ForgetPasswordPage);
-						}}
-						backArrowColor={colorSchema === 'dark' ? '#FFF' : '#000'}
-						buttonBackgroundColor={colorSchema === 'dark' ? '#000' : '#FFF'}
-					/>
-				</View>
-
-				<View id={'header-text-view'} style={Style.headerTextView}>
-					<HeaderText text={'Create new password'} textColor={'#FFF'} />
-
-					<Text style={Style.subHeaderTextView}>
-						Your new password must be unique from those previously used.
-					</Text>
-				</View>
-			</ImageBackground>
-
-			<View
-				style={[
-					Style.editTextContainer,
-					{backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'},
-				]}>
-				<View style={Style.newPasswordEditTextContainer}>
-					<EditText
-						text={'New Password'}
-						textColor={colorSchema === 'light' ? '#000' : '#FFF'}
-						placeHolderTextColor={colorSchema === 'light' ? '#000' : '#FFF'}
-						backgroundColor={colorSchema === 'light' ? '#E5E4E2' : '#303030'}
-						leftMargin={0}
-						rightMargin={0}
-						inputType={'password'}
-						value={defaultNewPasswordValue}
-						onChangeText={(value: SetStateAction<string>) => {
-							setDefaultNewPasswordValue(value);
+				<ImageBackground
+					source={require('../../../Assets/Images/GlobalAppAssets/img.png')}
+					style={{flexDirection: 'row', flexWrap: 'wrap'}}
+					resizeMode={'cover'}>
+					<View
+						style={{
+							...StyleSheet.absoluteFillObject,
+							backgroundColor: 'rgba(0 ,0, 0, 0.6)',
 						}}
 					/>
-				</View>
 
-				<View style={Style.confirmPasswordEditTextContainer}>
-					<EditText
-						text={'Confirm Password'}
-						textColor={colorSchema === 'light' ? '#000' : '#FFF'}
-						placeHolderTextColor={colorSchema === 'light' ? '#000' : '#FFF'}
-						backgroundColor={colorSchema === 'light' ? '#E5E4E2' : '#303030'}
-						leftMargin={0}
-						rightMargin={0}
-						inputType={'password'}
-						value={defaultConfirmPasswordValue}
-						onChangeText={(value: SetStateAction<string>) => {
-							setDefaultConfirmPasswordValue(value);
-						}}
-					/>
-				</View>
-				<View style={Style.buttonContainer}>
-					<AwesomeButton
-						style={{marginTop: verticalScale(38)}}
-						backgroundColor={colorSchema === 'dark' ? '#1E232C' : '#E5E4E2'}
-						raiseLevel={0}
-						progress={true}
-						stretch={true}
-						borderRadius={8}
-						onPress={async next => {
-							if (
-								validatePassword() &&
-								defaultConfirmPasswordValue !== previousPasswordValue
-							) {
-								await updatePassword()
-									.then()
-									.catch();
-							} else {
-								if (!validatePassword()) {
-									showFlashMessage('Passwords do not match', 'warning');
+					<View id={'back-button'} style={Style.backButton}>
+						<BackButton
+							onPress={() => {
+								navigation.navigate(Routes.ForgetPasswordPage);
+							}}
+							backArrowColor={colorSchema === 'dark' ? '#FFF' : '#000'}
+							buttonBackgroundColor={colorSchema === 'dark' ? '#000' : '#FFF'}
+						/>
+					</View>
+
+					<View id={'header-text-view'} style={Style.headerTextView}>
+						<HeaderText text={'Create new password'} textColor={'#FFF'} />
+
+						<Text style={Style.subHeaderTextView}>
+							Your new password must be unique from those previously used.
+						</Text>
+					</View>
+				</ImageBackground>
+
+				<View
+					style={[
+						Style.editTextContainer,
+						{backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'},
+					]}>
+					<View style={Style.newPasswordEditTextContainer}>
+						<EditText
+							text={'New Password'}
+							textColor={colorSchema === 'light' ? '#000' : '#FFF'}
+							placeHolderTextColor={colorSchema === 'light' ? '#000' : '#FFF'}
+							backgroundColor={colorSchema === 'light' ? '#E5E4E2' : '#303030'}
+							leftMargin={0}
+							rightMargin={0}
+							inputType={'password'}
+							value={defaultNewPasswordValue}
+							onChangeText={(value: SetStateAction<string>) => {
+								setDefaultNewPasswordValue(value);
+							}}
+						/>
+					</View>
+
+					<View style={Style.confirmPasswordEditTextContainer}>
+						<EditText
+							text={'Confirm Password'}
+							textColor={colorSchema === 'light' ? '#000' : '#FFF'}
+							placeHolderTextColor={colorSchema === 'light' ? '#000' : '#FFF'}
+							backgroundColor={colorSchema === 'light' ? '#E5E4E2' : '#303030'}
+							leftMargin={0}
+							rightMargin={0}
+							inputType={'password'}
+							value={defaultConfirmPasswordValue}
+							onChangeText={(value: SetStateAction<string>) => {
+								setDefaultConfirmPasswordValue(value);
+							}}
+						/>
+					</View>
+					<View style={Style.buttonContainer}>
+						<AwesomeButton
+							style={{marginTop: verticalScale(38)}}
+							backgroundColor={colorSchema === 'dark' ? '#1E232C' : '#E5E4E2'}
+							raiseLevel={0}
+							progress={true}
+							stretch={true}
+							borderRadius={8}
+							onPress={async next => {
+								if (
+									validatePassword() &&
+									defaultConfirmPasswordValue !== previousPasswordValue
+								) {
+									await updatePassword()
+										.then()
+										.catch();
 								} else {
-									if (
-										validatePassword() &&
-										defaultConfirmPasswordValue === previousPasswordValue
-									) {
-										showFlashMessage(
-											'Current password can not be the same as the old one',
-											'danger',
-										);
+									if (!validatePassword()) {
+										showFlashMessage('Passwords do not match', 'warning');
+									} else {
+										if (
+											validatePassword() &&
+											defaultConfirmPasswordValue === previousPasswordValue
+										) {
+											showFlashMessage(
+												'Current password can not be the same as the old one',
+												'danger',
+											);
+										}
 									}
 								}
-							}
 
-							if (next) {
-								next();
-							}
-						}}
-						activeOpacity={0.5}>
-						<Text
-							style={{
-								color: colorSchema === 'dark' ? '#FFF' : '#000',
-								fontWeight: '500',
-							}}>
-							Reset Password
-						</Text>
-					</AwesomeButton>
+								if (next) {
+									next();
+								}
+							}}
+							activeOpacity={0.5}>
+							<Text
+								style={{
+									color: colorSchema === 'dark' ? '#FFF' : '#000',
+									fontWeight: '500',
+								}}>
+								Reset Password
+							</Text>
+						</AwesomeButton>
+					</View>
 				</View>
-			</View>
+			</KeyboardCoveringContainer>
 		</SafeAreaView>
 	);
 };

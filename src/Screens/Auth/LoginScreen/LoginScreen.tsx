@@ -30,10 +30,6 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 	const [defaultEmailValue, setDefaultEmailValue] = useState('');
 	const [defaultPasswordValue, setDefaultPasswordValue] = useState('');
 
-	const fireabseAuthProvider = 'firebase.com';
-	const googleAuthProvider = 'google.com';
-	const facebookAuthProvider = 'facebook.com';
-
 	const signInWithGoogle = async () => {
 		try {
 			GoogleSignin.configure({

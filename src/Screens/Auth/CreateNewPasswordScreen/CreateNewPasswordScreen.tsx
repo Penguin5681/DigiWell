@@ -46,6 +46,7 @@ const CreateNewPasswordScreen = ({navigation}: {navigation: any}) => {
 				password: defaultConfirmPasswordValue,
 			});
 			showFlashMessage('Password Updated Successfully', 'success');
+			navigation.replace(Routes.LoginScreen);
 			await firestore()
 				.collection('users')
 				.doc(email)
@@ -118,7 +119,7 @@ const CreateNewPasswordScreen = ({navigation}: {navigation: any}) => {
 	}, []);
 
 	return (
-		<SafeAreaView>
+		<SafeAreaView style={{flex: 1, backgroundColor: colorSchema === 'light' ? '#FFF' : '#000'}}>
 			<KeyboardCoveringContainer style={undefined}>
 				<StatusBar
 					backgroundColor={'transparent'}

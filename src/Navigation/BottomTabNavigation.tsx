@@ -23,7 +23,7 @@ const BottomTabNavigation = ({navigation}: {navigation: any}) => {
 		let selectedTabIcon: IconProp = faWarning;
 
 		switch (routeName) {
-			case Routes.DashboardScreen:
+			case Routes.MainDashboardScreen:
 				selectedTabIcon = faHome;
 				break;
 			case Routes.AppUsageScreen:
@@ -74,7 +74,7 @@ const BottomTabNavigation = ({navigation}: {navigation: any}) => {
 				height={60}
 				circleWidth={50}
 				bgColor="#292929"
-				initialRouteName={Routes.DashboardScreen}
+				initialRouteName={Routes.MainDashboardScreen}
 				borderTopLeftRight
 				renderCircle={() => (
 					<Animated.View style={Style.btnCircleUp}>
@@ -89,7 +89,7 @@ const BottomTabNavigation = ({navigation}: {navigation: any}) => {
 				)}
 				tabBar={renderTabBar}>
 				<CurvedBottomBar.Screen
-					name={Routes.DashboardScreen}
+					name={Routes.MainDashboardScreen}
 					position="LEFT"
 					component={DashboardScreen}
 				/>

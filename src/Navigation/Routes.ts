@@ -21,4 +21,5 @@ export const Routes = {
     PasswordResetLinkSentSuccessfullyScreen: "PasswordResetLinkSentSuccessfullyScreen",
     CreateUsernameScreen: "CreateUsernameScreen",
     CreateAnAccount: "CreateAnAccount",
+    MainDashboardScreen: "MainDashboardScreen",
 };

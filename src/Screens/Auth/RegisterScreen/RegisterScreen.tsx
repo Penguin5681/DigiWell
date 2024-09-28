@@ -105,6 +105,7 @@ const RegisterScreen = ({navigation}: {navigation: any}) => {
 				console.log("Account created: " + user);
 				collectData(defaultUsernameValue, defaultPasswordValue);
 				showFlashMessage('Registration Complete', 'success');
+				navigation.replace(Routes.AvatarUploadScreen);
 				sendWelcomeEmail();
 			})
 			.catch((error: Error) => {
@@ -126,6 +127,7 @@ const RegisterScreen = ({navigation}: {navigation: any}) => {
 
 	const signInWithGoogle = async () => {
 		try {
+			console.log("Google Sign in called");
 			GoogleSignin.configure({
 				offlineAccess: false,
 				webClientId:

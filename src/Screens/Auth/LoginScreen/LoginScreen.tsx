@@ -4,7 +4,8 @@ import {
 	StatusBar,
 	StyleSheet,
 	Text,
-	ToastAndroid, TouchableOpacity,
+	ToastAndroid,
+	TouchableOpacity,
 	useColorScheme,
 	View,
 } from 'react-native';
@@ -56,40 +57,40 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 				GlobalStyle.globalBackgroundFlex,
 				{backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'},
 			]}>
-			<StatusBar
-				backgroundColor={'transparent'}
-				barStyle={'light-content'}
-				translucent={true}
-			/>
-
-			<ImageBackground
-				source={require('../../../Assets/Images/GlobalAppAssets/img.png')}
-				style={{flexDirection: 'row', flexWrap: 'wrap'}}
-				resizeMode={'cover'}>
-				<View
-					style={{
-						...StyleSheet.absoluteFillObject,
-						backgroundColor: 'rgba(0 ,0, 0, 0.6)',
-					}}
-				/>
-				<View id={'back-button'} style={Style.backButton}>
-					<BackButton
-						onPress={() => {
-							navigation.navigate(Routes.WelcomeScreen);
-						}}
-						buttonBackgroundColor={colorSchema === 'dark' ? '#000' : '#FFF'}
-						backArrowColor={colorSchema === 'dark' ? '#FFF' : '#000'}
-					/>
-				</View>
-
-				<View id={'header-text-view'} style={Style.headerTextView}>
-					<HeaderText
-						text={'Welcome back! Glad to see you, Again!'}
-						textColor={'#FFF'}
-					/>
-				</View>
-			</ImageBackground>
 			<KeyboardCoveringContainer style={undefined}>
+				<StatusBar
+					backgroundColor={'transparent'}
+					barStyle={'light-content'}
+					translucent={true}
+				/>
+
+				<ImageBackground
+					source={require('../../../Assets/Images/GlobalAppAssets/img.png')}
+					style={{flexDirection: 'row', flexWrap: 'wrap'}}
+					resizeMode={'cover'}>
+					<View
+						style={{
+							...StyleSheet.absoluteFillObject,
+							backgroundColor: 'rgba(0 ,0, 0, 0.6)',
+						}}
+					/>
+					<View id={'back-button'} style={Style.backButton}>
+						<BackButton
+							onPress={() => {
+								navigation.navigate(Routes.WelcomeScreen);
+							}}
+							buttonBackgroundColor={colorSchema === 'dark' ? '#000' : '#FFF'}
+							backArrowColor={colorSchema === 'dark' ? '#FFF' : '#000'}
+						/>
+					</View>
+
+					<View id={'header-text-view'} style={Style.headerTextView}>
+						<HeaderText
+							text={'Welcome back! Glad to see you, Again!'}
+							textColor={'#FFF'}
+						/>
+					</View>
+				</ImageBackground>
 				<View
 					style={[
 						Style.inputFieldContainer,
@@ -129,15 +130,12 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 						/>
 					</View>
 
-
 					<TouchableOpacity
 						onPress={() => {
 							console.log('LoginScreen -> ForgetPasswordPage');
 							navigation.navigate(Routes.ForgetPasswordPage);
 						}}>
-						<Text style={Style.forgetPasswordText}>
-							Forgot Password?
-						</Text>
+						<Text style={Style.forgetPasswordText}>Forgot Password?</Text>
 					</TouchableOpacity>
 					{error.length > 0 && <Text style={Style.error}>{error}</Text>}
 					<View style={Style.loginButtonContainer}>

@@ -22,28 +22,34 @@ const ForgetPasswordPage = ({navigation}: {navigation: any}) => {
 	const colorSchema = useColorScheme();
 	const [defaultEmailValue, setDefaultEmailValue] = useState('');
 	const [uidValue, setUidValue] = useState('');
-	const fetchUid = async () => {
+	const fetchUidAndSendOtp = async () => {
 		await firestore()
 			.collection('users')
 			.doc(defaultEmailValue)
 			.get()
-			.then(snapshot => {
-				setUidValue(snapshot.get('uid'));
-			});
-	};
-	const sendOtp = async () => {
-		try {
-			await functions().httpsCallable('sendPasswordResetOtp')({
-				email: defaultEmailValue,
-			});
-			showFlashMessage('OTP Sent Successfully', 'success');
-			navigation.navigate(Routes.ForgetPasswordOTPVerificationScreen, {
-				defaultEmailValue,
-			});
-		} catch (error) {
-			showFlashMessage('Error sending OTP!', 'danger');
-			console.log(error);
-		}
+			.then(async snapshot => {
+				if (snapshot.exists) {
+					setUidValue(snapshot.get('uid'));
+					console.log("UID: " + uidValue);
+					try {
+						await functions().httpsCallable('sendPasswordResetOtp')({
+							email: defaultEmailValue,
+						});
+						showFlashMessage('OTP Sent Successfully', 'success');
+						navigation.navigate(Routes.ForgetPasswordOTPVerificationScreen, {
+							defaultEmailValue,
+						});
+					} catch (error: any) {
+						showFlashMessage('Error sending OTP!', 'danger');
+						console.log(error);
+					}
+				} else {
+					showFlashMessage('Account not found!', 'danger');
+				}
+			})
+			.catch(reason => {
+				console.error(reason);
+			})
 	};
 	const showFlashMessage = (message: string, type: 'danger' | 'success' | 'warning') => {
 		showMessage({
@@ -52,9 +58,6 @@ const ForgetPasswordPage = ({navigation}: {navigation: any}) => {
 			statusBarHeight: StatusBar.currentHeight,
 		})
 	}
-	useEffect(() => {
-		fetchUid().then();
-	}, []);
 	// @ts-ignore
 	return (
 		<SafeAreaView style={[GlobalStyle.globalBackgroundFlex, {backgroundColor: colorSchema === 'light' ? '#FFF' : '#000'}]}>
@@ -110,9 +113,7 @@ const ForgetPasswordPage = ({navigation}: {navigation: any}) => {
 					progress={true}
 					stretch={true}
 					onPress={async (next) => {
-						await sendOtp()
-							.then((response) => null)
-							.catch((error) => null);
+						await fetchUidAndSendOtp();
 
 						if (next) {
 							next();

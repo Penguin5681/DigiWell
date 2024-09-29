@@ -8,13 +8,13 @@ import ForgetPasswordPage from '../Screens/Auth/ForgetPasswordPage/ForgetPasswor
 import ForgetPasswordOTPVerificationScreen from '../Screens/Core/ForgetPasswordOTPVerificationScreen/ForgetPasswordOTPVerificationScreen.tsx';
 import CreateNewPasswordScreen from '../Screens/Auth/CreateNewPasswordScreen/CreateNewPasswordScreen.tsx';
 import PasswordChangedScreen from '../Screens/Auth/PasswordChangedScreen/PasswordChangedScreen.tsx';
-import BottomTabNavigation from './BottomTabNavigation.tsx';
 import RegistrationOTPVerificationScreen from '../Screens/Auth/RegistrationOTPVerificationScreen/RegistrationOTPVerificationScreen.tsx';
 import AvatarUploadScreen from '../Screens/Core/AvatarUploadScreen/AvatarUploadScreen.tsx';
 import ProfileSettingsScreen from '../Screens/Core/ProfileSettingsScreen/ProfileSettingsScreen.tsx';
 import EditProfileScreen from '../Screens/Core/EditProfileScreen/EditProfileScreen.tsx';
 import CreateUsernameScreen from '../Screens/Auth/CreateUsernameScreen/CreateUsernameScreen.tsx';
 import CreateAnAccount from '../Screens/Auth/CreateAnAccount/CreateAnAccount.tsx';
+import DashboardScreen from '../Screens/Core/DashboardScreen/DashboardScreen.tsx';
 
 const StackBase = createStackNavigator();
 
@@ -87,7 +87,7 @@ const MainNavigation: React.FC = () => {
 			/>
 			<StackBase.Screen
 				name={Routes.DashboardScreen}
-				component={BottomTabNavigation}
+				component={DashboardScreen}
 			/>
 			<StackBase.Screen
 				name={Routes.ProfileSettingScreen}

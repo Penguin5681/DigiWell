@@ -15,26 +15,25 @@ const Style = StyleSheet.create({
         marginBottom: verticalScale(20),
     },
     inputFieldContainer: {
-        height: "100%",
-        width: "100%",
-        backgroundColor: "#000",
+        flex: 1,
+        marginTop: verticalScale(17),
+        marginHorizontal: horizontalScale(27)
     },
     emailEditTextContainer: {
+        flex: 1,
         flexDirection: 'row',
-        justifyContent: "space-between",
-        marginHorizontal: horizontalScale(27),
-        marginTop: verticalScale(15),
+        justifyContent: 'space-around',
         marginBottom: verticalScale(10.8),
+    },
+    usernameEditTextContainer: {
+
     },
     passwordEditTextContainer: {
-        marginHorizontal: horizontalScale(27),
         marginBottom: verticalScale(10.8),
     },
-    confirmPasswordEditTextContainer: {
-        marginHorizontal: horizontalScale(27),
-    },
+    confirmPasswordEditTextContainer: {},
     buttonContainer: {
-        marginHorizontal: horizontalScale(27),
+
     },
     signUpMethodTextContainer: {
         marginTop: verticalScale(10),
@@ -56,6 +55,7 @@ const Style = StyleSheet.create({
         color: '#08ff00',
         marginTop: verticalScale(5),
     },
+
 });
 
 export default Style;

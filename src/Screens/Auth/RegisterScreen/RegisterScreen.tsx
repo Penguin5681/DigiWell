@@ -105,7 +105,7 @@ const RegisterScreen = ({navigation}: {navigation: any}) => {
 				console.log("Account created: " + user);
 				collectData(defaultUsernameValue, defaultPasswordValue);
 				showFlashMessage('Registration Complete', 'success');
-				navigation.replace(Routes.AvatarUploadScreen);
+				// navigation.replace(Routes.AvatarUploadScreen);
 				sendWelcomeEmail();
 			})
 			.catch((error: Error) => {
@@ -164,7 +164,7 @@ const RegisterScreen = ({navigation}: {navigation: any}) => {
 	return (
 		<SafeAreaView
 			style={[
-				GlobalStyle.globalAppBackground,
+				{backgroundColor: colorSchema === 'dark' ? '#000' : '#FFF'},
 				GlobalStyle.globalBackgroundFlex,
 			]}>
 			<KeyboardCoveringContainer style={undefined}>
@@ -213,32 +213,32 @@ const RegisterScreen = ({navigation}: {navigation: any}) => {
 					<View style={Style.emailEditTextContainer}>
 						<EditText
 							text={'Email'}
+							inputType={'email'}
+							value={defaultEmailValue}
+							onChangeText={() => {
+
+							}}
 							textColor={colorSchema === 'light' ? '#000' : '#FFF'}
 							placeHolderTextColor={colorSchema === 'light' ? '#000' : '#FFF'}
 							backgroundColor={colorSchema === 'light' ? '#E5E4E2' : '#303030'}
 							leftMargin={0}
-							rightMargin={0}
-							inputType={'email'}
-							value={defaultEmailValue}
-							onChangeText={(value: SetStateAction<string>) => {
-								// setDefaultEmailValue(value);
-							}}
-						/>
-
+							rightMargin={10}/>
 						<EditText
 							text={'Username'}
-							textColor={colorSchema === 'light' ? '#000' : '#FFF'}
-							placeHolderTextColor={colorSchema === 'light' ? '#000' : '#FFF'}
-							backgroundColor={colorSchema === 'light' ? '#E5E4E2' : '#303030'}
-							leftMargin={10}
-							rightMargin={0}
 							inputType={'text'}
 							value={defaultUsernameValue}
 							onChangeText={(value: SetStateAction<string>) => {
 								setDefaultUsernameValue(value);
 							}}
-						/>
+							textColor={colorSchema === 'light' ? '#000' : '#FFF'}
+							placeHolderTextColor={colorSchema === 'light' ? '#000' : '#FFF'}
+							backgroundColor={colorSchema === 'light' ? '#E5E4E2' : '#303030'}
+							leftMargin={0}
+							rightMargin={0}/>
 					</View>
+
+					{/*<View style={Style.usernameEditTextContainer}>*/}
+					{/*</View>*/}
 
 					<View style={Style.passwordEditTextContainer}>
 						<EditText

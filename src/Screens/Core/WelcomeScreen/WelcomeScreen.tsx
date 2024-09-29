@@ -20,6 +20,7 @@ import auth from '@react-native-firebase/auth';
 import OptionsHeaderText from '../../../Components/OptionsHeaderText/OptionsHeaderText.tsx';
 import {scaleFontSize} from '../../../Assets/ScalingUtility/ScalingUtility';
 import {showUsageAccessSettings} from '@brighthustle/react-native-usage-stats-manager';
+import {showMessage} from 'react-native-flash-message';
 
 const WelcomeScreen = ({navigation}: {navigation: any}) => {
 	const colorSchema = useColorScheme();
@@ -29,6 +30,16 @@ const WelcomeScreen = ({navigation}: {navigation: any}) => {
 	function killApp() {
 		KillApp.kill();
 	}
+	const showFlashMessage = (
+		message: string,
+		type: 'danger' | 'success' | 'warning',
+	) => {
+		showMessage({
+			message: message,
+			type: type,
+			statusBarHeight: StatusBar.currentHeight,
+		});
+	};
 
 	const checkUsageAccessPermission = async () => {
 		try {
@@ -44,13 +55,10 @@ const WelcomeScreen = ({navigation}: {navigation: any}) => {
 							onPress: () => {
 								const permissionGranted = showUsageAccessSettings('');
 								if (permissionGranted) {
-									ToastAndroid.show('Permission Granted', ToastAndroid.SHORT);
+									showFlashMessage('Permission Granted', 'success');
 									navigation.navigate(Routes.DashboardScreen);
 								} else {
-									ToastAndroid.show(
-										'Please grant usage access permission',
-										ToastAndroid.SHORT,
-									);
+									showFlashMessage('Please grant usage access permission', 'danger');
 								}
 							},
 						},
@@ -60,8 +68,6 @@ const WelcomeScreen = ({navigation}: {navigation: any}) => {
 						},
 					],
 				);
-			} else {
-				navigation.navigate(Routes.DashboardScreen);
 			}
 		} catch (error) {
 			console.error('Error checking usage access permission:', error);

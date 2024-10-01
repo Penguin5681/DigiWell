@@ -20,7 +20,7 @@ import LabelText from '../../../Components/LabelText/LabelText.tsx';
 import {
 	scaleFontSize,
 	verticalScale,
-} from '../../../Assets/ScalingUtility/ScalingUtility';
+} from '../../../Utility/ScalingUtility/ScalingUtility';
 import LinearGradient from 'react-native-linear-gradient';
 import OptionsHeaderText from '../../../Components/OptionsHeaderText/OptionsHeaderText.tsx';
 import React, {lazy, Suspense, useCallback, useEffect, useState} from 'react';
@@ -150,45 +150,6 @@ const DashboardScreen = ({navigation}: {navigation: any}) => {
 				console.error('appUsageData: ' + error);
 			});
 	}, []);
-
-	const appData = [
-		{
-			appName: 'Instagram',
-			icon: faInstagram,
-			usageTime: '2h 34m',
-			category: 'Social',
-		},
-		{
-			appName: 'Youtube',
-			icon: faYoutube,
-			usageTime: '2h 34m',
-			category: 'Entertainment',
-		},
-		{
-			appName: 'BGMI',
-			icon: faGamepad,
-			usageTime: '20h 34m',
-			category: 'Video Game',
-		},
-		{
-			appName: 'Instagram',
-			icon: faInstagram,
-			usageTime: '2h 34m',
-			category: 'Social',
-		},
-		{
-			appName: 'Youtube',
-			icon: faYoutube,
-			usageTime: '2h 34m',
-			category: 'Entertainment',
-		},
-		{
-			appName: 'BGMI',
-			icon: faGamepad,
-			usageTime: '20h 34m',
-			category: 'Video Game',
-		},
-	];
 
 	interface AppDataItem {
 		appName: string;

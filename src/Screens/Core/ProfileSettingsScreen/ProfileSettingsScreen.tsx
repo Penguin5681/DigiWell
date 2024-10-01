@@ -15,7 +15,7 @@ import OptionsHeaderText from '../../../Components/OptionsHeaderText/OptionsHead
 import {
 	scaleFontSize,
 	verticalScale,
-} from '../../../Assets/ScalingUtility/ScalingUtility';
+} from '../../../Utility/ScalingUtility/ScalingUtility';
 import BackButton from '../../../Components/BackButton/BackButton.tsx';
 import {Routes} from '../../../Navigation/Routes.ts';
 

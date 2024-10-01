@@ -17,7 +17,7 @@ import OptionsHeaderText from '../../../Components/OptionsHeaderText/OptionsHead
 import {
 	scaleFontSize,
 	verticalScale,
-} from '../../../Assets/ScalingUtility/ScalingUtility';
+} from '../../../Utility/ScalingUtility/ScalingUtility';
 import {SvgXml} from 'react-native-svg';
 import {VectorIcons} from '../../../Assets/Images/VectorIcons';
 import LinearGradient from 'react-native-linear-gradient';

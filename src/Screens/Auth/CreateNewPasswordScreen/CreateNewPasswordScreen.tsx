@@ -13,7 +13,7 @@ import {Routes} from '../../../Navigation/Routes.ts';
 import HeaderText from '../../../Components/HeaderText/HeaderText.tsx';
 import EditText from '../../../Components/EditText/EditText.tsx';
 import React, {SetStateAction, useEffect, useState} from 'react';
-import {verticalScale} from '../../../Assets/ScalingUtility/ScalingUtility';
+import {verticalScale} from '../../../Utility/ScalingUtility/ScalingUtility';
 import AwesomeButton from 'react-native-really-awesome-button';
 import firestore from '@react-native-firebase/firestore';
 import {useRoute} from '@react-navigation/native';

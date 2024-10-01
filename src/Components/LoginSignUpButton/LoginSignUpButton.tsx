@@ -1,7 +1,7 @@
 import {Pressable, Text} from "react-native";
 import Style from "./Style";
 import PropTypes from "prop-types";
-import {verticalScale} from "../../Assets/ScalingUtility/ScalingUtility";
+import {verticalScale} from "../../Utility/ScalingUtility/ScalingUtility";
 
 interface ButtonProps {
     leftMargin: number;

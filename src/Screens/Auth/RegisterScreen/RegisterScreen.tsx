@@ -105,7 +105,7 @@ const RegisterScreen = ({navigation}: {navigation: any}) => {
 				console.log("Account created: " + user);
 				collectData(defaultUsernameValue, defaultPasswordValue);
 				showFlashMessage('Registration Complete', 'success');
-				// navigation.replace(Routes.AvatarUploadScreen);
+				navigation.replace(Routes.DashboardScreen);
 				sendWelcomeEmail();
 			})
 			.catch((error: Error) => {

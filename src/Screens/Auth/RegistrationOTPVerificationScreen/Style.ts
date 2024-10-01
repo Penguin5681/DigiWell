@@ -1,6 +1,6 @@
 
 import {StyleSheet} from "react-native";
-import {horizontalScale, verticalScale} from "../../../Assets/ScalingUtility/ScalingUtility";
+import {horizontalScale, verticalScale} from "../../../Utility/ScalingUtility/ScalingUtility";
 
 const Style = StyleSheet.create({
     backButton: {

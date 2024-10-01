@@ -15,6 +15,7 @@ import EditProfileScreen from '../Screens/Core/EditProfileScreen/EditProfileScre
 import CreateUsernameScreen from '../Screens/Auth/CreateUsernameScreen/CreateUsernameScreen.tsx';
 import CreateAnAccount from '../Screens/Auth/CreateAnAccount/CreateAnAccount.tsx';
 import DashboardScreen from '../Screens/Core/DashboardScreen/DashboardScreen.tsx';
+import BottomTabNavigation from "./BottomTabNavigation.tsx";
 
 const StackBase = createStackNavigator();
 
@@ -87,7 +88,7 @@ const MainNavigation: React.FC = () => {
 			/>
 			<StackBase.Screen
 				name={Routes.DashboardScreen}
-				component={DashboardScreen}
+				component={BottomTabNavigation}
 			/>
 			<StackBase.Screen
 				name={Routes.ProfileSettingScreen}

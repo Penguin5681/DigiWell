@@ -18,7 +18,7 @@ import {Routes} from '../../../Navigation/Routes.ts';
 import {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import OptionsHeaderText from '../../../Components/OptionsHeaderText/OptionsHeaderText.tsx';
-import {scaleFontSize} from '../../../Assets/ScalingUtility/ScalingUtility';
+import {scaleFontSize} from '../../../Utility/ScalingUtility/ScalingUtility';
 import {showUsageAccessSettings} from '@brighthustle/react-native-usage-stats-manager';
 import {showMessage} from 'react-native-flash-message';
 

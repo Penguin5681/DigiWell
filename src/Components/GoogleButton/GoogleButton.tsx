@@ -2,7 +2,7 @@ import {SvgXml} from "react-native-svg";
 import {Pressable, View} from "react-native";
 import GlobalStyle from "../../Assets/GlobalStyles/GlobalStyle";
 import PropTypes from "prop-types";
-import {horizontalScale} from "../../Assets/ScalingUtility/ScalingUtility";
+import {horizontalScale} from "../../Utility/ScalingUtility/ScalingUtility";
 
 interface GoogleButtonProps {
     onPress: any;

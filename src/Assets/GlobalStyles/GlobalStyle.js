@@ -1,5 +1,5 @@
 import {StyleSheet} from "react-native";
-import {verticalScale} from "../ScalingUtility/ScalingUtility";
+import {verticalScale} from "../../Utility/ScalingUtility/ScalingUtility";
 
 const GlobalStyle = StyleSheet.create({
     globalBackgroundFlex: {

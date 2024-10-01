@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { getUrbanistFontFamily } from "../../Assets/Fonts/helper";
-import { scaleFontSize } from "../../Assets/ScalingUtility/ScalingUtility";
+import { scaleFontSize } from "../../Utility/ScalingUtility/ScalingUtility";
 
 const Styles = StyleSheet.create({
   activityprofiles: {

@@ -19,7 +19,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
 import {firebase} from "@react-native-firebase/auth";
 import AwesomeButton from "react-native-really-awesome-button";
-import {verticalScale} from "../../../Assets/ScalingUtility/ScalingUtility";
+import {verticalScale} from "../../../Utility/ScalingUtility/ScalingUtility";
 
 const AvatarUploadScreen = ({navigation}: { navigation: any }) => {
     const colorSchema = useColorScheme();

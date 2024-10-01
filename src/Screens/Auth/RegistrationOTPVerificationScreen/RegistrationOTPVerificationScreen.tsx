@@ -17,7 +17,7 @@ import {OtpInput} from 'react-native-otp-entry';
 import functions from '@react-native-firebase/functions';
 import {useRoute} from '@react-navigation/native';
 import AwesomeButton from 'react-native-really-awesome-button';
-import {verticalScale} from '../../../Assets/ScalingUtility/ScalingUtility';
+import {verticalScale} from '../../../Utility/ScalingUtility/ScalingUtility';
 import {showMessage} from 'react-native-flash-message';
 
 const RegistrationOTPVerificationScreen = ({navigation}: {navigation: any}) => {

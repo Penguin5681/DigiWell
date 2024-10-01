@@ -1,5 +1,5 @@
 import {StyleSheet, useColorScheme} from "react-native";
-import { horizontalScale, scaleFontSize, verticalScale } from "../../../Assets/ScalingUtility/ScalingUtility";
+import { horizontalScale, scaleFontSize, verticalScale } from "../../../Utility/ScalingUtility/ScalingUtility";
 import { getInterFontFamily, getUrbanistFontFamily } from "../../../Assets/Fonts/helper";
 const Style = StyleSheet.create({
     backButton: {

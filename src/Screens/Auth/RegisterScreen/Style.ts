@@ -1,5 +1,5 @@
 import {StyleSheet} from "react-native";
-import {horizontalScale, scaleFontSize, verticalScale} from "../../../Assets/ScalingUtility/ScalingUtility";
+import {horizontalScale, scaleFontSize, verticalScale} from "../../../Utility/ScalingUtility/ScalingUtility";
 import {getInterFontFamily} from "../../../Assets/Fonts/helper";
 import {getFontScale} from "react-native-device-info";
 

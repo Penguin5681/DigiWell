@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { getUrbanistFontFamily } from "../../../Assets/Fonts/helper";
-import { horizontalScale, scaleFontSize, verticalScale } from "../../../Assets/ScalingUtility/ScalingUtility";
+import { horizontalScale, scaleFontSize, verticalScale } from "../../../Utility/ScalingUtility/ScalingUtility";
 
 const Style = StyleSheet.create({
     stickerContainer: {

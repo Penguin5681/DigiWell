@@ -5,7 +5,7 @@ import Style from './Style.ts';
 import {
 	scaleFontSize,
 	verticalScale,
-} from '../../../Assets/ScalingUtility/ScalingUtility';
+} from '../../../Utility/ScalingUtility/ScalingUtility';
 import OptionsHeaderText from '../../../Components/OptionsHeaderText/OptionsHeaderText.tsx';
 import EditText from '../../../Components/EditText/EditText.tsx';
 

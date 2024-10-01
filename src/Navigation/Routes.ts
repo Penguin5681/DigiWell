@@ -22,4 +22,5 @@ export const Routes = {
     CreateUsernameScreen: "CreateUsernameScreen",
     CreateAnAccount: "CreateAnAccount",
     MainDashboardScreen: "MainDashboardScreen",
+    BottomTabNavigation: 'BottomTabNavigation',
 };

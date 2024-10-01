@@ -23,7 +23,7 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import GlobalStyle from '../../../Assets/GlobalStyles/GlobalStyle';
 import KeyboardCoveringContainer from '../../../Components/KeboardCoveringContainer/KeyboardCoveringContainer';
 import AwesomeButton from 'react-native-really-awesome-button';
-import {horizontalScale} from '../../../Assets/ScalingUtility/ScalingUtility';
+import {horizontalScale} from '../../../Utility/ScalingUtility/ScalingUtility';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
 	const colorSchema = useColorScheme();

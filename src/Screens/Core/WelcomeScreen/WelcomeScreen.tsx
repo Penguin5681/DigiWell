@@ -77,6 +77,7 @@ const WelcomeScreen = ({navigation}: {navigation: any}) => {
 	useEffect(() => {
 		const unsubscribe = auth().onAuthStateChanged(user => {
 			if (user) {
+				console.log(user.email);
 				checkUsageAccessPermission()
 					.then(() => null);
 			}

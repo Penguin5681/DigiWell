@@ -103,10 +103,6 @@ const MainNavigation: React.FC = () => {
 				component={AvatarUploadScreen}
 			/>
 			<StackBase.Screen
-				name={Routes.CreateUsernameScreen}
-				component={CreateUsernameScreen}
-			/>
-			<StackBase.Screen
 				name={Routes.CreateAnAccount}
 				component={CreateAnAccount}
 			/>

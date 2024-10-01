@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Style from './Style.ts';
 import {
 	Alert,
@@ -26,7 +26,7 @@ import {firebase} from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import {generateRandomUsername} from '../../../Assets/RandomUsernameGenerator/RandomUsernameGenerator';
-import {useFocusEffect} from '@react-navigation/native';
+import {CommonActions, useFocusEffect} from '@react-navigation/native';
 
 const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 	const colorSchema = useColorScheme();
@@ -34,6 +34,15 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 	const [defaultImageUrl, setDefaultImageUrl] = useState('');
 	const [defaultDisplayName, setDefaultDisplayName] = useState('');
 	const [backPressedTime, setBackPressedTime] = useState(0);
+	const [accountCreationDate, setAccountCreationDate] = useState('');
+	const defaultProfileImagePath = colorSchema === 'dark' ? 'default_profile_image/avatar_icon_white.png' : 'default_profile_image/avatar_icon_black.png';
+	const dailyScreenTime = '3h 28m';
+	const weeklyScreenTime = '13h 42m';
+	const dailyMostUsedApp = 'Brave';
+	const weeklyMostUsedApp = 'Chrome';
+	const darkModeGradientColorList = ['#0c0c0c', '#4C4E52', '#9FA2A8'];
+	const lightModeGradientColorList = ['#c6c6d2', '#d0d0e8', '#97a1a3'];
+
 	useFocusEffect(
 		useCallback(() => {
 			const onBackPress = () => {
@@ -59,19 +68,20 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 		}, [backPressedTime]),
 	);
 
-	// TODO: Will write the core backend soon, (saturday is the day)
-	const dailyScreenTime = '3h 28m';
-	const weeklyScreenTime = '13h 42m';
-	const dailyMostUsedApp = 'Brave';
-	const weeklyMostUsedApp = 'Chrome';
-	const accountCreationDate = '09/07/2024';
-	// TODO: YEAH BAYBEE
 
-	const darkModeGradientColorList = ['#0c0c0c', '#4C4E52', '#9FA2A8'];
-	const lightModeGradientColorList = ['#c6c6d2', '#d0d0e8', '#97a1a3'];
 	const fetchProfileImageUrl = async (imagePath: string) => {
 		try {
-			return await storage().ref(imagePath).getDownloadURL();
+			await storage()
+				.ref(imagePath)
+				.getDownloadURL()
+				.then(imageUri => {
+					if (imageUri !== null) {
+						setDefaultImageUrl(imageUri);
+					}
+				})
+				.catch((error: Error) => {
+					// TODO: Return the default profile image
+				});
 		} catch (error) {
 			console.error('Firebase Storage Error: ' + error);
 			return null;
@@ -89,53 +99,35 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 				: require('../../../Assets/Images/avatar_icon_white.png')),
 		);
 	};
+
 	const fetchFirebaseProfile = async () => {
-		const email =
-			firebase.auth().currentUser?.email?.replace('@', '_').replace('.', '_') ||
-			'';
-		setDefaultEmail(firebase.auth().currentUser?.email || 'emailNotFound');
-		const displayName = firestore()
+		await firestore()
 			.collection('users')
-			.doc(email)
+			.doc(firebase.auth().currentUser?.email?.toString())
 			.get()
-			.then(snapshot => {
+			.then(async (snapshot) => {
 				if (snapshot.exists) {
-					const userNameSnapshot = snapshot.get('userName');
-					if (userNameSnapshot) {
-						const userName = userNameSnapshot.toString();
-						console.log('USERNAME: ' + userName);
-						setDefaultDisplayName(userName);
-					} else {
-						console.log('USERNAME IS POSSIBLY NULL');
-						setDefaultDisplayName(generateRandomUsername());
-					}
+					setDefaultDisplayName(snapshot.get('username'));
+					setAccountCreationDate(snapshot.get('accountCreationTime'));
 				}
+			})
+			.catch((error: Error) => {
+				setDefaultDisplayName(generateRandomUsername());
+				console.error("Error fetching display name: " + error);
 			});
 
-		if (displayName !== null) {
-			console.log('displayName: ' + displayName);
-		} else {
-			console.error('You fucked up something!');
-		}
-
-		const imagePath = 'user_profile_images/' + email;
-		const defaultProfileImagePath =
-			colorSchema === 'light'
-				? 'default_profile_images/' + 'avatar_icon_black.png'
-				: 'default_profile_images/' + 'avatar_icon_white';
-		const url = await fetchProfileImageUrl(imagePath);
-		if (url !== null) {
-			setDefaultImageUrl(url);
-			console.log('URL FETCH COMPLETE RAHHHHH!: ' + url);
-		} else {
-			// TODO: Test this code later on
-			const defaultProfileImageUrl = fetchProfileImageUrl(
-				defaultProfileImagePath,
-			);
-			console.error('No Image found at this location! :(');
-			console.log('Loaded the default image: ' + defaultProfileImageUrl);
+		try {
+			await fetchProfileImageUrl("user_profile_images/" + firebase.auth().currentUser?.uid.toString() + ".jpg");
+		} catch (error) {
+			console.error("Error Fetching the Image URL");
 		}
 	};
+
+	useEffect(() => {
+		fetchFirebaseProfile()
+			.then(() => {})
+			.catch(() => {});
+	}, []);
 
 	return (
 		<SafeAreaView
@@ -299,7 +291,17 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 								? darkModeGradientColorList
 								: lightModeGradientColorList
 						}>
-						<View style={Style.homeOption}>
+						<TouchableOpacity
+							style={Style.homeOption}
+							onPress={() => {
+								navigation.dispatch(
+									CommonActions.reset({
+										index: 0,
+										routes: [{name: Routes.DashboardScreen}]
+									})
+								)
+							}}
+						>
 							<SvgXml xml={VectorIcons.homeIconVector} />
 							<Text
 								style={[
@@ -315,7 +317,7 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 										: VectorIcons.arrowRightVectorBlack
 								}
 							/>
-						</View>
+						</TouchableOpacity>
 
 						<View style={Style.settingsOption}>
 							<SvgXml xml={VectorIcons.settingsVector} />
@@ -382,7 +384,7 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 													.auth()
 													.currentUser?.delete()
 													.then(() => {
-														navigation.navigate(Routes.WelcomeScreen);
+														navigation.replace(Routes.WelcomeScreen);
 													});
 											},
 											style: 'cancel',

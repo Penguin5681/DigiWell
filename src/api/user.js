@@ -1,4 +1,5 @@
 import auth from '@react-native-firebase/auth';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const createUser = async (email, password) => {
     try {
@@ -20,6 +21,7 @@ export const loginUser = async (email, password) => {
     try {
         const response = await auth().signInWithEmailAndPassword(email, password);
         const token = await response.user.getIdToken();
+        await AsyncStorage.setItem('userToken', token);
         return {
             status: true,
             data: {

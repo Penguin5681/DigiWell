@@ -1,5 +1,5 @@
 import {
-	Alert,
+	Alert, BackHandler,
 	Image,
 	ImageBackground,
 	NativeModules,
@@ -21,15 +21,32 @@ import OptionsHeaderText from '../../../Components/OptionsHeaderText/OptionsHead
 import {scaleFontSize} from '../../../Utility/ScalingUtility/ScalingUtility';
 import {showUsageAccessSettings} from '@brighthustle/react-native-usage-stats-manager';
 import {showMessage} from 'react-native-flash-message';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const WelcomeScreen = ({navigation}: {navigation: any}) => {
+const WelcomeScreen = ({ navigation }: { navigation: any }) => {
 	const colorSchema = useColorScheme();
 	const [hasPermission, setHasPermission] = useState(false);
-	const {KillApp, UsageStatsModule} = NativeModules;
+	const { UsageStatsModule } = NativeModules;
+
+	useEffect(() => {
+		const checkUserLoggedIn = async () => {
+			try {
+				const userToken = await AsyncStorage.getItem('userToken');
+				if (userToken) {
+					navigation.replace(Routes.DashboardScreen); // If token exists, navigate to Dashboard
+				}
+			} catch (error) {
+				console.log('Error checking user session', error);
+			}
+		};
+		checkUserLoggedIn().then(r => console.log(r));
+	}, []);
 
 	function killApp() {
-		KillApp.kill();
+		// Exits the app
+		BackHandler.exitApp()
 	}
+
 	const showFlashMessage = (
 		message: string,
 		type: 'danger' | 'success' | 'warning',
@@ -86,6 +103,13 @@ const WelcomeScreen = ({navigation}: {navigation: any}) => {
 		return () => unsubscribe();
 	}, []);
 
+	useEffect(() => {
+		const unsubscribeFocus = navigation.addListener('focus', () => {
+			checkUsageAccessPermission();
+		});
+
+		return () => unsubscribeFocus();
+	}, [navigation]);
 
 	return (
 		<SafeAreaView

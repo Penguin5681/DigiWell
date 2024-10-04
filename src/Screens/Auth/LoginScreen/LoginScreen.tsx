@@ -9,8 +9,9 @@ import {
 	useColorScheme,
 	View,
 } from 'react-native';
+import React, {SetStateAction, useState, useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 import BackButton from '../../../Components/BackButton/BackButton.tsx';
-import React, {SetStateAction, useState} from 'react';
 import Style from './Style.ts';
 import HeaderText from '../../../Components/HeaderText/HeaderText.tsx';
 import EditText from '../../../Components/EditText/EditText.tsx';
@@ -31,6 +32,21 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 	const [defaultEmailValue, setDefaultEmailValue] = useState('');
 	const [defaultPasswordValue, setDefaultPasswordValue] = useState('');
 
+	// Check if user is already logged in
+	useEffect(() => {
+		const checkUserLoggedIn = async () => {
+			try {
+				const userToken = await AsyncStorage.getItem('userToken');
+				if (userToken) {
+					navigation.replace(Routes.DashboardScreen); // If token exists, navigate to Dashboard
+				}
+			} catch (error) {
+				console.log('Error checking user session', error);
+			}
+		};
+		checkUserLoggedIn();
+	}, []);
+
 	const signInWithGoogle = async () => {
 		try {
 			GoogleSignin.configure({
@@ -43,7 +59,15 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 			const userInfo = await GoogleSignin.signIn();
 			const {idToken} = await GoogleSignin.signIn();
 			const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
-			await auth().signInWithCredential(googleCredentials);
+			const userCredential = await auth().signInWithCredential(googleCredentials);
+
+			// Store user token in AsyncStorage for session persistence
+			await AsyncStorage.setItem('userToken', idToken);
+
+			// Navigate to Dashboard
+			navigation.navigate(Routes.DashboardScreen, {
+				authProvider: 'google.com',
+			});
 			return userInfo;
 		} catch (error) {
 			console.log('=> Google Sign In', error);
@@ -51,6 +75,39 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 		}
 	};
 
+	const handleLogin = async (next: Function | null) => {
+		if (defaultPasswordValue.length === 0 || defaultEmailValue.length === 0) {
+			ToastAndroid.show("Fields can't be empty", ToastAndroid.SHORT);
+			if (next) next();
+			return;
+		}
+
+		try {
+			const user = await loginUser(defaultEmailValue, defaultPasswordValue);
+			if (!user.status) {
+				setError(user.error);
+				if (next) next();
+			} else {
+				setError('');
+
+				// Store Firebase user token for session persistence
+				const currentUser = auth().currentUser;
+				if (currentUser) {
+					const userToken = await currentUser.getIdToken();
+					await AsyncStorage.setItem('userToken', userToken); // Save token
+				}
+
+				navigation.navigate(Routes.DashboardScreen, {
+					authProvider: 'firebase.com',
+				});
+			}
+		} catch (error) {
+			setError('Login failed');
+			console.log('Login error: ', error);
+		} finally {
+			if (next) next();
+		}
+	};
 	return (
 		<SafeAreaView
 			style={[

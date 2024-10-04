@@ -27,6 +27,7 @@ import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import {generateRandomUsername} from '../../../Assets/RandomUsernameGenerator/RandomUsernameGenerator';
 import {CommonActions, useFocusEffect} from '@react-navigation/native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 	const colorSchema = useColorScheme();
@@ -416,11 +417,12 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 						</TouchableOpacity>
 
 						<TouchableOpacity
-							onPress={() => {
+							onPress={() =>{
 								firebase
 									.auth()
 									.signOut()
-									.then(() => {
+									.then(async () => {
+										await AsyncStorage.removeItem('userToken');
 										console.log('Sign out complete');
 										navigation.replace(Routes.WelcomeScreen);
 									})

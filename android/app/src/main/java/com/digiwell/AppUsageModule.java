@@ -73,10 +73,8 @@ public class AppUsageModule extends ReactContextBaseJavaModule {
                     break;
             }
 
-            // Log the start and end time for debugging
             Log.d("AppUsageModule", "Querying usage stats from " + startTime + " to " + endTime + " for period: " + period);
 
-            // Use the correct interval constant for monthly data
             int intervalType = UsageStatsManager.INTERVAL_DAILY;
             if (period.equals("weekly")) {
                 intervalType = UsageStatsManager.INTERVAL_WEEKLY;
@@ -146,6 +144,51 @@ public class AppUsageModule extends ReactContextBaseJavaModule {
             }
 
             promise.resolve(result);
+        } catch (Exception e) {
+            promise.reject("UNKNOWN_ERROR", e);
+        }
+    }
+
+    @ReactMethod
+    public void getInstalledApps(Promise promise) {
+        try {
+            PackageManager pm = getReactApplicationContext().getPackageManager();
+            List<ApplicationInfo> apps = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+            WritableArray result = Arguments.createArray();
+
+            for (ApplicationInfo appInfo : apps) {
+                if ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+                    WritableMap appData = Arguments.createMap();
+                    appData.putString("packageName", appInfo.packageName);
+                    appData.putString("appName", pm.getApplicationLabel(appInfo).toString());
+
+                    Drawable icon = pm.getApplicationIcon(appInfo.packageName);
+                    appData.putString("icon", iconToBase64(icon));
+
+                    result.pushMap(appData);
+                }
+            }
+
+            promise.resolve(result);
+        } catch (Exception e) {
+            promise.reject("UNKNOWN_ERROR", e);
+        }
+    }
+
+    @ReactMethod
+    public void getPlayStoreAppsCount(Promise promise) {
+        try {
+            PackageManager pm = getReactApplicationContext().getPackageManager();
+            List<ApplicationInfo> apps = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+            int count = 0;
+
+            for (ApplicationInfo appInfo : apps) {
+                if ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+                    count++;
+                }
+            }
+
+            promise.resolve(count);
         } catch (Exception e) {
             promise.reject("UNKNOWN_ERROR", e);
         }

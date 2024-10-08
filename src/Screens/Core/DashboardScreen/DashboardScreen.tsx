@@ -30,12 +30,11 @@ import {
 	queryUsageStats,
 	showUsageAccessSettings,
 } from '@brighthustle/react-native-usage-stats-manager';
-import {faInstagram, faYoutube} from '@fortawesome/free-brands-svg-icons';
 import {IconDefinition} from '@fortawesome/fontawesome-svg-core';
 import AppUsageStatContainerStyle from './AppUsageStatContainerStyle.ts';
-import {faGamepad} from '@fortawesome/free-solid-svg-icons';
 import {useFocusEffect, useRoute} from '@react-navigation/native';
 import {getUrbanistFontFamily} from '../../../Assets/Fonts/helper';
+import { showMessage } from 'react-native-flash-message';
 
 const FlashList = lazy(() =>
 	import('@shopify/flash-list').then(module => ({default: module.FlashList})),
@@ -44,12 +43,12 @@ const FlashList = lazy(() =>
 const {AppUsageModule} = NativeModules;
 
 const DashboardScreen = ({navigation}: {navigation: any}) => {
-	const appsInstalled = '12';
-	const dailyScreenTime = '3h 12m';
+	const [appsInstalled, setAppInstalled] = useState(0);
+	const [defaultScreenTime, setDefaultScreenTime] = useState('');
 	const colorSchema = useColorScheme();
 	const darkModeGradientColorList = ['#3f3c3c', '#313334', '#1a1a1a'];
 	const lightModeGradientColorList = ['#c6c6d2', '#d0d0e8', '#b8c0c2'];
-	const currentAppListView = 'Today';
+	const [currentAppListView, setCurrentAppListView] = useState('Today')
 	const [isOpen, setIsOpen] = useState(false);
 	const [dropDownValue, setDropDownValue] = useState('today');
 	const [dropDownItems, setDropDownItems] = useState([
@@ -65,6 +64,78 @@ const DashboardScreen = ({navigation}: {navigation: any}) => {
 	const [permissionGranted, setPermissionGranted] = useState(false);
 	const [backPressedTime, setBackPressedTime] = useState(0);
 	const [appUsageData, setAppUsageData] = useState('');
+	const showFlashMessage = (
+		message: string,
+		type: 'success' | 'warning' | 'danger',
+	) => {
+		showMessage({
+			message: message,
+			type: type,
+			statusBarHeight: StatusBar.currentHeight,
+		});
+	};
+
+	const parseTimeString = (timeString: string): number => {
+		const timeParts = timeString.split(' ');
+		let totalMinutes = 0;
+
+		timeParts.forEach(part => {
+			if (part.endsWith('h')) {
+				totalMinutes += parseInt(part) * 60;
+			} else if (part.endsWith('m')) {
+				totalMinutes += parseInt(part);
+			}
+		});
+
+		return totalMinutes;
+	};
+
+	const convertMinutesToTime = (totalMinutes: number): string => {
+		const hours = Math.floor(totalMinutes / 60);
+		const minutes = totalMinutes % 60;
+
+		if (hours > 0 && minutes > 0) {
+			return `${hours}h ${minutes}m`;
+		} else if (hours > 0) {
+			return `${hours}h`;
+		} else {
+			return `${minutes}m`;
+		}
+	};
+
+	const sumAppUsageTime = async (interval: string): Promise<string> => {
+		try {
+			const data = await AppUsageModule.getUsageStats(interval);
+			let totalUsageTimeInMinutes = 0;
+
+			if (!data || data.length === 0) {
+				console.log("No usage data received.");
+				return '0h 0m';
+			}
+
+			data.forEach((app: { totalTimeInForeground: string }) => {
+				const usageTimeInMinutes = parseTimeString(app.totalTimeInForeground);
+				totalUsageTimeInMinutes += usageTimeInMinutes;
+			});
+
+			return convertMinutesToTime(totalUsageTimeInMinutes);
+		} catch (error) {
+			console.error('Error summing app usage time:', error);
+			return '0h 0m';
+		}
+	};
+	
+	const getPlayStoreAppsCount = async () => {
+		try {
+			const count = await AppUsageModule.getPlayStoreAppsCount();
+			console.log('Play Store Apps Count:', count);
+			setAppInstalled(count);
+		} catch (error) {
+			console.error('Error fetching Play Store apps count:', error);
+			setAppInstalled(0);
+		}
+	};
+
 	useFocusEffect(
 		useCallback(() => {
 			const onBackPress = () => {
@@ -142,6 +213,12 @@ const DashboardScreen = ({navigation}: {navigation: any}) => {
 		return await AppUsageModule.getUsageStats(interval);
 	};
 	useEffect(() => {
+		getPlayStoreAppsCount();
+		sumAppUsageTime(INTERVAL.DAILY)
+			.then(screenTime => {
+				setDefaultScreenTime(screenTime);
+			})
+			.catch((error: Error) => {})
 		loadAppUsageData(INTERVAL.DAILY)
 			.then(value => {
 				setAppUsageData(value);
@@ -304,7 +381,7 @@ const DashboardScreen = ({navigation}: {navigation: any}) => {
 									Style.count,
 									{color: colorSchema === 'dark' ? '#FFF' : '#000'},
 								]}>
-								{dailyScreenTime}
+								{defaultScreenTime}
 							</Text>
 						</View>
 					</LinearGradient>
@@ -332,14 +409,23 @@ const DashboardScreen = ({navigation}: {navigation: any}) => {
 							setOpen={setIsOpen}
 							placeholder={'Sort By'}
 							onSelectItem={item => {
+								if (item.label) {
+									setCurrentAppListView(item.label);
+								}
+								sumAppUsageTime(item.label === 'Today' ? INTERVAL.DAILY : item.label === 'Weekly' ? INTERVAL.WEEKLY : INTERVAL.MONTHLY)
+								.then((screenTime) => {
+									setDefaultScreenTime(screenTime);
+								})
+								.catch((error: Error) => {
+
+								})
 								loadAppUsageData(item.label === 'Today' ? INTERVAL.DAILY : item.label === 'Weekly' ? INTERVAL.WEEKLY : INTERVAL.MONTHLY)
 								.then(data => {
 									setAppUsageData(data);
 								}) 
 								.catch((error: Error) => {
-
-								})
-								ToastAndroid.show('Showing: ' + item.label, ToastAndroid.SHORT);
+									showFlashMessage(error.message, 'danger');
+								});
 							}}
 						/>
 					</View>

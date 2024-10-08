@@ -2,7 +2,7 @@ import {AnimatedTabBarNavigator} from 'react-native-animated-nav-tab-bar';
 import {Routes} from "./Routes.ts";
 import Icon from 'react-native-vector-icons/Feather';
 import DashboardScreen from "../Screens/Core/DashboardScreen/DashboardScreen.tsx";
-import DetailedAppUsageScreen from "../Screens/Core/DetailedAppUsageScreen/DetailedAppUsageScreen.tsx";
+import AnalyticsScreen from "../Screens/Core/AnalyticsScreen/AnalyticsScreen.tsx";
 import AppLimitsScreen from "../Screens/Core/AppLimitsScreen/AppLimitsScreen.tsx";
 import ProfilePreviewScreen from "../Screens/Core/ProfilePreviewScreen/ProfilePreviewScreen.tsx";
 import CustomIcon from "../Utility/IconUtility/Icon.tsx";
@@ -40,7 +40,7 @@ const BottomTabNavigation = () => {
 			/>
 			<Tabs.Screen
 				name="Analytics"
-				component={DetailedAppUsageScreen}
+				component={AnalyticsScreen}
 				options={{
 					tabBarIcon: () => (
 						<CustomIcon xml={isDarkMode ? SVG.analytics_bottom_nav_dark_mode : SVG.analytics_bottom_nav_light_mode}/>

@@ -15,7 +15,7 @@ import {
 import GlobalStyle from '../../../Assets/GlobalStyles/GlobalStyle';
 import Style from './Style.ts';
 import {SvgXml} from 'react-native-svg';
-import {VectorIcons} from '../../../Assets/Images/VectorIcons';
+import {VectorIcons} from '../../../Assets/Images/VectorIcons.ts';
 import LabelText from '../../../Components/LabelText/LabelText.tsx';
 import {
 	scaleFontSize,
@@ -124,7 +124,7 @@ const DashboardScreen = ({navigation}: {navigation: any}) => {
 			return '0h 0m';
 		}
 	};
-	
+
 	const getPlayStoreAppsCount = async () => {
 		try {
 			const count = await AppUsageModule.getPlayStoreAppsCount();
@@ -324,7 +324,7 @@ const DashboardScreen = ({navigation}: {navigation: any}) => {
 			]}>
 			<StatusBar
 				backgroundColor={colorSchema === 'dark' ? '#000' : '#FFF'}
-				barStyle={colorSchema === 'light' ? 'dark-content' : 'light-content'}
+				barStyle={colorSchema === 'dark' ? 'light-content' : 'dark-content'}
 				translucent={true}
 			/>
 			<View style={Style.headerStatsContainer}>
@@ -422,7 +422,7 @@ const DashboardScreen = ({navigation}: {navigation: any}) => {
 								loadAppUsageData(item.label === 'Today' ? INTERVAL.DAILY : item.label === 'Weekly' ? INTERVAL.WEEKLY : INTERVAL.MONTHLY)
 								.then(data => {
 									setAppUsageData(data);
-								}) 
+								})
 								.catch((error: Error) => {
 									showFlashMessage(error.message, 'danger');
 								});

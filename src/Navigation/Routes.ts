@@ -22,4 +22,7 @@ export const Routes = {
     CreateAnAccount: "CreateAnAccount",
     MainDashboardScreen: "MainDashboardScreen",
     BottomTabNavigation: 'BottomTabNavigation',
+    DailyUsageStats: "DailyUsageStats",
+    WeeklyUsageStats: "WeeklyUsageStats",
+    MonthlyUsageStats: "MonthlyUsageStats"
 };

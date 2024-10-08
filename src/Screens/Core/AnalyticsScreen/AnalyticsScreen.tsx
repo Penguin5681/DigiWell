@@ -7,6 +7,11 @@ import {SvgXml} from 'react-native-svg';
 import {VectorIcons} from '../../../Assets/Images/VectorIcons.ts';
 import CustomIcon from '../../../Utility/IconUtility/Icon.tsx';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {Routes} from '../../../Navigation/Routes.ts';
+import DailyUsageStats from '../MaterialTabs/Screen/DailyUsageStats/DailyUsageStats.tsx';
+import WeeklyUsageStats from '../MaterialTabs/Screen/WeeklyUsageStats/WeeklyUsageStats.tsx';
+import MonthlyUsageStats from '../MaterialTabs/Screen/MonthlyUsageStats/MonthlyUsageStats.tsx';
+import {scaleFontSize} from '../../../Utility/ScalingUtility/ScalingUtility';
 
 const AnalyticsScreen = () => {
 	const colorSchema = useColorScheme();
@@ -73,6 +78,61 @@ const AnalyticsScreen = () => {
 
 					</LinearGradient>
 				</View>
+			</View>
+
+			<View style={Style.bodyContainer}>
+				<MaterialTopTabs.Navigator
+					screenOptions={{
+						tabBarStyle: {borderRadius: 11, },
+						animationEnabled: true,
+						tabBarContentContainerStyle: {},
+						tabBarLabelStyle: {
+							padding: 6,
+							borderRadius: 11,
+						},
+						tabBarIndicatorContainerStyle: {backgroundColor: colorSchema === 'dark' ? "#313334" : "#d0d0e8", borderRadius: 11},
+						swipeEnabled: true
+					}}
+
+					initialRouteName={Routes.DailyUsageStats}
+				>
+					<MaterialTopTabs.Screen
+						name={Routes.DailyUsageStats}
+						component={DailyUsageStats}
+						options={{
+							title: "Daily",
+							tabBarLabelStyle: {
+								textTransform: "capitalize",
+								fontSize: scaleFontSize(18),
+								color: colorSchema === 'dark' ? "#FFF" : "#000",
+							}
+						}}
+					/>
+					<MaterialTopTabs.Screen
+						name={Routes.WeeklyUsageStats}
+						component={WeeklyUsageStats}
+						options={{
+							title: "Weekly",
+							tabBarLabelStyle: {
+								textTransform: "capitalize",
+								fontSize: scaleFontSize(18),
+								color: colorSchema === 'dark' ? "#FFF" : "#000",
+							}
+						}}
+					/>
+					<MaterialTopTabs.Screen
+						name={Routes.MonthlyUsageStats}
+						component={MonthlyUsageStats}
+						options={{
+							title: "Monthly",
+							tabBarLabelStyle: {
+								textTransform: "capitalize",
+								fontSize: scaleFontSize(18),
+								color: colorSchema === 'dark' ? "#FFF" : "#000",
+							}
+						}}
+					/>
+				</MaterialTopTabs.Navigator>
 			</View>
 
 		</SafeAreaView>

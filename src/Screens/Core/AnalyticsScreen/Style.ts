@@ -41,6 +41,11 @@ const Style = StyleSheet.create({
 		marginRight: horizontalScale(10),
 		marginBottom: verticalScale(9),
 	},
+	bodyContainer: {
+		flex: 0.85,
+		margin: 18,
+		borderRadius: 11,
+	},
 });
 
 export default Style;

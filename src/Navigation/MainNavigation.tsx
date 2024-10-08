@@ -12,9 +12,7 @@ import RegistrationOTPVerificationScreen from '../Screens/Auth/RegistrationOTPVe
 import AvatarUploadScreen from '../Screens/Core/AvatarUploadScreen/AvatarUploadScreen.tsx';
 import ProfileSettingsScreen from '../Screens/Core/ProfileSettingsScreen/ProfileSettingsScreen.tsx';
 import EditProfileScreen from '../Screens/Core/EditProfileScreen/EditProfileScreen.tsx';
-import CreateUsernameScreen from '../Screens/Auth/CreateUsernameScreen/CreateUsernameScreen.tsx';
 import CreateAnAccount from '../Screens/Auth/CreateAnAccount/CreateAnAccount.tsx';
-import DashboardScreen from '../Screens/Core/DashboardScreen/DashboardScreen.tsx';
 import BottomTabNavigation from "./BottomTabNavigation.tsx";
 
 const StackBase = createStackNavigator();

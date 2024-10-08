@@ -51,7 +51,7 @@ const DashboardScreen = ({navigation}: {navigation: any}) => {
 	const lightModeGradientColorList = ['#c6c6d2', '#d0d0e8', '#b8c0c2'];
 	const currentAppListView = 'Today';
 	const [isOpen, setIsOpen] = useState(false);
-	const [dropDownValue, setDropDownValue] = useState(null);
+	const [dropDownValue, setDropDownValue] = useState('today');
 	const [dropDownItems, setDropDownItems] = useState([
 		{label: 'Today', value: 'today'},
 		{label: 'Weekly', value: 'weekly'},
@@ -332,6 +332,13 @@ const DashboardScreen = ({navigation}: {navigation: any}) => {
 							setOpen={setIsOpen}
 							placeholder={'Sort By'}
 							onSelectItem={item => {
+								loadAppUsageData(item.label === 'Today' ? INTERVAL.DAILY : item.label === 'Weekly' ? INTERVAL.WEEKLY : INTERVAL.MONTHLY)
+								.then(data => {
+									setAppUsageData(data);
+								}) 
+								.catch((error: Error) => {
+
+								})
 								ToastAndroid.show('Showing: ' + item.label, ToastAndroid.SHORT);
 							}}
 						/>

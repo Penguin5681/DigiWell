@@ -68,6 +68,8 @@ const WelcomeScreen = ({navigation}: {navigation: any}) => {
 						},
 					],
 				);
+			} else {
+				navigation.replace(Routes.DashboardScreen);
 			}
 		} catch (error) {
 			console.error('Error checking usage access permission:', error);

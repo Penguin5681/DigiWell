@@ -1,17 +1,18 @@
 import GlobalStyle from "../../../Assets/GlobalStyles/GlobalStyle";
 import { SafeAreaView, StatusBar, Text, useColorScheme, View } from 'react-native';
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Style from './Style.ts';
 import LinearGradient from 'react-native-linear-gradient';
 import { SvgXml } from 'react-native-svg';
 import { VectorIcons } from '../../../Assets/Images/VectorIcons.ts';
-import CustomIcon from '../../../Utility/IconUtility/Icon.tsx';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Routes } from '../../../Navigation/Routes.ts';
 import DailyUsageStats from '../MaterialTabs/Screen/DailyUsageStats/DailyUsageStats.tsx';
 import WeeklyUsageStats from '../MaterialTabs/Screen/WeeklyUsageStats/WeeklyUsageStats.tsx';
 import MonthlyUsageStats from '../MaterialTabs/Screen/MonthlyUsageStats/MonthlyUsageStats.tsx';
 import { scaleFontSize } from '../../../Utility/ScalingUtility/ScalingUtility';
+import { NativeModules } from 'react-native';
+const { NotificationModule } = NativeModules;
 
 const AnalyticsScreen = () => {
 	const colorSchema = useColorScheme();
@@ -19,6 +20,20 @@ const AnalyticsScreen = () => {
 	const lightModeGradientColorList = ['#c6c6d2', '#d0d0e8', '#b8c0c2'];
 	const [periodicNotificationCount, setPeriodicNotificationCount] = useState(0);
 	const [mostNotificationCount, setMostNotificationCount] = useState(0);
+	const [notifications, setNotifications] = useState([]);
+
+	const fetchNotifications = async () => {
+		try {
+			const notifications = await NotificationModule.getNotificationData();
+			console.log('Notifications: ', notifications);
+		} catch (error) {
+			console.error('Error fetching notifications: ', error);
+		}
+	};
+
+	useEffect(() => {
+		fetchNotifications();
+	}, []);
 
 	const MaterialTopTabs = createMaterialTopTabNavigator();
 
@@ -89,7 +104,7 @@ const AnalyticsScreen = () => {
 							backgroundColor: colorSchema === 'dark' ? '#666666' : '#d0d0d0',
 							height: '80%',
 							borderRadius: 11,
-							width: '30%',
+							width: "30%",
 							marginHorizontal: 5,
 							marginVertical: 5,
 						},
@@ -105,8 +120,7 @@ const AnalyticsScreen = () => {
 						},
 						swipeEnabled: true,
 					}}
-					initialRouteName={Routes.DailyUsageStats}
-				>
+					initialRouteName={Routes.DailyUsageStats}>
 					<MaterialTopTabs.Screen
 						name={Routes.DailyUsageStats}
 						component={DailyUsageStats}
@@ -116,14 +130,18 @@ const AnalyticsScreen = () => {
 						name={Routes.WeeklyUsageStats}
 						component={WeeklyUsageStats}
 						options={{ title: 'Week' }}
-					/><MaterialTopTabs.Screen
+					/>
+					<MaterialTopTabs.Screen
 					name={Routes.MonthlyUsageStats}
 					component={MonthlyUsageStats}
 					options={{ title: 'Month' }}
 				/>
 				</MaterialTopTabs.Navigator>
-
 			</View>
+
+			<Text>
+				&nbsp; {notifications}
+			</Text>
 
 		</SafeAreaView>
 	);

@@ -141,7 +141,7 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 				backgroundColor={colorSchema === 'dark' ? '#000' : '#FFF'}
 				barStyle={colorSchema === 'light' ? 'dark-content' : 'light-content'}
 			/>
-			{/* <View style={Style.userDetailContainer}>
+			<View style={Style.userDetailContainer}>
 				<Image
 					style={[
 						Style.userImage,
@@ -447,7 +447,7 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 						</TouchableOpacity>
 					</LinearGradient>
 				</View>
-			</View> */}
+			</View>
 		</SafeAreaView>
 	);
 };

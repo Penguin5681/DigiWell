@@ -213,7 +213,9 @@ const DashboardScreen = ({navigation}: {navigation: any}) => {
 		return await AppUsageModule.getUsageStats(interval);
 	};
 	useEffect(() => {
-		getPlayStoreAppsCount();
+		getPlayStoreAppsCount()
+			.then(() => {})
+			.catch(() => {});
 		sumAppUsageTime(INTERVAL.DAILY)
 			.then(screenTime => {
 				setDefaultScreenTime(screenTime);

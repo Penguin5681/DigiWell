@@ -45,11 +45,13 @@ const WeeklyUsageStats = () => {
 			<View>
 				<LineChart
 					data={data}
-					width={screenWidth - 3* horizontalMargin}
+					width={screenWidth - 3 * horizontalMargin}
 					height={220}
 					yAxisLabel="$"
 					chartConfig={chartConfig}
 					bezier
+					withInnerLines={false}
+					withOuterLines={false}
 					style={{
 						marginLeft:horizontalMargin - 5,
 						marginRight:horizontalMargin,

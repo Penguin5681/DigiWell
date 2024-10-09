@@ -26,6 +26,7 @@ import com.facebook.react.module.annotations.ReactModule;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -48,6 +49,75 @@ public class AppUsageModule extends ReactContextBaseJavaModule {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @ReactMethod
+    public void getUsageStatsForDay(Promise promise) {
+        try {
+            UsageStatsManager usageStatsManager = (UsageStatsManager) getReactApplicationContext().getSystemService(Context.USAGE_STATS_SERVICE);
+            if (usageStatsManager == null) {
+                throw new Exception("UsageStatsManager not available");
+            }
+
+            long endTime = System.currentTimeMillis();
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            long startTime = calendar.getTimeInMillis();
+            Log.d("AppUsageModule", "Querying usage stats from " + startTime + " to " + endTime);
+
+            List<UsageStats> stats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
+            if (stats == null || stats.isEmpty()) {
+                Log.d("AppUsageModule", "No usage stats found");
+                promise.resolve(Arguments.createArray());
+                return;
+            }
+
+            long morningUsage = 0L;
+            long afternoonUsage = 0L;
+            long eveningUsage = 0L;
+            long nightUsage = 0L;
+
+            PackageManager pm = getReactApplicationContext().getPackageManager();
+
+            for (UsageStats usageStat : stats) {
+                if (usageStat.getTotalTimeInForeground() == 0L) continue;
+                ApplicationInfo appInfo = pm.getApplicationInfo(usageStat.getPackageName(), 0);
+                if ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) continue;
+
+                long usageStart = usageStat.getFirstTimeStamp();
+                Calendar usageCalendar = Calendar.getInstance();
+                usageCalendar.setTimeInMillis(usageStart);
+                int hourOfDay = usageCalendar.get(Calendar.HOUR_OF_DAY);
+
+                if (hourOfDay >= 6 && hourOfDay < 12) {
+                    morningUsage += usageStat.getTotalTimeInForeground();
+                } else if (hourOfDay >= 12 && hourOfDay < 18) {
+                    afternoonUsage += usageStat.getTotalTimeInForeground();
+                } else if (hourOfDay >= 18 && hourOfDay < 24) {
+                    eveningUsage += usageStat.getTotalTimeInForeground();
+                } else {
+                    nightUsage += usageStat.getTotalTimeInForeground();
+                }
+            }
+
+            WritableMap result = Arguments.createMap();
+            result.putString("morning", formatTime(morningUsage));
+            result.putString("afternoon", formatTime(afternoonUsage));
+            result.putString("evening", formatTime(eveningUsage));
+            result.putString("night", formatTime(nightUsage));
+
+            Log.d("AppUsageModule", "Usage stats: " + result.toString());
+
+            promise.resolve(result);
+
+        } catch (Exception e) {
+            promise.reject("UNKNOWN_ERROR", e);
+        }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @ReactMethod
     public void getUsageStats(String period, Promise promise) {
         try {
             UsageStatsManager usageStatsManager = (UsageStatsManager) getReactApplicationContext().getSystemService(Context.USAGE_STATS_SERVICE);
@@ -57,19 +127,41 @@ public class AppUsageModule extends ReactContextBaseJavaModule {
 
             long endTime = System.currentTimeMillis();
             long startTime;
+            Calendar calendar = Calendar.getInstance();
 
             switch (period) {
                 case "daily":
-                    startTime = endTime - 1000 * 60 * 60 * 24;
+                    calendar.set(Calendar.HOUR_OF_DAY, 0);
+                    calendar.set(Calendar.MINUTE, 0);
+                    calendar.set(Calendar.SECOND, 0);
+                    calendar.set(Calendar.MILLISECOND, 0);
+                    startTime = calendar.getTimeInMillis();
                     break;
+
                 case "weekly":
-                    startTime = endTime - 1000 * 60 * 60 * 24 * 7;
+                    calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+                    calendar.set(Calendar.HOUR_OF_DAY, 0);
+                    calendar.set(Calendar.MINUTE, 0);
+                    calendar.set(Calendar.SECOND, 0);
+                    calendar.set(Calendar.MILLISECOND, 0);
+                    startTime = calendar.getTimeInMillis();
                     break;
+
                 case "monthly":
-                    startTime = endTime - 1000 * 60 * 60 * 24 * 30;
+                    calendar.set(Calendar.DAY_OF_MONTH, 1);
+                    calendar.set(Calendar.HOUR_OF_DAY, 0);
+                    calendar.set(Calendar.MINUTE, 0);
+                    calendar.set(Calendar.SECOND, 0);
+                    calendar.set(Calendar.MILLISECOND, 0);
+                    startTime = calendar.getTimeInMillis();
                     break;
+
                 default:
-                    startTime = endTime - 1000 * 60 * 60 * 24;
+                    calendar.set(Calendar.HOUR_OF_DAY, 0);
+                    calendar.set(Calendar.MINUTE, 0);
+                    calendar.set(Calendar.SECOND, 0);
+                    calendar.set(Calendar.MILLISECOND, 0);
+                    startTime = calendar.getTimeInMillis();
                     break;
             }
 
@@ -133,13 +225,13 @@ public class AppUsageModule extends ReactContextBaseJavaModule {
                 public int compare(WritableMap o1, WritableMap o2) {
                     long time1 = Long.parseLong(o1.getString("totalTimeInForeground"));
                     long time2 = Long.parseLong(o2.getString("totalTimeInForeground"));
-                    return Long.compare(time2, time1); 
+                    return Long.compare(time2, time1);
                 }
             });
 
             WritableArray result = Arguments.createArray();
             for (WritableMap appData : appDataList) {
-                appData.putString("totalTimeInForeground", formatTime(Long.parseLong(appData.getString("totalTimeInForeground")))); 
+                appData.putString("totalTimeInForeground", formatTime(Long.parseLong(appData.getString("totalTimeInForeground"))));
                 result.pushMap(appData);
             }
 
@@ -148,6 +240,8 @@ public class AppUsageModule extends ReactContextBaseJavaModule {
             promise.reject("UNKNOWN_ERROR", e);
         }
     }
+
+
 
     @ReactMethod
     public void getInstalledApps(Promise promise) {

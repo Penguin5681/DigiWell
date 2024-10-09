@@ -13,6 +13,7 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.soloader.SoLoader
 import com.digiwell.UsageStatsModule
 import com.digiwell.UsageStatsPackage
+import com.digiwell.AppUsageModule
 class MainApplication : Application(), ReactApplication {
 
   override val reactNativeHost: ReactNativeHost =
@@ -24,6 +25,7 @@ class MainApplication : Application(), ReactApplication {
               add(UsageStatsPackage())
               add(MyAppPackage())
               add(AppUsagePackage())
+             // add(AppUsageModule())
             }
 
         override fun getJSMainModuleName(): String = "index"

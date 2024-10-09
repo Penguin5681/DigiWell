@@ -12,7 +12,7 @@ const DailyUsageStats = () => {
 	const darkModeGradientColorList = ['#3f3c3c', '#313334'];
 	const lightModeGradientColorList = ['#c6c6d2', '#d0d0e8'];
 	const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
-	const [usageData, setUsageData] = useState([0, 0, 0, 0]); // Morning, Afternoon, Evening, Night
+	const [usageData, setUsageData] = useState([0, 0, 0, 0]);
 	const horizontalMargin = 15;
 
 	useEffect(() => {
@@ -40,7 +40,7 @@ const DailyUsageStats = () => {
 
 	const parseUsageTime = (timeString: string) => {
 		const [hours, minutes] = timeString.split(/[h m]/).map(Number);
-		return (hours || 0) * 60 + (minutes || 0); // Convert hours and minutes to total minutes
+		return (hours || 0) * 60 + (minutes || 0);
 	};
 
 	const data: LineChartData = {

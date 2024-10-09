@@ -48,6 +48,131 @@ public class AppUsageModule extends ReactContextBaseJavaModule {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @ReactMethod
+        public void getUsageStats(String period, Promise promise) {
+            try {
+                UsageStatsManager usageStatsManager = (UsageStatsManager) getReactApplicationContext().getSystemService(Context.USAGE_STATS_SERVICE);
+                if (usageStatsManager == null) {
+                    throw new Exception("UsageStatsManager not available");
+                }
+
+                long endTime = System.currentTimeMillis();
+                long startTime;
+                Calendar calendar = Calendar.getInstance();
+
+                switch (period) {
+                    case "daily":
+                        calendar.set(Calendar.HOUR_OF_DAY, 0);
+                        calendar.set(Calendar.MINUTE, 0);
+                        calendar.set(Calendar.SECOND, 0);
+                        calendar.set(Calendar.MILLISECOND, 0);
+                        startTime = calendar.getTimeInMillis();
+                        break;
+
+                    case "weekly":
+                        calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+                        calendar.set(Calendar.HOUR_OF_DAY, 0);
+                        calendar.set(Calendar.MINUTE, 0);
+                        calendar.set(Calendar.SECOND, 0);
+                        calendar.set(Calendar.MILLISECOND, 0);
+                        startTime = calendar.getTimeInMillis();
+                        break;
+
+                    case "monthly":
+                        calendar.set(Calendar.DAY_OF_MONTH, 1);
+                        calendar.set(Calendar.HOUR_OF_DAY, 0);
+                        calendar.set(Calendar.MINUTE, 0);
+                        calendar.set(Calendar.SECOND, 0);
+                        calendar.set(Calendar.MILLISECOND, 0);
+                        startTime = calendar.getTimeInMillis();
+                        break;
+
+                    default:
+                        calendar.set(Calendar.HOUR_OF_DAY, 0);
+                        calendar.set(Calendar.MINUTE, 0);
+                        calendar.set(Calendar.SECOND, 0);
+                        calendar.set(Calendar.MILLISECOND, 0);
+                        startTime = calendar.getTimeInMillis();
+                        break;
+                }
+
+                Log.d("AppUsageModule", "Querying usage stats from " + startTime + " to " + endTime + " for period: " + period);
+
+                int intervalType = UsageStatsManager.INTERVAL_DAILY;
+                if (period.equals("weekly")) {
+                    intervalType = UsageStatsManager.INTERVAL_WEEKLY;
+                } else if (period.equals("monthly")) {
+                    intervalType = UsageStatsManager.INTERVAL_MONTHLY;
+                }
+
+                List<UsageStats> stats = usageStatsManager.queryUsageStats(intervalType, startTime, endTime);
+                if (stats == null || stats.isEmpty()) {
+                    Log.d("AppUsageModule", "No usage stats found for period: " + period);
+                    promise.resolve(Arguments.createArray());
+                    return;
+                }
+
+                Map<String, WritableMap> appDataMap = new HashMap<>();
+                PackageManager pm = getReactApplicationContext().getPackageManager();
+
+                for (UsageStats usageStat : stats) {
+                    try {
+                        ApplicationInfo appInfo = pm.getApplicationInfo(usageStat.getPackageName(), 0);
+                        if ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
+                            continue;
+                        }
+
+                        if (usageStat.getTotalTimeInForeground() == 0L) {
+                            continue;
+                        }
+
+                        String packageName = usageStat.getPackageName();
+                        WritableMap appData;
+
+                        if (appDataMap.containsKey(packageName)) {
+                            appData = appDataMap.get(packageName);
+                            long existingTime = Long.parseLong(appData.getString("totalTimeInForeground"));
+                            appData.putString("totalTimeInForeground", String.valueOf(existingTime + usageStat.getTotalTimeInForeground()));
+                        } else {
+                            appData = Arguments.createMap();
+                            appData.putString("packageName", packageName);
+                            appData.putString("appName", pm.getApplicationLabel(appInfo).toString());
+                            appData.putString("totalTimeInForeground", String.valueOf(usageStat.getTotalTimeInForeground()));
+
+                            Drawable icon = pm.getApplicationIcon(packageName);
+                            appData.putString("icon", iconToBase64(icon));
+
+                            appDataMap.put(packageName, appData);
+                        }
+                    } catch (PackageManager.NameNotFoundException e) {
+                        Log.e("AppUsageModule", "App not found: " + usageStat.getPackageName(), e);
+                    }
+                }
+
+                List<WritableMap> appDataList = new ArrayList<>(appDataMap.values());
+
+                Collections.sort(appDataList, new Comparator<WritableMap>() {
+                    @Override
+                    public int compare(WritableMap o1, WritableMap o2) {
+                        long time1 = Long.parseLong(o1.getString("totalTimeInForeground"));
+                        long time2 = Long.parseLong(o2.getString("totalTimeInForeground"));
+                        return Long.compare(time2, time1);
+                    }
+                });
+
+                WritableArray result = Arguments.createArray();
+                for (WritableMap appData : appDataList) {
+                    appData.putString("totalTimeInForeground", formatTime(Long.parseLong(appData.getString("totalTimeInForeground"))));
+                    result.pushMap(appData);
+                }
+
+                promise.resolve(result);
+            } catch (Exception e) {
+                promise.reject("UNKNOWN_ERROR", e);
+            }
+        }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @ReactMethod
     public void getUsageStatsForDay(Promise promise) {
         try {
@@ -115,10 +240,9 @@ public class AppUsageModule extends ReactContextBaseJavaModule {
         }
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @ReactMethod
-    public void getUsageStats(String period, Promise promise) {
+    public void getWeeklyUsageStats(Promise promise) {
         try {
             UsageStatsManager usageStatsManager = (UsageStatsManager) getReactApplicationContext().getSystemService(Context.USAGE_STATS_SERVICE);
             if (usageStatsManager == null) {
@@ -126,113 +250,37 @@ public class AppUsageModule extends ReactContextBaseJavaModule {
             }
 
             long endTime = System.currentTimeMillis();
-            long startTime;
             Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            long startTime = calendar.getTimeInMillis();
 
-            switch (period) {
-                case "daily":
-                    calendar.set(Calendar.HOUR_OF_DAY, 0);
-                    calendar.set(Calendar.MINUTE, 0);
-                    calendar.set(Calendar.SECOND, 0);
-                    calendar.set(Calendar.MILLISECOND, 0);
-                    startTime = calendar.getTimeInMillis();
-                    break;
-
-                case "weekly":
-                    calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
-                    calendar.set(Calendar.HOUR_OF_DAY, 0);
-                    calendar.set(Calendar.MINUTE, 0);
-                    calendar.set(Calendar.SECOND, 0);
-                    calendar.set(Calendar.MILLISECOND, 0);
-                    startTime = calendar.getTimeInMillis();
-                    break;
-
-                case "monthly":
-                    calendar.set(Calendar.DAY_OF_MONTH, 1);
-                    calendar.set(Calendar.HOUR_OF_DAY, 0);
-                    calendar.set(Calendar.MINUTE, 0);
-                    calendar.set(Calendar.SECOND, 0);
-                    calendar.set(Calendar.MILLISECOND, 0);
-                    startTime = calendar.getTimeInMillis();
-                    break;
-
-                default:
-                    calendar.set(Calendar.HOUR_OF_DAY, 0);
-                    calendar.set(Calendar.MINUTE, 0);
-                    calendar.set(Calendar.SECOND, 0);
-                    calendar.set(Calendar.MILLISECOND, 0);
-                    startTime = calendar.getTimeInMillis();
-                    break;
-            }
-
-            Log.d("AppUsageModule", "Querying usage stats from " + startTime + " to " + endTime + " for period: " + period);
-
-            int intervalType = UsageStatsManager.INTERVAL_DAILY;
-            if (period.equals("weekly")) {
-                intervalType = UsageStatsManager.INTERVAL_WEEKLY;
-            } else if (period.equals("monthly")) {
-                intervalType = UsageStatsManager.INTERVAL_MONTHLY;
-            }
-
-            List<UsageStats> stats = usageStatsManager.queryUsageStats(intervalType, startTime, endTime);
+            List<UsageStats> stats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
             if (stats == null || stats.isEmpty()) {
-                Log.d("AppUsageModule", "No usage stats found for period: " + period);
                 promise.resolve(Arguments.createArray());
                 return;
             }
 
-            Map<String, WritableMap> appDataMap = new HashMap<>();
-            PackageManager pm = getReactApplicationContext().getPackageManager();
+            long[] dailyUsage = new long[7];
 
             for (UsageStats usageStat : stats) {
-                try {
-                    ApplicationInfo appInfo = pm.getApplicationInfo(usageStat.getPackageName(), 0);
-                    if ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
-                        continue;
-                    }
+                if (usageStat.getTotalTimeInForeground() == 0L) continue;
 
-                    if (usageStat.getTotalTimeInForeground() == 0L) {
-                        continue;
-                    }
+                Calendar usageCalendar = Calendar.getInstance();
+                usageCalendar.setTimeInMillis(usageStat.getFirstTimeStamp());
+                int dayOfWeek = usageCalendar.get(Calendar.DAY_OF_WEEK) - 1;
 
-                    String packageName = usageStat.getPackageName();
-                    WritableMap appData;
-
-                    if (appDataMap.containsKey(packageName)) {
-                        appData = appDataMap.get(packageName);
-                        long existingTime = Long.parseLong(appData.getString("totalTimeInForeground"));
-                        appData.putString("totalTimeInForeground", String.valueOf(existingTime + usageStat.getTotalTimeInForeground()));
-                    } else {
-                        appData = Arguments.createMap();
-                        appData.putString("packageName", packageName);
-                        appData.putString("appName", pm.getApplicationLabel(appInfo).toString());
-                        appData.putString("totalTimeInForeground", String.valueOf(usageStat.getTotalTimeInForeground()));
-
-                        Drawable icon = pm.getApplicationIcon(packageName);
-                        appData.putString("icon", iconToBase64(icon));
-
-                        appDataMap.put(packageName, appData);
-                    }
-                } catch (PackageManager.NameNotFoundException e) {
-                    Log.e("AppUsageModule", "App not found: " + usageStat.getPackageName(), e);
+                if (dayOfWeek >= 0 && dayOfWeek < 7) {
+                    dailyUsage[dayOfWeek] += usageStat.getTotalTimeInForeground() / 1000 / 60;
                 }
             }
 
-            List<WritableMap> appDataList = new ArrayList<>(appDataMap.values());
-
-            Collections.sort(appDataList, new Comparator<WritableMap>() {
-                @Override
-                public int compare(WritableMap o1, WritableMap o2) {
-                    long time1 = Long.parseLong(o1.getString("totalTimeInForeground"));
-                    long time2 = Long.parseLong(o2.getString("totalTimeInForeground"));
-                    return Long.compare(time2, time1);
-                }
-            });
-
             WritableArray result = Arguments.createArray();
-            for (WritableMap appData : appDataList) {
-                appData.putString("totalTimeInForeground", formatTime(Long.parseLong(appData.getString("totalTimeInForeground"))));
-                result.pushMap(appData);
+            for (long usage : dailyUsage) {
+                result.pushInt((int) usage);
             }
 
             promise.resolve(result);
@@ -241,6 +289,54 @@ public class AppUsageModule extends ReactContextBaseJavaModule {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @ReactMethod
+    public void getMonthlyUsageStats(Promise promise) {
+        try {
+            UsageStatsManager usageStatsManager = (UsageStatsManager) getReactApplicationContext().getSystemService(Context.USAGE_STATS_SERVICE);
+            if (usageStatsManager == null) {
+                throw new Exception("UsageStatsManager not available");
+            }
+
+            long endTime = System.currentTimeMillis();
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_MONTH, 1);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            long startTime = calendar.getTimeInMillis();
+
+            List<UsageStats> stats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
+            if (stats == null || stats.isEmpty()) {
+                promise.resolve(Arguments.createArray());
+                return;
+            }
+
+            long[] weeklyUsage = new long[4];
+
+            for (UsageStats usageStat : stats) {
+                if (usageStat.getTotalTimeInForeground() == 0L) continue;
+
+                Calendar usageCalendar = Calendar.getInstance();
+                usageCalendar.setTimeInMillis(usageStat.getFirstTimeStamp());
+                int weekOfMonth = usageCalendar.get(Calendar.WEEK_OF_MONTH) - 1;
+
+                if (weekOfMonth >= 0 && weekOfMonth < 4) {
+                    weeklyUsage[weekOfMonth] += usageStat.getTotalTimeInForeground() / 1000 / 60;
+                }
+            }
+
+            WritableArray result = Arguments.createArray();
+            for (long usage : weeklyUsage) {
+                result.pushInt((int) usage);
+            }
+
+            promise.resolve(result);
+        } catch (Exception e) {
+            promise.reject("UNKNOWN_ERROR", e);
+        }
+    }
 
 
     @ReactMethod

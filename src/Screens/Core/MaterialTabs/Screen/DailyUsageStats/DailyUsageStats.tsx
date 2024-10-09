@@ -1,12 +1,63 @@
-import {SafeAreaView, Text, useColorScheme} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Dimensions, SafeAreaView, useColorScheme, View } from 'react-native';
+import { LineChart } from "react-native-chart-kit";
 
 const DailyUsageStats = () => {
 	const colorSchema = useColorScheme();
+	const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
+	const horizontalMargin = 15;
+
+	useEffect(() => {
+		const updateWidth = () => {
+			setScreenWidth(Dimensions.get("window").width);
+		};
+
+		const subscription = Dimensions.addEventListener('change', updateWidth);
+
+		return () => {
+			subscription?.remove();
+		};
+	}, []);
+
+	const data = {
+		labels: ["1", "2", "3", "4", "5", "6"],
+		datasets: [
+			{
+				data: [20, 45, 28, 80, 99, 43],
+				color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`,
+				strokeWidth: 2,
+			},
+		],
+		legend: ["Rainy Days"],
+	};
+
+	const chartConfig = {
+		backgroundGradientFrom: "#fff",
+		backgroundGradientTo: "#fff",
+		color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+		strokeWidth: 2,
+		barPercentage: 0.5,
+		decimalPlaces: 0,
+	};
+
 	return (
-		<SafeAreaView style={{flex: 1, backgroundColor: colorSchema === 'dark' ? "#000" : "#FFF"}}>
-			<Text>
-				Daily App Usage Graph
-			</Text>
+		<SafeAreaView style={{ flex: 1, backgroundColor: colorSchema === 'dark' ? "#000" : "#FFF" }}>
+			<View>
+				<LineChart
+					data={data}
+					width={screenWidth - 3* horizontalMargin}
+					height={220}
+					yAxisLabel="$"
+					chartConfig={chartConfig}
+					bezier
+					style={{
+						marginLeft:horizontalMargin - 5,
+						marginRight:horizontalMargin,
+						marginVertical: 8,
+						borderRadius: 16,
+					}}
+				/>
+			</View>
 		</SafeAreaView>
 	);
 };

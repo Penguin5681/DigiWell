@@ -2448,9 +2448,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-firebase/app@npm:^20.3.0":
-  version: 20.3.0
-  resolution: "@react-native-firebase/app@npm:20.3.0"
+"@react-native-firebase/app@npm:^20.5.0":
+  version: 20.5.0
+  resolution: "@react-native-firebase/app@npm:20.5.0"
   dependencies:
     firebase: 10.12.2
     superstruct: ^0.6.2
@@ -2461,7 +2461,7 @@ __metadata:
   peerDependenciesMeta:
     expo:
       optional: true
-  checksum: 6bc4dd88c16f528a9a8224864ea03ae137c57fe152b3e2133d821ebe47656734e07e02be09ca54b56895febe215bf74ea656cef9a785b5c30f99b831e8b341e3
+  checksum: 107293fe8f5bd62923ad2a428dca6ff50817526a8a9829c831f7e64bdad6f5d940457555faeffea24b1213ea09fa19db553f45081c568906a845d3f5871bd96c
   languageName: node
   linkType: hard
 
@@ -3429,7 +3429,7 @@ __metadata:
     "@fortawesome/free-brands-svg-icons": ^6.5.2
     "@fortawesome/free-solid-svg-icons": ^6.5.2
     "@fortawesome/react-native-fontawesome": ^0.3.2
-    "@react-native-firebase/app": ^20.3.0
+    "@react-native-firebase/app": ^20.5.0
     "@react-native-firebase/auth": ^20.1.0
     "@react-native-firebase/firestore": ^20.3.0
     "@react-native-firebase/functions": ^20.1.0

@@ -4,16 +4,19 @@ import React, {useEffect} from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import FlashMessage from 'react-native-flash-message';
 import MainNavigation from "./src/Navigation/MainNavigation.tsx";
+import {AuthProviderProvider} from './src/Context/AuthProviderContext/AuthProviderContext.tsx';
 
 const App = () => {
 	useEffect(() => {
 		SplashScreen.hide();
 	}, []);
 	return (
-		<NavigationContainer>
-			<MainNavigation />
-			<FlashMessage position={'top'} />
-		</NavigationContainer>
+		<AuthProviderProvider>
+			<NavigationContainer>
+				<MainNavigation />
+				<FlashMessage position={'top'} />
+			</NavigationContainer>
+		</AuthProviderProvider>
 	);
 };
 

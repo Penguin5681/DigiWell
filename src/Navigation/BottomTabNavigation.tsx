@@ -1,6 +1,5 @@
 import {AnimatedTabBarNavigator} from 'react-native-animated-nav-tab-bar';
 import {Routes} from "./Routes.ts";
-import Icon from 'react-native-vector-icons/Feather';
 import DashboardScreen from "../Screens/Core/DashboardScreen/DashboardScreen.tsx";
 import AnalyticsScreen from "../Screens/Core/AnalyticsScreen/AnalyticsScreen.tsx";
 import AppLimitsScreen from "../Screens/Core/AppLimitsScreen/AppLimitsScreen.tsx";
@@ -24,8 +23,6 @@ const BottomTabNavigation = () => {
 				tabBarBackground: isDarkMode ? '#1E232C' : '#E5E4E2',
 				shadow: true,
 				floating: true,
-
-
 			}}
 			backBehavior={'initialRoute'}
 			initialRouteName={Routes.DashboardScreen}>

@@ -24,12 +24,15 @@ import GlobalStyle from '../../../Assets/GlobalStyles/GlobalStyle';
 import KeyboardCoveringContainer from '../../../Components/KeboardCoveringContainer/KeyboardCoveringContainer';
 import AwesomeButton from 'react-native-really-awesome-button';
 import {horizontalScale} from '../../../Utility/ScalingUtility/ScalingUtility';
+import {showMessage} from 'react-native-flash-message';
+import {useAuthProvider} from '../../../Context/AuthProviderContext/AuthProviderContext.tsx';
 
 const LoginScreen = ({navigation}: {navigation: any}) => {
 	const colorSchema = useColorScheme();
 	const [error, setError] = useState('');
 	const [defaultEmailValue, setDefaultEmailValue] = useState('');
 	const [defaultPasswordValue, setDefaultPasswordValue] = useState('');
+	const {setAuthProvider} = useAuthProvider();
 
 	const signInWithGoogle = async () => {
 		try {
@@ -46,7 +49,10 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 			await auth().signInWithCredential(googleCredentials);
 			return userInfo;
 		} catch (error) {
-			console.log('=> Google Sign In', error);
+			showMessage({
+				message: "Google sign in error: " + error,
+				type: "danger",
+			});
 			return null;
 		}
 	};
@@ -77,7 +83,7 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 					<View id={'back-button'} style={Style.backButton}>
 						<BackButton
 							onPress={() => {
-								navigation.navigate(Routes.WelcomeScreen);
+								navigation.replace(Routes.WelcomeScreen);
 							}}
 							buttonBackgroundColor={colorSchema === 'dark' ? '#000' : '#FFF'}
 							backArrowColor={colorSchema === 'dark' ? '#FFF' : '#000'}
@@ -170,9 +176,8 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 										}
 									} else {
 										setError('');
-										navigation.navigate(Routes.DashboardScreen, {
-											authProvider: 'firebase.com',
-										});
+										navigation.replace(Routes.DashboardScreen);
+										setAuthProvider('firebase.com');
 									}
 								}
 							}}>
@@ -190,11 +195,10 @@ const LoginScreen = ({navigation}: {navigation: any}) => {
 							<View style={Style.signInButtonContainer}>
 								<GoogleButton
 									onPress={() =>
-										signInWithGoogle().then(data => {
-											navigation.navigate(Routes.DashboardScreen, {
-												authProvider: 'google.com',
-											});
-											console.log('UserData =>', data);
+										signInWithGoogle()
+											.then(() => {
+											navigation.replace(Routes.DashboardScreen);
+											setAuthProvider('google.com');
 										})
 									}
 									rightMargin={horizontalScale(12)}

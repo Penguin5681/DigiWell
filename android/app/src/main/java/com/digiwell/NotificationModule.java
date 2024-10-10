@@ -22,7 +22,7 @@ public class NotificationModule extends ReactContextBaseJavaModule {
 
     public NotificationModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        notificationListener = new NotificationListener(reactContext);
+        notificationListener = new NotificationListener(); // No need to pass context anymore
     }
 
     @Override

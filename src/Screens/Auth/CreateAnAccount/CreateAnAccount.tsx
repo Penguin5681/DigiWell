@@ -45,17 +45,6 @@ const CreateAnAccount = ({navigation}: {navigation: any}) => {
 			);
 		}
 	};
-	const showFlashMessage = (
-		message: string,
-		type: 'danger' | 'warning' | 'success',
-	) => {
-		showMessage({
-			message: message,
-			type: type,
-			autoHide: true,
-			statusBarHeight: StatusBar.currentHeight,
-		});
-	};
 
 	const showDescFlashMessage = (
 		message: string,

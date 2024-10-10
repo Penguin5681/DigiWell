@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.service.notification.NotificationListenerService;
@@ -15,17 +14,16 @@ import android.util.Log;
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.AdaptiveIconDrawable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class NotificationListener extends NotificationListenerService {
     private static final String TAG = "NotificationListener";
     private static final String PREFS_NAME = "NotificationData";
-    private Context mContext;
-
-    public NotificationListener(Context context) {
-        this.mContext = context;
-    }
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
@@ -51,7 +49,7 @@ public class NotificationListener extends NotificationListenerService {
 
     private boolean isSystemApp(String packageName) {
         try {
-            ApplicationInfo appInfo = mContext.getPackageManager().getApplicationInfo(packageName, 0);
+            ApplicationInfo appInfo = getBaseContext().getPackageManager().getApplicationInfo(packageName, 0);
             return (appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, "Error checking if app is a system app", e);
@@ -61,25 +59,49 @@ public class NotificationListener extends NotificationListenerService {
 
     private String getAppIconBase64(String packageName) {
         try {
-            Drawable icon = mContext.getPackageManager().getApplicationIcon(packageName);
-            Bitmap bitmap = ((BitmapDrawable) icon).getBitmap();
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray = byteArrayOutputStream.toByteArray();
-            return Base64.encodeToString(byteArray, Base64.DEFAULT);
+            Drawable icon = getApplicationContext().getPackageManager().getApplicationIcon(packageName);
+            if (icon instanceof BitmapDrawable) {
+                Bitmap bitmap = ((BitmapDrawable) icon).getBitmap();
+                return bitmapToBase64(bitmap);
+            } else if (icon instanceof AdaptiveIconDrawable) {
+                Bitmap bitmap = getBitmapFromDrawable((AdaptiveIconDrawable) icon);
+                return bitmapToBase64(bitmap);
+            } else {
+                Log.e(TAG, "Unsupported drawable type for package: " + packageName);
+                return "";
+            }
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, "Error getting app icon for " + packageName, e);
             return "";
         }
     }
 
+    private String bitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    private Bitmap getBitmapFromDrawable(AdaptiveIconDrawable drawable) {
+        Bitmap bitmap = Bitmap.createBitmap(
+            drawable.getIntrinsicWidth(),
+            drawable.getIntrinsicHeight(),
+            Bitmap.Config.ARGB_8888
+        );
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
     private int getNotificationCount(String packageName) {
-        SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getInt(packageName + "_count", 0);
     }
 
     private void storeNotificationData(String packageName, String appName, String appIconBase64, int notificationCount) {
-        SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         try {
@@ -97,7 +119,7 @@ public class NotificationListener extends NotificationListenerService {
     }
 
     public int getTotalNotificationCount() {
-        SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         Map<String, ?> allEntries = sharedPreferences.getAll();
         int totalNotificationCount = 0;
 
@@ -112,9 +134,10 @@ public class NotificationListener extends NotificationListenerService {
 
     private String getAppName(String packageName) {
         try {
-            return mContext.getPackageManager().getApplicationLabel(mContext.getPackageManager().getApplicationInfo(packageName, 0)).toString();
+            return getBaseContext().getPackageManager().getApplicationLabel(getBaseContext().getPackageManager().getApplicationInfo(packageName, 0)).toString();
         } catch (PackageManager.NameNotFoundException e) {
             return packageName;
         }
     }
 }
+

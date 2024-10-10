@@ -56,7 +56,7 @@ const WelcomeScreen = ({navigation}: {navigation: any}) => {
 								const permissionGranted = showUsageAccessSettings('');
 								if (permissionGranted) {
 									showFlashMessage('Permission Granted', 'success');
-									navigation.navigate(Routes.DashboardScreen);
+									// navigation.navigate(Routes.DashboardScreen);
 								} else {
 									showFlashMessage('Please grant usage access permission', 'danger');
 								}

@@ -20,14 +20,13 @@ const AnalyticsScreen = () => {
 	const lightModeGradientColorList = ['#c6c6d2', '#d0d0e8', '#b8c0c2'];
 	const [periodicNotificationCount, setPeriodicNotificationCount] = useState(0);
 	const [mostNotificationCount, setMostNotificationCount] = useState(0);
-	const [notifications, setNotifications] = useState([]);
 
 	const fetchNotifications = async () => {
 		try {
-			const notifications = await NotificationModule.getNotificationData();
-			console.log('Notifications: ', notifications);
+			const count = await NotificationModule.getTotalNotificationCount();
+			setPeriodicNotificationCount(count);
 		} catch (error) {
-			console.error('Error fetching notifications: ', error);
+			console.error('Error fetching notification count:', error);
 		}
 	};
 
@@ -138,10 +137,6 @@ const AnalyticsScreen = () => {
 				/>
 				</MaterialTopTabs.Navigator>
 			</View>
-
-			<Text>
-				&nbsp; {notifications}
-			</Text>
 
 		</SafeAreaView>
 	);

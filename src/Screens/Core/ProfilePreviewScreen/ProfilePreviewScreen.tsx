@@ -87,6 +87,21 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 			return null;
 		}
 	};
+
+	const uploadToCloud = async () => {
+		await firestore()
+			.collection('backups')
+			.doc('')
+			.set({
+
+			})
+			.then(() => {
+
+			})
+			.catch(() => {
+
+			})
+	};
 	const fetchGoogleProfile = async () => {
 		setDefaultEmail(firebase.auth().currentUser?.email || 'emailNotFound');
 		setDefaultDisplayName(
@@ -141,313 +156,315 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 				backgroundColor={colorSchema === 'dark' ? '#000' : '#FFF'}
 				barStyle={colorSchema === 'light' ? 'dark-content' : 'light-content'}
 			/>
-			<View style={Style.userDetailContainer}>
-				<Image
-					style={[
-						Style.userImage,
-						{borderColor: colorSchema === 'dark' ? '#FFF' : '#000'},
-					]}
-					source={{uri: defaultImageUrl}}
-				/>
-				<View style={[Style.userLabelContainer, {alignItems: 'baseline'}]}>
-					<View style={{width: 'auto'}}>
-						<OptionsHeaderText
-							text={defaultDisplayName}
-							color={'#309CFF'}
-							fontSize={scaleFontSize(25)}
-							marginBottom={0}
-							onPress={() => null}
-						/>
-					</View>
-					<OptionsHeaderText
-						text={'Surat'}
-						color={colorSchema === 'dark' ? '#FFF' : '#000'}
-						fontSize={scaleFontSize(19)}
-						marginBottom={0}
-						onPress={() => null}
-					/>
-					<OptionsHeaderText
-						text={'Since 2024'}
-						color={colorSchema === 'dark' ? '#FFF' : '#000'}
-						fontSize={scaleFontSize(19)}
-						marginBottom={0}
-						onPress={() => null}
-					/>
+			{/*<View style={Style.userDetailContainer}>*/}
+			{/*	<Image*/}
+			{/*		style={[*/}
+			{/*			Style.userImage,*/}
+			{/*			{borderColor: colorSchema === 'dark' ? '#FFF' : '#000'},*/}
+			{/*		]}*/}
+			{/*		source={{uri: defaultImageUrl}}*/}
+			{/*	/>*/}
+			{/*	<View style={[Style.userLabelContainer, {alignItems: 'baseline'}]}>*/}
+			{/*		<View style={{width: 'auto'}}>*/}
+			{/*			<OptionsHeaderText*/}
+			{/*				text={defaultDisplayName}*/}
+			{/*				color={'#309CFF'}*/}
+			{/*				fontSize={scaleFontSize(25)}*/}
+			{/*				marginBottom={0}*/}
+			{/*				onPress={() => null}*/}
+			{/*			/>*/}
+			{/*		</View>*/}
+			{/*		<OptionsHeaderText*/}
+			{/*			text={'Surat'}*/}
+			{/*			color={colorSchema === 'dark' ? '#FFF' : '#000'}*/}
+			{/*			fontSize={scaleFontSize(19)}*/}
+			{/*			marginBottom={0}*/}
+			{/*			onPress={() => null}*/}
+			{/*		/>*/}
+			{/*		<OptionsHeaderText*/}
+			{/*			text={'Since 2024'}*/}
+			{/*			color={colorSchema === 'dark' ? '#FFF' : '#000'}*/}
+			{/*			fontSize={scaleFontSize(19)}*/}
+			{/*			marginBottom={0}*/}
+			{/*			onPress={() => null}*/}
+			{/*		/>*/}
 
-					<TouchableOpacity
-						style={[
-							Style.editProfileButton,
-							{backgroundColor: colorSchema === 'dark' ? '#FFF' : '#E5E4E2'},
-						]}
-						onPress={() => {
-							navigation.navigate(Routes.EditProfileScreen);
-						}}>
-						<Text style={Style.buttonContent}>Edit Profile</Text>
-					</TouchableOpacity>
-				</View>
-			</View>
+			{/*		<TouchableOpacity*/}
+			{/*			style={[*/}
+			{/*				Style.editProfileButton,*/}
+			{/*				{backgroundColor: colorSchema === 'dark' ? '#FFF' : '#E5E4E2'},*/}
+			{/*			]}*/}
+			{/*			onPress={() => {*/}
+			{/*				navigation.navigate(Routes.EditProfileScreen);*/}
+			{/*			}}>*/}
+			{/*			<Text style={Style.buttonContent}>Edit Profile</Text>*/}
+			{/*		</TouchableOpacity>*/}
+			{/*	</View>*/}
+			{/*</View>*/}
 
-			<View
-				style={{
-					flex: 1,
-					justifyContent: 'space-around',
-					top: 140,
-					left: 0,
-					right: 0,
-					position: 'absolute',
-					bottom: 75,
-				}}>
-				<View style={[Style.statsContainer]}>
-					<LinearGradient
-						style={Style.usageStatsGradient}
-						start={{x: 0, y: 0}}
-						end={{x: 0.2, y: 4}}
-						colors={
-							colorSchema === 'dark'
-								? darkModeGradientColorList
-								: lightModeGradientColorList
-						}>
-						<View style={Style.dailyStats}>
-							<OptionsHeaderText
-								text={'Screen Usage'}
-								color={'#119b9b'}
-								fontSize={scaleFontSize(30)}
-								marginBottom={verticalScale(10)}
-								onPress={() => null}
-							/>
+			{/*<View*/}
+			{/*	style={{*/}
+			{/*		flex: 1,*/}
+			{/*		justifyContent: 'space-around',*/}
+			{/*		top: 140,*/}
+			{/*		left: 0,*/}
+			{/*		right: 0,*/}
+			{/*		position: 'absolute',*/}
+			{/*		bottom: 75,*/}
+			{/*	}}>*/}
+			{/*	<View style={[Style.statsContainer]}>*/}
+			{/*		<LinearGradient*/}
+			{/*			style={Style.usageStatsGradient}*/}
+			{/*			start={{x: 0, y: 0}}*/}
+			{/*			end={{x: 0.2, y: 4}}*/}
+			{/*			colors={*/}
+			{/*				colorSchema === 'dark'*/}
+			{/*					? darkModeGradientColorList*/}
+			{/*					: lightModeGradientColorList*/}
+			{/*			}>*/}
+			{/*			<View style={Style.dailyStats}>*/}
+			{/*				<OptionsHeaderText*/}
+			{/*					text={'Screen Usage'}*/}
+			{/*					color={'#119b9b'}*/}
+			{/*					fontSize={scaleFontSize(30)}*/}
+			{/*					marginBottom={verticalScale(10)}*/}
+			{/*					onPress={() => null}*/}
+			{/*				/>*/}
 
-							<OptionsHeaderText
-								text={`Today's Screen Time: ${dailyScreenTime}`}
-								color={colorSchema === 'light' ? '#000' : '#FFF'}
-								fontSize={scaleFontSize(14)}
-								marginBottom={0}
-								onPress={() => {}}
-							/>
+			{/*				<OptionsHeaderText*/}
+			{/*					text={`Today's Screen Time: ${dailyScreenTime}`}*/}
+			{/*					color={colorSchema === 'light' ? '#000' : '#FFF'}*/}
+			{/*					fontSize={scaleFontSize(14)}*/}
+			{/*					marginBottom={0}*/}
+			{/*					onPress={() => {}}*/}
+			{/*				/>*/}
 
-							<OptionsHeaderText
-								text={`Today's Most Used App: ${dailyMostUsedApp}`}
-								color={colorSchema === 'light' ? '#000' : '#FFF'}
-								fontSize={scaleFontSize(14)}
-								marginBottom={verticalScale(10)}
-								onPress={() => {}}
-							/>
-						</View>
+			{/*				<OptionsHeaderText*/}
+			{/*					text={`Today's Most Used App: ${dailyMostUsedApp}`}*/}
+			{/*					color={colorSchema === 'light' ? '#000' : '#FFF'}*/}
+			{/*					fontSize={scaleFontSize(14)}*/}
+			{/*					marginBottom={verticalScale(10)}*/}
+			{/*					onPress={() => {}}*/}
+			{/*				/>*/}
+			{/*			</View>*/}
 
-						<View style={Style.weeklyStats}>
-							<OptionsHeaderText
-								text={`Week's Screen Time: ${weeklyScreenTime}`}
-								color={colorSchema === 'light' ? '#000' : '#FFF'}
-								fontSize={scaleFontSize(14)}
-								marginBottom={0}
-								onPress={() => {}}
-							/>
+			{/*			<View style={Style.weeklyStats}>*/}
+			{/*				<OptionsHeaderText*/}
+			{/*					text={`Week's Screen Time: ${weeklyScreenTime}`}*/}
+			{/*					color={colorSchema === 'light' ? '#000' : '#FFF'}*/}
+			{/*					fontSize={scaleFontSize(14)}*/}
+			{/*					marginBottom={0}*/}
+			{/*					onPress={() => {}}*/}
+			{/*				/>*/}
 
-							<OptionsHeaderText
-								text={`Week's Most Used App: ${weeklyMostUsedApp}`}
-								color={colorSchema === 'light' ? '#000' : '#FFF'}
-								fontSize={scaleFontSize(14)}
-								marginBottom={10}
-								onPress={() => {}}
-							/>
-						</View>
-					</LinearGradient>
-				</View>
+			{/*				<OptionsHeaderText*/}
+			{/*					text={`Week's Most Used App: ${weeklyMostUsedApp}`}*/}
+			{/*					color={colorSchema === 'light' ? '#000' : '#FFF'}*/}
+			{/*					fontSize={scaleFontSize(14)}*/}
+			{/*					marginBottom={10}*/}
+			{/*					onPress={() => {}}*/}
+			{/*				/>*/}
+			{/*			</View>*/}
+			{/*		</LinearGradient>*/}
+			{/*	</View>*/}
 
-				<View style={[Style.accountStatusContainer]}>
-					<LinearGradient
-						style={Style.usageStatsGradient}
-						start={{x: 0, y: 0}}
-						end={{x: 0.2, y: 4}}
-						colors={
-							colorSchema === 'dark'
-								? darkModeGradientColorList
-								: lightModeGradientColorList
-						}>
-						<OptionsHeaderText
-							text={'Account Info'}
-							color={'#119b9b'}
-							fontSize={scaleFontSize(30)}
-							marginBottom={verticalScale(10)}
-							onPress={() => null}
-						/>
+			{/*	<View style={[Style.accountStatusContainer]}>*/}
+			{/*		<LinearGradient*/}
+			{/*			style={Style.usageStatsGradient}*/}
+			{/*			start={{x: 0, y: 0}}*/}
+			{/*			end={{x: 0.2, y: 4}}*/}
+			{/*			colors={*/}
+			{/*				colorSchema === 'dark'*/}
+			{/*					? darkModeGradientColorList*/}
+			{/*					: lightModeGradientColorList*/}
+			{/*			}>*/}
+			{/*			<OptionsHeaderText*/}
+			{/*				text={'Account Info'}*/}
+			{/*				color={'#119b9b'}*/}
+			{/*				fontSize={scaleFontSize(30)}*/}
+			{/*				marginBottom={verticalScale(10)}*/}
+			{/*				onPress={() => null}*/}
+			{/*			/>*/}
 
-						<OptionsHeaderText
-							text={`Account Created On: ${accountCreationDate}`}
-							color={colorSchema === 'light' ? '#000' : '#FFF'}
-							fontSize={scaleFontSize(14)}
-							marginBottom={10}
-							onPress={() => {}}
-						/>
-					</LinearGradient>
-				</View>
+			{/*			<OptionsHeaderText*/}
+			{/*				text={`Account Created On: ${accountCreationDate}`}*/}
+			{/*				color={colorSchema === 'light' ? '#000' : '#FFF'}*/}
+			{/*				fontSize={scaleFontSize(14)}*/}
+			{/*				marginBottom={10}*/}
+			{/*				onPress={() => {}}*/}
+			{/*			/>*/}
+			{/*		</LinearGradient>*/}
+			{/*	</View>*/}
 
-				<View style={[Style.profileOptionContainer]}>
-					<LinearGradient
-						style={Style.profileOptionGradient}
-						start={{x: 0, y: 0}}
-						end={{x: 0.2, y: 4}}
-						colors={
-							colorSchema === 'dark'
-								? darkModeGradientColorList
-								: lightModeGradientColorList
-						}>
-						<TouchableOpacity
-							style={Style.homeOption}
-							onPress={() => {
-								navigation.dispatch(
-									CommonActions.reset({
-										index: 0,
-										routes: [{name: Routes.DashboardScreen}]
-									})
-								)
-							}}
-						>
-							<SvgXml xml={VectorIcons.homeIconVector} />
-							<Text
-								style={[
-									Style.optionLabel,
-									{color: colorSchema === 'dark' ? '#FFF' : '#000'},
-								]}>
-								Go to Dashboard
-							</Text>
-							<SvgXml
-								xml={
-									colorSchema === 'dark'
-										? VectorIcons.arrowRightVectorWhite
-										: VectorIcons.arrowRightVectorBlack
-								}
-							/>
-						</TouchableOpacity>
+			{/*	<View style={[Style.profileOptionContainer]}>*/}
+			{/*		<LinearGradient*/}
+			{/*			style={Style.profileOptionGradient}*/}
+			{/*			start={{x: 0, y: 0}}*/}
+			{/*			end={{x: 0.2, y: 4}}*/}
+			{/*			colors={*/}
+			{/*				colorSchema === 'dark'*/}
+			{/*					? darkModeGradientColorList*/}
+			{/*					: lightModeGradientColorList*/}
+			{/*			}>*/}
+			{/*			<TouchableOpacity*/}
+			{/*				style={Style.homeOption}*/}
+			{/*				onPress={() => {*/}
+			{/*					navigation.dispatch(*/}
+			{/*						CommonActions.reset({*/}
+			{/*							index: 0,*/}
+			{/*							routes: [{name: Routes.DashboardScreen}]*/}
+			{/*						})*/}
+			{/*					)*/}
+			{/*				}}*/}
+			{/*			>*/}
+			{/*				<SvgXml xml={VectorIcons.homeIconVector} />*/}
+			{/*				<Text*/}
+			{/*					style={[*/}
+			{/*						Style.optionLabel,*/}
+			{/*						{color: colorSchema === 'dark' ? '#FFF' : '#000'},*/}
+			{/*					]}>*/}
+			{/*					Go to Dashboard*/}
+			{/*				</Text>*/}
+			{/*				<SvgXml*/}
+			{/*					xml={*/}
+			{/*						colorSchema === 'dark'*/}
+			{/*							? VectorIcons.arrowRightVectorWhite*/}
+			{/*							: VectorIcons.arrowRightVectorBlack*/}
+			{/*					}*/}
+			{/*				/>*/}
+			{/*			</TouchableOpacity>*/}
 
-						<View style={Style.settingsOption}>
-							<SvgXml xml={VectorIcons.settingsVector} />
-							<Text
-								style={[
-									Style.optionLabel,
-									{color: colorSchema === 'dark' ? '#FFF' : '#000'},
-								]}>
-								Settings
-							</Text>
-							<SvgXml
-								xml={
-									colorSchema === 'dark'
-										? VectorIcons.arrowRightVectorWhite
-										: VectorIcons.arrowRightVectorBlack
-								}
-							/>
-						</View>
+			{/*			<View style={Style.settingsOption}>*/}
+			{/*				<SvgXml xml={VectorIcons.settingsVector} />*/}
+			{/*				<Text*/}
+			{/*					style={[*/}
+			{/*						Style.optionLabel,*/}
+			{/*						{color: colorSchema === 'dark' ? '#FFF' : '#000'},*/}
+			{/*					]}>*/}
+			{/*					Settings*/}
+			{/*				</Text>*/}
+			{/*				<SvgXml*/}
+			{/*					xml={*/}
+			{/*						colorSchema === 'dark'*/}
+			{/*							? VectorIcons.arrowRightVectorWhite*/}
+			{/*							: VectorIcons.arrowRightVectorBlack*/}
+			{/*					}*/}
+			{/*				/>*/}
+			{/*			</View>*/}
 
-						<TouchableOpacity
-							style={Style.shareOption}
-							onPress={async () => {}}>
-							<SvgXml
-								xml={
-									colorSchema === 'dark'
-										? VectorIcons.shareIconWhite
-										: VectorIcons.shareIconBlack
-								}
-							/>
-							<Text
-								style={[
-									Style.optionLabel,
-									{color: colorSchema === 'dark' ? '#FFF' : '#000'},
-								]}>
-								Tell your friends
-							</Text>
-							<SvgXml
-								xml={
-									colorSchema === 'dark'
-										? VectorIcons.arrowRightVectorWhite
-										: VectorIcons.arrowRightVectorBlack
-								}
-							/>
-						</TouchableOpacity>
+			{/*			<TouchableOpacity*/}
+			{/*				style={Style.shareOption}*/}
+			{/*				onPress={async () => {*/}
 
-						<TouchableOpacity
-							style={Style.deleteOption}
-							onPress={() => {
-								Alert.alert(
-									'Are you sure?',
-									'Your Account will be deleted permanently',
-									[
-										{
-											text: 'Cancel',
-											onPress: () => {
-												console.log('Dismiss');
-											},
-											style: 'cancel',
-										},
-										{
-											text: 'Confirm Delete',
-											onPress: () => {
-												firebase
-													.auth()
-													.currentUser?.delete()
-													.then(() => {
-														navigation.replace(Routes.WelcomeScreen);
-													});
-											},
-											style: 'cancel',
-										},
-									],
-								);
-							}}>
-							<SvgXml
-								xml={
-									colorSchema === 'dark'
-										? VectorIcons.deleteIconWhiteVector
-										: VectorIcons.deleteIconBlackVector
-								}
-							/>
-							<Text
-								style={[
-									Style.optionLabel,
-									{color: colorSchema === 'dark' ? '#FFF' : '#000'},
-								]}>
-								Delete Account
-							</Text>
-							<SvgXml
-								xml={
-									colorSchema === 'dark'
-										? VectorIcons.arrowRightVectorWhite
-										: VectorIcons.arrowRightVectorBlack
-								}
-							/>
-						</TouchableOpacity>
+			{/*				}}>*/}
+			{/*				<SvgXml*/}
+			{/*					xml={*/}
+			{/*						colorSchema === 'dark'*/}
+			{/*							? VectorIcons.uploadIconWhite*/}
+			{/*							: VectorIcons.uploadIconBlack*/}
+			{/*					}*/}
+			{/*				/>*/}
+			{/*				<Text*/}
+			{/*					style={[*/}
+			{/*						Style.optionLabel,*/}
+			{/*						{color: colorSchema === 'dark' ? '#FFF' : '#000'},*/}
+			{/*					]}>*/}
+			{/*					Upload to Cloud*/}
+			{/*				</Text>*/}
+			{/*				<SvgXml*/}
+			{/*					xml={*/}
+			{/*						colorSchema === 'dark'*/}
+			{/*							? VectorIcons.arrowRightVectorWhite*/}
+			{/*							: VectorIcons.arrowRightVectorBlack*/}
+			{/*					}*/}
+			{/*				/>*/}
+			{/*			</TouchableOpacity>*/}
 
-						<TouchableOpacity
-							onPress={() => {
-								firebase
-									.auth()
-									.signOut()
-									.then(() => {
-										console.log('Sign out complete');
-										navigation.replace(Routes.WelcomeScreen);
-									})
-									.catch(reason => {
-										console.log(reason);
-									});
-							}}
-							style={[Style.logoutOption]}>
-							<SvgXml xml={VectorIcons.logOutVector} />
-							<Text
-								style={[
-									Style.optionLabel,
-									{color: colorSchema === 'dark' ? '#FFF' : '#000'},
-								]}>
-								Logout
-							</Text>
-							<SvgXml
-								xml={
-									colorSchema === 'dark'
-										? VectorIcons.arrowRightVectorWhite
-										: VectorIcons.arrowRightVectorBlack
-								}
-							/>
-						</TouchableOpacity>
-					</LinearGradient>
-				</View>
-			</View>
+			{/*			<TouchableOpacity*/}
+			{/*				style={Style.deleteOption}*/}
+			{/*				onPress={() => {*/}
+			{/*					Alert.alert(*/}
+			{/*						'Are you sure?',*/}
+			{/*						'Your Account will be deleted permanently',*/}
+			{/*						[*/}
+			{/*							{*/}
+			{/*								text: 'Cancel',*/}
+			{/*								onPress: () => {*/}
+			{/*									console.log('Dismiss');*/}
+			{/*								},*/}
+			{/*								style: 'cancel',*/}
+			{/*							},*/}
+			{/*							{*/}
+			{/*								text: 'Confirm Delete',*/}
+			{/*								onPress: () => {*/}
+			{/*									firebase*/}
+			{/*										.auth()*/}
+			{/*										.currentUser?.delete()*/}
+			{/*										.then(() => {*/}
+			{/*											navigation.replace(Routes.WelcomeScreen);*/}
+			{/*										});*/}
+			{/*								},*/}
+			{/*								style: 'cancel',*/}
+			{/*							},*/}
+			{/*						],*/}
+			{/*					);*/}
+			{/*				}}>*/}
+			{/*				<SvgXml*/}
+			{/*					xml={*/}
+			{/*						colorSchema === 'dark'*/}
+			{/*							? VectorIcons.deleteIconWhiteVector*/}
+			{/*							: VectorIcons.deleteIconBlackVector*/}
+			{/*					}*/}
+			{/*				/>*/}
+			{/*				<Text*/}
+			{/*					style={[*/}
+			{/*						Style.optionLabel,*/}
+			{/*						{color: colorSchema === 'dark' ? '#FFF' : '#000'},*/}
+			{/*					]}>*/}
+			{/*					Delete Account*/}
+			{/*				</Text>*/}
+			{/*				<SvgXml*/}
+			{/*					xml={*/}
+			{/*						colorSchema === 'dark'*/}
+			{/*							? VectorIcons.arrowRightVectorWhite*/}
+			{/*							: VectorIcons.arrowRightVectorBlack*/}
+			{/*					}*/}
+			{/*				/>*/}
+			{/*			</TouchableOpacity>*/}
+
+			{/*			<TouchableOpacity*/}
+			{/*				onPress={() => {*/}
+			{/*					firebase*/}
+			{/*						.auth()*/}
+			{/*						.signOut()*/}
+			{/*						.then(() => {*/}
+			{/*							console.log('Sign out complete');*/}
+			{/*							navigation.replace(Routes.WelcomeScreen);*/}
+			{/*						})*/}
+			{/*						.catch(reason => {*/}
+			{/*							console.log(reason);*/}
+			{/*						});*/}
+			{/*				}}*/}
+			{/*				style={[Style.logoutOption]}>*/}
+			{/*				<SvgXml xml={VectorIcons.logOutVector} />*/}
+			{/*				<Text*/}
+			{/*					style={[*/}
+			{/*						Style.optionLabel,*/}
+			{/*						{color: colorSchema === 'dark' ? '#FFF' : '#000'},*/}
+			{/*					]}>*/}
+			{/*					Logout*/}
+			{/*				</Text>*/}
+			{/*				<SvgXml*/}
+			{/*					xml={*/}
+			{/*						colorSchema === 'dark'*/}
+			{/*							? VectorIcons.arrowRightVectorWhite*/}
+			{/*							: VectorIcons.arrowRightVectorBlack*/}
+			{/*					}*/}
+			{/*				/>*/}
+			{/*			</TouchableOpacity>*/}
+			{/*		</LinearGradient>*/}
+			{/*	</View>*/}
+			{/*</View>*/}
 		</SafeAreaView>
 	);
 };

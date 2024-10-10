@@ -3,6 +3,7 @@ package com.digiwell;
 import android.app.Notification;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,69 +12,74 @@ import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Base64;
 import android.util.Log;
+import java.io.ByteArrayOutputStream;
+import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
-import java.util.Map;
-
-
 public class NotificationListener extends NotificationListenerService {
-
     private static final String TAG = "NotificationListener";
     private static final String PREFS_NAME = "NotificationData";
+    private Context mContext;
+
+    public NotificationListener(Context context) {
+        this.mContext = context;
+    }
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
+        String packageName = sbn.getPackageName();
+        if (isSystemApp(packageName)) {
+            Log.d(TAG, "Skipping system app: " + packageName);
+            return;
+        }
+
         Notification notification = sbn.getNotification();
         if (notification != null) {
-            String packageName = sbn.getPackageName();
-             Log.d("onNotificationPostedTAG", packageName);
-             String appName = getAppName(packageName);
-             String appIconBase64 = getAppIconBase64(notification);
+            Log.d("onNotificationPostedTAG", packageName);
+            String appName = getAppName(packageName);
+            String appIconBase64 = getAppIconBase64(packageName);
 
-             int notificationCount = getNotificationCount(packageName);
-             notificationCount++;
-             Log.d("NotificationCountTAG", Integer.toString(notificationCount));
+            int notificationCount = getNotificationCount(packageName);
+            notificationCount++;
+            Log.d("NotificationCountTAG", appName + ": " + notificationCount);
 
             storeNotificationData(packageName, appName, appIconBase64, notificationCount);
         }
     }
 
-    private String getAppIconBase64(Notification notification) {
-        if (notification.getLargeIcon() == null) {
-            Log.e(TAG, "Large icon is null");
-            return null;
+    private boolean isSystemApp(String packageName) {
+        try {
+            ApplicationInfo appInfo = mContext.getPackageManager().getApplicationInfo(packageName, 0);
+            return (appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, "Error checking if app is a system app", e);
+            return false;
         }
+    }
 
-        Drawable drawable = notification.getLargeIcon().loadDrawable(this);
-        Bitmap bitmap = null;
-
-        if (drawable instanceof BitmapDrawable) {
-            bitmap = ((BitmapDrawable) drawable).getBitmap();
-        } else {
-            Log.e(TAG, "Large icon is not a BitmapDrawable");
-            return null;
-        }
-
-        if (bitmap != null) {
+    private String getAppIconBase64(String packageName) {
+        try {
+            Drawable icon = mContext.getPackageManager().getApplicationIcon(packageName);
+            Bitmap bitmap = ((BitmapDrawable) icon).getBitmap();
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            String encodedIcon = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
-            return encodedIcon;
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            return Base64.encodeToString(byteArray, Base64.DEFAULT);
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(TAG, "Error getting app icon for " + packageName, e);
+            return "";
         }
-        return null;
     }
 
     private int getNotificationCount(String packageName) {
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getInt(packageName + "_count", 0);
     }
 
     private void storeNotificationData(String packageName, String appName, String appIconBase64, int notificationCount) {
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         try {
@@ -83,23 +89,30 @@ public class NotificationListener extends NotificationListenerService {
             jsonObject.put("notificationCount", notificationCount);
 
             editor.putString(packageName, jsonObject.toString());
-            editor.putString(packageName + "_appName", appName);
-            editor.putString(packageName + "_appIcon", appIconBase64);
+            editor.putInt(packageName + "_count", notificationCount);
             editor.apply();
         } catch (JSONException e) {
             Log.e(TAG, "Error saving notification data", e);
         }
     }
 
-    @Override
-    public void onNotificationRemoved(StatusBarNotification sbn) {
-        String packageName = sbn.getPackageName();
-        Log.d("NotificationRemovalTAG", getAppName(packageName));
+    public int getTotalNotificationCount() {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        Map<String, ?> allEntries = sharedPreferences.getAll();
+        int totalNotificationCount = 0;
+
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            if (entry.getKey().endsWith("_count")) {
+                totalNotificationCount += sharedPreferences.getInt(entry.getKey(), 0);
+            }
+        }
+
+        return totalNotificationCount;
     }
 
     private String getAppName(String packageName) {
         try {
-            return getPackageManager().getApplicationLabel(getPackageManager().getApplicationInfo(packageName, 0)).toString();
+            return mContext.getPackageManager().getApplicationLabel(mContext.getPackageManager().getApplicationInfo(packageName, 0)).toString();
         } catch (PackageManager.NameNotFoundException e) {
             return packageName;
         }

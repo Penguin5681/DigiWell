@@ -18,13 +18,26 @@ import java.util.Map;
 
 public class NotificationModule extends ReactContextBaseJavaModule {
 
+    private NotificationListener notificationListener;
+
     public NotificationModule(ReactApplicationContext reactContext) {
         super(reactContext);
+        notificationListener = new NotificationListener(reactContext);
     }
 
     @Override
     public String getName() {
         return "NotificationModule";
+    }
+
+    @ReactMethod
+    public void getTotalNotificationCount(Promise promise) {
+        try {
+            int totalNotificationCount = notificationListener.getTotalNotificationCount();
+            promise.resolve(totalNotificationCount);
+        } catch (Exception e) {
+            promise.reject("Error", e);
+        }
     }
 
     @ReactMethod

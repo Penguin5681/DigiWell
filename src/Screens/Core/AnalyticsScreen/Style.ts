@@ -42,7 +42,7 @@ const Style = StyleSheet.create({
 		marginBottom: verticalScale(9),
 	},
 	bodyContainer: {
-		flex: 0.85,
+		flex: 0.65,
 		margin: 18,
 		borderRadius: 11,
 	},

@@ -6,7 +6,6 @@ import {
 	SafeAreaView,
 	StatusBar,
 	StyleSheet,
-	ToastAndroid,
 	useColorScheme,
 	View,
 } from 'react-native';
@@ -56,7 +55,7 @@ const WelcomeScreen = ({navigation}: {navigation: any}) => {
 								const permissionGranted = showUsageAccessSettings('');
 								if (permissionGranted) {
 									showFlashMessage('Permission Granted', 'success');
-									// navigation.navigate(Routes.DashboardScreen);
+									navigation.navigate(Routes.DashboardScreen);
 								} else {
 									showFlashMessage('Please grant usage access permission', 'danger');
 								}
@@ -69,7 +68,7 @@ const WelcomeScreen = ({navigation}: {navigation: any}) => {
 					],
 				);
 			} else {
-				navigation.replace(Routes.DashboardScreen);
+				// navigation.replace(Routes.DashboardScreen);
 			}
 		} catch (error) {
 			console.error('Error checking usage access permission:', error);

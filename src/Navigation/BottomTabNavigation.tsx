@@ -44,15 +44,6 @@ const BottomTabNavigation = () => {
 					),
 				}}
 			/>
-			<Tabs.Screen
-				name="App Limit"
-				component={AppLimitsScreen}
-				options={{
-					tabBarIcon: () => (
-						<CustomIcon xml={isDarkMode ? SVG.appLimit_bottom_nav_dark_mode : SVG.appLimit_bottom_nav_light_mode}/>
-					),
-				}}
-			/>
 
 			<Tabs.Screen
 				name="Profile"

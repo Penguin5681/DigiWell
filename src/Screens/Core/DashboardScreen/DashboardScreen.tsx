@@ -113,7 +113,7 @@ const DashboardScreen = ({navigation}: {navigation: any}) => {
 				return '0h 0m';
 			}
 
-			data.forEach((app: { totalTimeInForeground: string }) => {
+			data.forEach((app: {totalTimeInForeground: string}) => {
 				const usageTimeInMinutes = parseTimeString(app.totalTimeInForeground);
 				totalUsageTimeInMinutes += usageTimeInMinutes;
 			});

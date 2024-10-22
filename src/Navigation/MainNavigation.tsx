@@ -23,7 +23,6 @@ const MainNavigation: React.FC = () => {
 			initialRouteName={'WelcomeScreen'}
 			screenOptions={{
 				headerShown: false,
-				gestureEnabled: true,
 				gestureDirection: 'horizontal',
 				transitionSpec: {
 					open: {

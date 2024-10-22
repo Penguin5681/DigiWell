@@ -26,7 +26,7 @@ import {firebase} from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import {generateRandomUsername} from '../../../Assets/RandomUsernameGenerator/RandomUsernameGenerator';
-import {CommonActions, useFocusEffect, useRoute} from '@react-navigation/native';
+import {CommonActions, useFocusEffect} from '@react-navigation/native';
 import {showMessage} from 'react-native-flash-message';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {useAuthProvider} from '../../../Context/AuthProviderContext/AuthProviderContext.tsx';
@@ -145,7 +145,6 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 	};
 
 	const fetchFirebaseProfile = async () => {
-
 		await firestore()
 			.collection('users')
 			.doc(firebase.auth().currentUser?.email?.toString())
@@ -183,16 +182,16 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 	};
 
 	useEffect(() => {
-		if (authProvider === 'google.com') {
-			fetchGoogleProfile()
-				.then(() => {})
-				.catch(() => {});
-		} else if (authProvider === 'firebase.com') {
+		if (firebase.auth().currentUser?.providerId === 'firebase') {
 			fetchFirebaseProfile()
 				.then(() => {})
 				.catch(() => {});
+		} else {
+			fetchGoogleProfile()
+				.then(() => {})
+				.catch(() => {});
 		}
-	}, [authProvider]);
+	}, []);
 
 	return (
 		<SafeAreaView

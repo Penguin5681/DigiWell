@@ -31,7 +31,9 @@ const AnalyticsScreen = () => {
 	};
 
 	useEffect(() => {
-		fetchNotifications();
+		fetchNotifications()
+			.then(() => {})
+			.catch(() => {});
 	}, []);
 
 	const MaterialTopTabs = createMaterialTopTabNavigator();

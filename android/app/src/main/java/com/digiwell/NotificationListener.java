@@ -49,7 +49,8 @@ public class NotificationListener extends NotificationListenerService {
 
     private boolean isSystemApp(String packageName) {
         try {
-            ApplicationInfo appInfo = getBaseContext().getPackageManager().getApplicationInfo(packageName, 0);
+//             ApplicationInfo appInfo = getBaseContext().getPackageManager().getApplicationInfo(packageName, 0);
+            ApplicationInfo appInfo = getApplicationContext().getPackageManager().getApplicationInfo(packageName, 0);
             return (appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, "Error checking if app is a system app", e);
@@ -60,6 +61,7 @@ public class NotificationListener extends NotificationListenerService {
     private String getAppIconBase64(String packageName) {
         try {
             Drawable icon = getApplicationContext().getPackageManager().getApplicationIcon(packageName);
+
             if (icon instanceof BitmapDrawable) {
                 Bitmap bitmap = ((BitmapDrawable) icon).getBitmap();
                 return bitmapToBase64(bitmap);
@@ -96,12 +98,16 @@ public class NotificationListener extends NotificationListenerService {
     }
 
     private int getNotificationCount(String packageName) {
-        SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+//         SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+
         return sharedPreferences.getInt(packageName + "_count", 0);
     }
 
     private void storeNotificationData(String packageName, String appName, String appIconBase64, int notificationCount) {
-        SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+//         SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         try {

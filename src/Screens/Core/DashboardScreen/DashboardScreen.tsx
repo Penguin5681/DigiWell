@@ -268,7 +268,7 @@ const DashboardScreen = ({navigation}: {navigation: any}) => {
 									{backgroundColor: 'rgba(62,43,62,0.39)'},
 									{alignSelf: 'baseline'},
 								]}>
-								Games
+								Other
 							</Text>
 						</View>
 					</View>

@@ -29,7 +29,6 @@ import {generateRandomUsername} from '../../../Assets/RandomUsernameGenerator/Ra
 import {CommonActions, useFocusEffect} from '@react-navigation/native';
 import {showMessage} from 'react-native-flash-message';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {useAuthProvider} from '../../../Context/AuthProviderContext/AuthProviderContext.tsx';
 
 const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 	const colorSchema = useColorScheme();
@@ -39,13 +38,13 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 	const [backPressedTime, setBackPressedTime] = useState(0);
 	const [accountCreationDate, setAccountCreationDate] = useState('');
 	const [uid, setUid] = useState('');
-	const {authProvider} = useAuthProvider();
 	const [appUsageData, setAppUsageData] = useState('');
 	const defaultProfileImagePath = colorSchema === 'dark' ? 'default_profile_image/avatar_icon_white.png' : 'default_profile_image/avatar_icon_black.png';
 	const dailyScreenTime = '3h 28m';
 	const weeklyScreenTime = '13h 42m';
 	const dailyMostUsedApp = 'Brave';
 	const weeklyMostUsedApp = 'Chrome';
+	const [authProvider, setAuthProvider] = useState(firebase.auth().currentUser?.providerId);
 	const darkModeGradientColorList = ['#0c0c0c', '#4C4E52', '#9FA2A8'];
 	const lightModeGradientColorList = ['#c6c6d2', '#d0d0e8', '#97a1a3'];
 
@@ -73,6 +72,10 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 			};
 		}, [backPressedTime]),
 	);
+
+	const fetchUserId = async () => {
+
+	}
 
 	const downloadPlaceholderImage = async () => {
 		try {
@@ -159,30 +162,28 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 				setDefaultDisplayName(generateRandomUsername());
 				console.error("Error fetching display name: " + error);
 			});
-
+		// TODO: FIX
 		try {
-			await firestore()
-				.collection('users')
-				.doc(firebase.auth().currentUser?.email?.toString())
-				.get()
-				.then((snapshot) => {
-					if (snapshot.exists) {
-						setUid(snapshot.get('uid'));
-					} else {
-						console.error("Error Occurred: " + "uid not found");
-					}
-				})
+			// await firestore()
+			// 	.collection('users')
+			// 	.doc(firebase.auth().currentUser?.email?.toString())
+			// 	.get()
+			// 	.then((snapshot) => {
+			// 		if (snapshot.exists) {
+			// 			setUid(snapshot.get('uid'));
+			// 		} else {
+			// 			console.error("Error Occurred: " + "uid not found");
+			// 		}
+			// 	})
 
-			console.log("ProfilePreviewScreen: " + uid);
-
-			await fetchProfileImageUrl("user_profile_images/" + uid + ".jpg");
+			await fetchProfileImageUrl("user_profile_images/" + firebase.auth().currentUser?.uid + ".jpg");
 		} catch (error) {
 			console.error("Error Fetching the Image URL");
 		}
 	};
 
 	useEffect(() => {
-		if (firebase.auth().currentUser?.providerId === 'firebase') {
+		if (authProvider === 'firebase') {
 			fetchFirebaseProfile()
 				.then(() => {})
 				.catch(() => {});
@@ -191,6 +192,7 @@ const ProfilePreviewScreen = ({navigation}: {navigation: any}) => {
 				.then(() => {})
 				.catch(() => {});
 		}
+		console.log(firebase.auth().currentUser?.providerId);
 	}, []);
 
 	return (

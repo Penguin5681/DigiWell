@@ -2961,17 +2961,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shopify/flash-list@npm:^1.7.0":
-  version: 1.7.0
-  resolution: "@shopify/flash-list@npm:1.7.0"
+"@shopify/flash-list@npm:^1.7.3":
+  version: 1.7.3
+  resolution: "@shopify/flash-list@npm:1.7.3"
   dependencies:
     recyclerlistview: 4.2.1
-    tslib: 2.6.3
+    tslib: 2.8.1
   peerDependencies:
     "@babel/runtime": "*"
     react: "*"
     react-native: "*"
-  checksum: d9cccd4c53f0957ecea071600d4297611c7dc00ca318dfbae4ff92ed34104340eaacb60a1f38c7165dd8f61e65c59acc7f7b627b21ca3abcec739da9e129d538
+  checksum: cbf3289779141777eab4ec6f1a59b90c6f2f91fb4a880dad09ace5e37559a1448ddbf7a282c8787bb7b4f1b45d3f612f8a940760accfd88313494d47a1d63cce
   languageName: node
   linkType: hard
 
@@ -3442,7 +3442,7 @@ __metadata:
     "@react-navigation/material-top-tabs": ^6.6.14
     "@react-navigation/native": ^6.1.17
     "@react-navigation/stack": ^6.4.0
-    "@shopify/flash-list": ^1.7.0
+    "@shopify/flash-list": ^1.7.3
     "@types/react": ^18.3.3
     "@types/react-native-vector-icons": ^6.4.18
     "@types/react-test-renderer": ^18.3.0
@@ -10247,10 +10247,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:2.6.3":
-  version: 2.6.3
-  resolution: "tslib@npm:2.6.3"
-  checksum: 74fce0e100f1ebd95b8995fbbd0e6c91bdd8f4c35c00d4da62e285a3363aaa534de40a80db30ecfd388ed7c313c42d930ee0eaf108e8114214b180eec3dbe6f5
+"tslib@npm:2.8.1":
+  version: 2.8.1
+  resolution: "tslib@npm:2.8.1"
+  checksum: e4aba30e632b8c8902b47587fd13345e2827fa639e7c3121074d5ee0880723282411a8838f830b55100cbe4517672f84a2472667d355b81e8af165a55dc6203a
   languageName: node
   linkType: hard
 

@@ -16,7 +16,7 @@
         "@fortawesome/free-brands-svg-icons": "^6.5.2",
         "@fortawesome/free-solid-svg-icons": "^6.5.2",
         "@fortawesome/react-native-fontawesome": "^0.3.2",
-        "@react-native-firebase/app": "^20.3.0",
+        "@react-native-firebase/app": "^20.5.0",
         "@react-native-firebase/auth": "^20.1.0",
         "@react-native-firebase/firestore": "^20.3.0",
         "@react-native-firebase/functions": "^20.1.0",
